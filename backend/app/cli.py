@@ -8,10 +8,13 @@ import asyncio
 import sys
 from collections.abc import Awaitable, Callable, Sequence
 
+from app.core.clock import Clock
 from app.core.config import get_settings
 from app.core.logging import configure_logging, get_logger
 from app.db.seeds import seed_reference_data
 from app.db.session import Database
+from app.jobs.registry import JOBS, JobContext
+from app.jobs.runner import JobOutcome, run_job
 
 logger = get_logger("app.cli")
 
@@ -28,13 +31,46 @@ async def _seed(_args: argparse.Namespace) -> int:
     return 0
 
 
-COMMANDS: dict[str, Callable[[argparse.Namespace], Awaitable[int]]] = {"seed": _seed}
+async def _list_jobs(_args: argparse.Namespace) -> int:
+    import app.jobs.tasks  # noqa: F401 - registers the jobs
+
+    for definition in JOBS.values():
+        trigger = ", ".join(f"{key}={value}" for key, value in definition.trigger.items())
+        sys.stdout.write(f"{definition.name:<28} {trigger:<40} {definition.description}\n")
+    return 0
+
+
+async def _run_job(args: argparse.Namespace) -> int:
+    import app.jobs.tasks  # noqa: F401 - registers the jobs
+
+    definition = JOBS.get(args.name)
+    if definition is None:
+        sys.stderr.write(f"Unknown job '{args.name}'. Known jobs: {', '.join(JOBS)}\n")
+        return 2
+    settings = get_settings()
+    database = Database.from_settings(settings)
+    try:
+        ctx = JobContext(session_factory=database.session_factory, clock=Clock(), settings=settings)
+        outcome = await run_job(definition, ctx, database.engine)
+    finally:
+        await database.dispose()
+    return 0 if outcome is not JobOutcome.FAILED else 1
+
+
+COMMANDS: dict[str, Callable[[argparse.Namespace], Awaitable[int]]] = {
+    "seed": _seed,
+    "list-jobs": _list_jobs,
+    "run-job": _run_job,
+}
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m app.cli", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("seed", help="Upsert reference data (system catalogs).")
+    commands.add_parser("list-jobs", help="List registered background jobs.")
+    run = commands.add_parser("run-job", help="Run a background job once.")
+    run.add_argument("name")
     return parser
 
 
