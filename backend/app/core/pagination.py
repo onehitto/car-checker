@@ -5,7 +5,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Annotated, Any
 
-from fastapi import Query
+from fastapi import Depends, Query
 from sqlalchemy import ColumnElement, Select, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -44,6 +44,9 @@ def get_page_params(
     ] = DEFAULT_PAGE_SIZE,
 ) -> PageParams:
     return PageParams(page=page, limit=limit)
+
+
+PageDep = Annotated[PageParams, Depends(get_page_params)]
 
 
 @dataclass(slots=True)

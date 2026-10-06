@@ -10,6 +10,7 @@ from app.core.clock import Clock
 from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.logging import get_logger
 from app.core.security import verify_password
+from app.core.updates import apply_updates
 from app.modules.audit.service import RequestMeta, record_audit
 from app.modules.auth.models import UserSession
 from app.modules.users.models import User
@@ -17,8 +18,7 @@ from app.modules.users.schemas import SessionResponse, UserUpdate
 
 logger = get_logger(__name__)
 
-# Fields that may be cleared with an explicit null.
-NULLABLE_PROFILE_FIELDS = frozenset({"phone_number"})
+REQUIRED_PROFILE_FIELDS = frozenset(UserUpdate.model_fields) - {"phone_number"}
 
 
 class UserService:
@@ -27,16 +27,7 @@ class UserService:
         self.clock = clock
 
     async def update_profile(self, user: User, data: UserUpdate) -> User:
-        changes = data.model_dump(exclude_unset=True)
-        null_fields = {
-            name: "This field cannot be null."
-            for name, value in changes.items()
-            if value is None and name not in NULLABLE_PROFILE_FIELDS
-        }
-        if null_fields:
-            raise ValidationAppError(fields=null_fields)
-        for name, value in changes.items():
-            setattr(user, name, value)
+        apply_updates(user, data, required=REQUIRED_PROFILE_FIELDS)
         await self.session.commit()
         return user
 
