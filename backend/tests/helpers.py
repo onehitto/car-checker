@@ -124,3 +124,30 @@ async def create_garage(
         await client.post(f"{API}/garages", headers=user.headers, json=payload), 201
     )
     return result
+
+
+async def maintenance_type_id(client: AsyncClient, user: AuthenticatedUser, code: str) -> str:
+    types = data(await client.get(f"{API}/maintenance-types", headers=user.headers))
+    return str(next(t["id"] for t in types if t["code"] == code))
+
+
+async def create_maintenance(
+    client: AsyncClient,
+    user: AuthenticatedUser,
+    vehicle_id: str,
+    *,
+    code: str = "oil_change",
+    **fields: Any,
+) -> dict[str, Any]:
+    payload = {
+        "maintenance_type_id": await maintenance_type_id(client, user, code),
+        "service_date": "2026-09-01",
+        **fields,
+    }
+    result: dict[str, Any] = data(
+        await client.post(
+            f"{API}/vehicles/{vehicle_id}/maintenance", headers=user.headers, json=payload
+        ),
+        201,
+    )
+    return result

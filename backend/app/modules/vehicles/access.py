@@ -7,10 +7,10 @@ identifiers cannot be probed. A visible vehicle with an insufficient role produc
 import uuid
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import Depends
-from sqlalchemy import Select, and_, select
+from sqlalchemy import ColumnElement, Select, and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import CurrentUser, DbSession
@@ -67,6 +67,16 @@ def accessible_vehicle_ids(user_id: uuid.UUID) -> Select[tuple[uuid.UUID]]:
         )
         .where((Vehicle.owner_id == user_id) | VehicleAccess.id.is_not(None))
     )
+
+
+def accessible_vehicles_clause(
+    vehicle_column: Any, user_id: uuid.UUID, vehicle_id: uuid.UUID | None = None
+) -> ColumnElement[bool]:
+    """Restrict a `vehicle_id` column to the user's vehicles (optionally one of them)."""
+    clause: ColumnElement[bool] = vehicle_column.in_(accessible_vehicle_ids(user_id))
+    if vehicle_id is not None:
+        clause = and_(clause, vehicle_column == vehicle_id)
+    return clause
 
 
 def require_vehicle_role(

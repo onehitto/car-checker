@@ -1,14 +1,16 @@
 """Maintenance DTOs."""
 
 import uuid
-from datetime import datetime
+from datetime import date, datetime
+from decimal import Decimal
 from typing import Annotated
 
 from pydantic import Field, StringConstraints
 
-from app.core.schemas import LongText, RequestModel
+from app.core.schemas import LongText, Mileage, Money, RequestModel, ResponseModel, ShortText
 from app.db.catalog import CatalogResponseModel
-from app.modules.maintenance.models import MaintenanceCategory
+from app.modules.garages.schemas import GarageSummary
+from app.modules.maintenance.models import MaintenanceCategory, MaintenanceKind
 
 TypeName = Annotated[str, StringConstraints(min_length=1, max_length=100)]
 IntervalKm = Annotated[int, Field(gt=0, le=1_000_000, examples=[10_000])]
@@ -52,3 +54,52 @@ class MaintenanceTypeSummary(CatalogResponseModel):
     code: str | None
     name: str
     category: MaintenanceCategory
+
+
+# --- Maintenance records --------------------------------------------------------------------
+
+
+class MaintenanceRecordFields(RequestModel):
+    kind: MaintenanceKind | None = None
+    title: ShortText | None = Field(
+        default=None, description="Defaults to the maintenance type name."
+    )
+    description: LongText | None = None
+    mileage: Mileage | None = Field(default=None, description="Odometer at service time (km).")
+    cost: Money | None = Field(
+        default=None, description="Total cost; defaults to labor_cost + parts_cost."
+    )
+    labor_cost: Money | None = None
+    parts_cost: Money | None = None
+    garage_id: uuid.UUID | None = None
+    notes: LongText | None = None
+
+
+class MaintenanceRecordCreate(MaintenanceRecordFields):
+    maintenance_type_id: uuid.UUID
+    kind: MaintenanceKind = MaintenanceKind.MAINTENANCE
+    service_date: date
+
+
+class MaintenanceRecordUpdate(MaintenanceRecordFields):
+    maintenance_type_id: uuid.UUID | None = None
+    service_date: date | None = None
+
+
+class MaintenanceRecordResponse(ResponseModel):
+    id: uuid.UUID
+    vehicle_id: uuid.UUID
+    maintenance_type: MaintenanceTypeSummary
+    kind: MaintenanceKind
+    title: str
+    description: str | None
+    service_date: date
+    mileage: int | None
+    cost: Decimal | None
+    labor_cost: Decimal | None
+    parts_cost: Decimal | None
+    garage: GarageSummary | None
+    notes: str | None
+    created_by_id: uuid.UUID | None
+    created_at: datetime
+    updated_at: datetime

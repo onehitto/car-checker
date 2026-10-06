@@ -60,7 +60,7 @@ class MileageService:
     async def add_reading(
         self, ctx: VehicleContext, data: MileageCreate, meta: RequestMeta
     ) -> MileageEntry | None:
-        vehicle = await self._lock_vehicle(ctx.vehicle_id)
+        vehicle = await self.lock_vehicle(ctx.vehicle_id)
         today = self.clock.today(ctx.user.timezone)
         recorded_on = data.recorded_on or today
         ensure_not_future(recorded_on, today, "recorded_on")
@@ -98,7 +98,7 @@ class MileageService:
         return entry
 
     async def delete_reading(self, ctx: VehicleContext, entry_id: uuid.UUID) -> int:
-        vehicle = await self._lock_vehicle(ctx.vehicle_id)
+        vehicle = await self.lock_vehicle(ctx.vehicle_id)
         result = await self.session.execute(
             delete(MileageEntry).where(
                 MileageEntry.id == entry_id, MileageEntry.vehicle_id == vehicle.id
@@ -171,7 +171,7 @@ class MileageService:
             )
         return entries
 
-    async def _lock_vehicle(self, vehicle_id: uuid.UUID) -> Vehicle:
+    async def lock_vehicle(self, vehicle_id: uuid.UUID) -> Vehicle:
         """Serialize concurrent odometer updates of the same vehicle."""
         vehicle = (
             await self.session.scalars(
