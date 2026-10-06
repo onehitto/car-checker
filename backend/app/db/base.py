@@ -59,14 +59,28 @@ class BaseModel(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     __abstract__ = True
 
 
-def str_enum(enum_cls: type[StrEnum], name: str, length: int = 20) -> sa.Enum:
-    """Store a StrEnum as VARCHAR + CHECK constraint (easier to evolve than native enums)."""
-    return sa.Enum(
-        enum_cls,
-        name=name,
-        native_enum=False,
-        create_constraint=True,
-        length=length,
-        values_callable=lambda members: [member.value for member in members],
-        validate_strings=True,
-    )
+class StrEnumType(sa.types.TypeDecorator[Any]):
+    """StrEnum stored as VARCHAR. Pair every column with `enum_check()` in `__table_args__`.
+
+    VARCHAR + CHECK is easier to evolve than native PostgreSQL enum types: adding a value is
+    a constraint swap inside a regular transactional migration.
+    """
+
+    impl = sa.String
+    cache_ok = True
+
+    def __init__(self, enum_cls: type[StrEnum], length: int = 20) -> None:
+        super().__init__(length)
+        self.enum_cls = enum_cls
+
+    def process_bind_param(self, value: Any, dialect: sa.Dialect) -> str | None:
+        return None if value is None else self.enum_cls(value).value
+
+    def process_result_value(self, value: Any, dialect: sa.Dialect) -> StrEnum | None:
+        return None if value is None else self.enum_cls(value)
+
+
+def enum_check(column: str, enum_cls: type[StrEnum]) -> sa.CheckConstraint:
+    """CHECK constraint restricting `column` to the enum values (named ck_<table>_<column>)."""
+    values = ", ".join(f"'{member.value}'" for member in enum_cls)
+    return sa.CheckConstraint(f"{column} IN ({values})", name=column)

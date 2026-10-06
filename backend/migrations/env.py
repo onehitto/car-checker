@@ -8,14 +8,17 @@ The database URL is resolved in this order:
 
 import asyncio
 from logging.config import fileConfig
+from typing import Literal
 
 from alembic import context
+from alembic.autogenerate.api import AutogenContext
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.core.config import get_settings
 from app.db.all_models import Base
+from app.db.base import StrEnumType
 
 config = context.config
 
@@ -23,6 +26,13 @@ if config.config_file_name is not None and not config.attributes.get("skip_loggi
     fileConfig(config.config_file_name)
 
 target_metadata = Base.metadata
+
+
+def render_item(type_: str, obj: object, autogen_context: AutogenContext) -> str | Literal[False]:
+    """Render application column types with plain SQLAlchemy types in revisions."""
+    if type_ == "type" and isinstance(obj, StrEnumType):
+        return f"sa.String(length={obj.impl.length})"  # type: ignore[attr-defined]
+    return False
 
 
 def get_url() -> str:
@@ -40,13 +50,19 @@ def run_migrations_offline() -> None:
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
         compare_type=True,
+        render_item=render_item,
     )
     with context.begin_transaction():
         context.run_migrations()
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        compare_type=True,
+        render_item=render_item,
+    )
     with context.begin_transaction():
         context.run_migrations()
 
