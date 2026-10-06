@@ -21,7 +21,9 @@ from app.core.middleware import (
     SecurityHeadersMiddleware,
 )
 from app.core.rate_limit import RateLimitMiddleware, build_rate_limiter, parse_rate
+from app.core.security import configure_password_hashing
 from app.db.session import Database
+from app.modules.notifications.email import build_email_sender
 
 logger = get_logger(__name__)
 
@@ -31,6 +33,11 @@ DOCS_PATHS = ("/docs", "/docs/oauth2-redirect", "/redoc")
 def create_app(settings: Settings | None = None) -> FastAPI:
     settings = settings or get_settings()
     configure_logging(settings)
+    configure_password_hashing(
+        time_cost=settings.password_hash_time_cost,
+        memory_cost=settings.password_hash_memory_cost,
+        parallelism=settings.password_hash_parallelism,
+    )
 
     database = Database.from_settings(settings)
     rate_limiter = build_rate_limiter(settings)
@@ -56,6 +63,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = settings
     app.state.db = database
     app.state.rate_limiter = rate_limiter
+    app.state.email_sender = build_email_sender(settings)
 
     # Middleware added last runs first: request context -> security headers -> CORS -> limits.
     if settings.rate_limit_enabled:

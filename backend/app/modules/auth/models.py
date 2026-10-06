@@ -5,9 +5,10 @@ from datetime import datetime
 
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import INET
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import BaseModel
+from app.modules.users.models import User
 
 
 class UserSession(BaseModel):
@@ -24,6 +25,8 @@ class UserSession(BaseModel):
     expires_at: Mapped[datetime]
     revoked_at: Mapped[datetime | None]
 
+    user: Mapped[User] = relationship(lazy="raise")
+
 
 class RefreshToken(BaseModel):
     """Rotating refresh token of a session. Only an HMAC of the token is stored."""
@@ -37,6 +40,8 @@ class RefreshToken(BaseModel):
     expires_at: Mapped[datetime] = mapped_column(index=True)
     used_at: Mapped[datetime | None]
 
+    session: Mapped[UserSession] = relationship(lazy="raise")
+
 
 class PasswordResetToken(BaseModel):
     __tablename__ = "password_reset_tokens"
@@ -47,3 +52,5 @@ class PasswordResetToken(BaseModel):
     token_hash: Mapped[str] = mapped_column(sa.CHAR(64), unique=True)
     expires_at: Mapped[datetime] = mapped_column(index=True)
     used_at: Mapped[datetime | None]
+
+    user: Mapped[User] = relationship(lazy="raise")
