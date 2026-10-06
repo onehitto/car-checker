@@ -5,6 +5,7 @@ from fastapi import APIRouter
 from app.api import health
 from app.modules.alerts.router import router as alerts_router
 from app.modules.auth.router import router as auth_router
+from app.modules.dashboard.router import router as dashboard_router
 from app.modules.documents.router import router as documents_router
 from app.modules.expenses.router import router as expenses_router
 from app.modules.fuel.router import router as fuel_router
@@ -38,3 +39,4 @@ api_router.include_router(fuel_router)
 api_router.include_router(alerts_router)
 api_router.include_router(timeline_router)
 api_router.include_router(statistics_router)
+api_router.include_router(dashboard_router)

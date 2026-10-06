@@ -94,6 +94,32 @@ class VehicleService:
         page = await paginate_rows(self.session, stmt, params)
         return page.map(lambda row: to_response(row[0], VehicleRole(str(row[1]))))
 
+    async def accessible_vehicles(
+        self, user: User, status: VehicleStatus | None = None
+    ) -> list[tuple[Vehicle, VehicleRole]]:
+        """Every vehicle the user owns or that is shared with them, with their role."""
+        stmt = (
+            select(Vehicle, VehicleAccess.role)
+            .outerjoin(
+                VehicleAccess,
+                and_(VehicleAccess.vehicle_id == Vehicle.id, VehicleAccess.user_id == user.id),
+            )
+            .where(or_(Vehicle.owner_id == user.id, VehicleAccess.id.is_not(None)))
+            .order_by(Vehicle.created_at)
+        )
+        if status is not None:
+            stmt = stmt.where(Vehicle.status == status)
+        rows = (await self.session.execute(stmt)).all()
+        return [
+            (
+                vehicle,
+                VehicleRole.OWNER
+                if vehicle.owner_id == user.id
+                else VehicleRole(shared_role.value),
+            )
+            for vehicle, shared_role in rows
+        ]
+
     async def create(self, owner: User, data: VehicleCreate) -> Vehicle:
         self._validate_dates_and_year(data.year, data.purchase_date)
         if data.vin:
