@@ -18,7 +18,6 @@ from app.modules.maintenance.calculator import (
     DueRule,
     DueState,
     DueStatus,
-    evaluate_due,
     next_service,
 )
 from app.modules.maintenance.catalog import CatalogService
@@ -27,6 +26,7 @@ from app.modules.maintenance.models import (
     MaintenanceSchedule,
     MaintenanceType,
 )
+from app.modules.maintenance.schedule_state import evaluate_schedule
 from app.modules.maintenance.schemas import ScheduleCreate, ScheduleResponse, ScheduleUpdate
 from app.modules.vehicles.access import VehicleContext
 from app.modules.vehicles.models import Vehicle
@@ -64,30 +64,6 @@ class ScheduleView:
                 "updated_at": s.updated_at,
             }
         )
-
-
-def evaluate_schedule(schedule: MaintenanceSchedule, current_mileage: int, today: date) -> DueState:
-    """Status of a schedule now. Disabled schedules are always OK."""
-    state = evaluate_due(
-        schedule.next_service_date,
-        schedule.next_service_mileage,
-        current_mileage,
-        today,
-        schedule.warning_before_km,
-        schedule.warning_before_days,
-    )
-    if not schedule.enabled:
-        return DueState(
-            state.next_service_date,
-            state.next_service_mileage,
-            state.remaining_km,
-            state.remaining_days,
-            state.overdue_km,
-            state.overdue_days,
-            DueStatus.OK,
-            None,
-        )
-    return state
 
 
 def recompute_next(

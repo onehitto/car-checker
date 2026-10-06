@@ -15,17 +15,15 @@ from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
 from app.modules.expenses.service import ExpenseLedger
 from app.modules.garages.service import ensure_garage_usable
-from app.modules.maintenance.calculator import DueBaseline, DueRule, DueState, compute_due
 from app.modules.maintenance.catalog import CatalogService
 from app.modules.maintenance.models import MaintenanceRecord
 from app.modules.mileage.models import MileageSource
 from app.modules.mileage.service import MileageService
+from app.modules.parts.lifetime import evaluate_part
 from app.modules.parts.models import PartReplacement, PartType
 from app.modules.parts.schemas import PartCreate, PartLifetime, PartResponse, PartUpdate
 from app.modules.vehicles.access import VehicleContext
 
-PART_WARNING_KM = 1000
-PART_WARNING_DAYS = 30
 PART_SORT_FIELDS = {
     "installed_date": PartReplacement.installed_date,
     "installed_mileage": PartReplacement.installed_mileage,
@@ -43,22 +41,6 @@ class PartFilters:
     date_to: date | None = None
     q: str | None = None
     sort: str | None = None
-
-
-def evaluate_part(part: PartReplacement, current_mileage: int, today: date) -> DueState | None:
-    """Wear status of an installed part with an expected lifetime (None otherwise)."""
-    if not part.is_installed or (
-        part.expected_lifetime_km is None and part.expected_lifetime_months is None
-    ):
-        return None
-    rule = DueRule(
-        interval_km=part.expected_lifetime_km,
-        interval_months=part.expected_lifetime_months,
-        warning_km=PART_WARNING_KM,
-        warning_days=PART_WARNING_DAYS,
-    )
-    baseline = DueBaseline(last_date=part.installed_date, last_mileage=part.installed_mileage)
-    return compute_due(rule, baseline, current_mileage, today)
 
 
 def to_response(part: PartReplacement, current_mileage: int, today: date) -> PartResponse:
