@@ -13,6 +13,7 @@ from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.expenses.service import ExpenseLedger
 from app.modules.garages.service import ensure_garage_usable
 from app.modules.maintenance.calculator import DueBaseline, DueRule, DueState, compute_due
 from app.modules.maintenance.catalog import CatalogService
@@ -86,6 +87,7 @@ class PartService:
         self.clock = clock
         self.types = CatalogService(session, PartType, "Part type")
         self.mileage = MileageService(session, clock)
+        self.ledger = ExpenseLedger(session)
 
     def today(self, ctx: VehicleContext) -> date:
         return self.clock.today(ctx.user.timezone)
@@ -149,6 +151,7 @@ class PartService:
         await self.session.flush()
         await self._retire_previous(part)
         await self._advance_odometer(ctx, part)
+        await self.ledger.sync_part(part)
         await self.session.commit()
         return await self.get(ctx, part.id)
 
@@ -175,6 +178,7 @@ class PartService:
                 fields={"warranty_expiration_date": "Cannot be before installed_date."}
             )
         await self._advance_odometer(ctx, part)
+        await self.ledger.sync_part(part)
         await self.session.commit()
         return await self.get(ctx, part.id)
 

@@ -189,3 +189,22 @@ async def create_document(
         201,
     )
     return result
+
+
+async def create_expense(
+    client: AsyncClient, user: AuthenticatedUser, vehicle_id: str, **fields: Any
+) -> dict[str, Any]:
+    payload = {
+        "category": "parking",
+        "title": "Parking",
+        "amount": "20.00",
+        "expense_date": "2026-09-15",
+        **fields,
+    }
+    result: dict[str, Any] = data(
+        await client.post(
+            f"{API}/vehicles/{vehicle_id}/expenses", headers=user.headers, json=payload
+        ),
+        201,
+    )
+    return result

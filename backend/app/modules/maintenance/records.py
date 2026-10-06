@@ -14,6 +14,7 @@ from app.core.exceptions import NotFoundError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.expenses.service import ExpenseLedger
 from app.modules.garages.service import ensure_garage_usable
 from app.modules.maintenance.catalog import CatalogService
 from app.modules.maintenance.models import MaintenanceKind, MaintenanceRecord, MaintenanceType
@@ -78,6 +79,7 @@ class MaintenanceRecordService:
         self.types = CatalogService(session, MaintenanceType, "Maintenance type")
         self.mileage = MileageService(session, clock)
         self.schedules = ScheduleService(session, clock)
+        self.ledger = ExpenseLedger(session)
 
     async def list_records(
         self, scope: ColumnElement[bool], filters: MaintenanceFilters, params: PageParams
@@ -188,13 +190,15 @@ class MaintenanceRecordService:
         record: MaintenanceRecord,
         previous: PreviousRecord | None = None,
     ) -> None:
-        """Side effects of a saved record, in the same transaction: odometer and schedules."""
+        """Side effects of a saved record, in one transaction: odometer, expense, schedules."""
         vehicle = ctx.vehicle
         if record.mileage is not None:
             vehicle = await self.mileage.lock_vehicle(ctx.vehicle_id)
             await self.mileage.record_odometer(
                 vehicle, record.mileage, record.service_date, MileageSource.MAINTENANCE, ctx.user.id
             )
+        await self.session.flush()
+        await self.ledger.sync_maintenance(record)
         if previous is None:
             await self.schedules.sync_with_records(vehicle, record.maintenance_type_id)
             return

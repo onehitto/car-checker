@@ -4,6 +4,7 @@ from app.db.base import Base
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 from app.modules.documents.models import VehicleDocument
+from app.modules.expenses.models import Expense
 from app.modules.garages.models import Garage
 from app.modules.maintenance.models import (
     MaintenanceRecord,
@@ -18,6 +19,7 @@ from app.modules.vehicles.models import Vehicle, VehicleAccess
 __all__ = [
     "AuditLog",
     "Base",
+    "Expense",
     "Garage",
     "MaintenanceRecord",
     "MaintenanceSchedule",
