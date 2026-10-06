@@ -3,12 +3,14 @@
 from app.db.base import Base
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
+from app.modules.mileage.models import MileageEntry
 from app.modules.users.models import User
 from app.modules.vehicles.models import Vehicle, VehicleAccess
 
 __all__ = [
     "AuditLog",
     "Base",
+    "MileageEntry",
     "PasswordResetToken",
     "RefreshToken",
     "User",

@@ -12,6 +12,7 @@ from app.core.pagination import Page, PageParams, apply_sort, like_pattern, pagi
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
 from app.modules.audit.service import RequestMeta, record_audit
+from app.modules.mileage.service import MileageService
 from app.modules.users.models import User
 from app.modules.vehicles.access import VehicleContext
 from app.modules.vehicles.models import Vehicle, VehicleAccess, VehicleRole, VehicleStatus
@@ -106,6 +107,8 @@ class VehicleService:
             ),
         )
         self.session.add(vehicle)
+        today = self.clock.today(owner.timezone)
+        self.session.add_all(MileageService.initial_entries(vehicle, today, owner.id))
         await self.session.commit()
         return vehicle
 
