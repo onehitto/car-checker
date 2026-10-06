@@ -1,0 +1,82 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "car-checker-backend"
+version = "0.1.0"
+description = "Car Checker - vehicle maintenance logbook REST API"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.120",
+    "uvicorn[standard]>=0.34",
+    "sqlalchemy[asyncio]>=2.1,<2.2",
+    "asyncpg>=0.30",
+    "alembic>=1.15",
+    "pydantic[email]>=2.10",
+    "pydantic-settings>=2.7",
+    "argon2-cffi>=23.1",
+    "pyjwt>=2.10",
+    "structlog>=25.1",
+    "apscheduler>=3.11,<4",
+    "python-multipart>=0.0.20",
+    "filetype>=1.2",
+    "redis>=5.2",
+    "tzdata>=2025.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=1.0",
+    "pytest-cov>=6.0",
+    "httpx>=0.28",
+    "ruff>=0.9",
+    "mypy>=1.15",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["migrations/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "S", "A", "C4", "SIM", "RUF", "ASYNC", "DTZ"]
+ignore = [
+    "B008",   # FastAPI dependencies are declared as default arguments
+    "RUF012", # SQLAlchemy/Pydantic class attributes
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "DTZ"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path", "fastapi.File", "fastapi.Form"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["migrations/"]
+
+[[tool.mypy.overrides]]
+module = ["filetype.*", "apscheduler.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+filterwarnings = ["error::DeprecationWarning:app.*"]
+markers = [
+    "integration: tests that need the PostgreSQL test database",
+]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/worker.py"]
