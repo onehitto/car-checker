@@ -56,6 +56,10 @@ class Settings(BaseSettings):
     access_token_expires_in: int = Field(default=900, ge=60, description="Seconds")
     refresh_token_expires_in: int = Field(default=30 * 24 * 3600, ge=3600, description="Seconds")
     password_reset_expires_in: int = Field(default=1800, ge=300, description="Seconds")
+    # Argon2id cost (OWASP: 64 MiB, 3 iterations, 4 lanes). Lowered only in the test suite.
+    password_hash_time_cost: int = Field(default=3, ge=1)
+    password_hash_memory_cost: int = Field(default=64 * 1024, ge=8, description="KiB")
+    password_hash_parallelism: int = Field(default=4, ge=1)
 
     # --- HTTP ----------------------------------------------------------------------------------
     cors_origins: Annotated[list[str], NoDecode] = [
@@ -116,6 +120,8 @@ class Settings(BaseSettings):
                 )
         if self.jwt_secret.get_secret_value() == self.jwt_refresh_secret.get_secret_value():
             raise ValueError("JWT_SECRET and JWT_REFRESH_SECRET must be different.")
+        if self.password_hash_memory_cost < 19 * 1024 or self.password_hash_time_cost < 2:
+            raise ValueError("Argon2 parameters are below the OWASP minimum (19 MiB, t=2).")
         if "*" in self.cors_origins:
             raise ValueError("CORS_ORIGINS must not contain '*' in production.")
         if self.email_backend == "memory":

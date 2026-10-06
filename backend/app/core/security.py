@@ -16,8 +16,9 @@ from argon2.exceptions import InvalidHashError, VerificationError, VerifyMismatc
 from app.core.config import Settings
 from app.core.ids import uuid7
 
-# OWASP recommended Argon2id parameters (64 MiB, 3 iterations, 4 lanes).
+# OWASP recommended Argon2id parameters (64 MiB, 3 iterations, 4 lanes); see Settings.
 _password_hasher = PasswordHasher(time_cost=3, memory_cost=64 * 1024, parallelism=4)
+_dummy_password_hash: str | None = None
 
 PASSWORD_MIN_LENGTH = 8
 PASSWORD_MAX_LENGTH = 128
@@ -26,6 +27,15 @@ OPAQUE_TOKEN_BYTES = 32  # 256 bits of entropy
 
 
 # --- Passwords -------------------------------------------------------------------------------
+
+
+def configure_password_hashing(*, time_cost: int, memory_cost: int, parallelism: int) -> None:
+    """Apply Argon2id cost parameters from the settings (called once at startup)."""
+    global _password_hasher, _dummy_password_hash
+    _password_hasher = PasswordHasher(
+        time_cost=time_cost, memory_cost=memory_cost, parallelism=parallelism
+    )
+    _dummy_password_hash = None
 
 
 def hash_password(password: str) -> str:
@@ -43,8 +53,12 @@ def password_needs_rehash(password_hash: str) -> bool:
     return _password_hasher.check_needs_rehash(password_hash)
 
 
-# Verified against when the account does not exist, so response time does not reveal it.
-DUMMY_PASSWORD_HASH = hash_password(secrets.token_urlsafe(16))
+def dummy_password_hash() -> str:
+    """Hash verified when the account does not exist, so response time does not reveal it."""
+    global _dummy_password_hash
+    if _dummy_password_hash is None:
+        _dummy_password_hash = hash_password(secrets.token_urlsafe(16))
+    return _dummy_password_hash
 
 
 def password_policy_violation(password: str, email: str | None = None) -> str | None:
