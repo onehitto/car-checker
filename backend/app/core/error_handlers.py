@@ -97,9 +97,20 @@ async def http_exception_handler(request: Request, exc: Exception) -> JSONRespon
     )
 
 
+def constraint_name(exc: BaseException) -> str | None:
+    """Name of the violated constraint (asyncpg exposes it on the wrapped driver error)."""
+    current: BaseException | None = exc
+    while current is not None:
+        name = getattr(current, "constraint_name", None)
+        if name:
+            return str(name)
+        current = getattr(current, "orig", None) or current.__cause__
+    return None
+
+
 async def integrity_error_handler(request: Request, exc: Exception) -> JSONResponse:
     # Unique/foreign-key races that escaped service-level checks. Never leak SQL details.
-    logger.warning("integrity_error", error_type=type(exc).__name__)
+    logger.warning("integrity_error", constraint=constraint_name(exc))
     return error_response(
         request, 409, "CONFLICT", "The request conflicts with the current state of the resource."
     )
