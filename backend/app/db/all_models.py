@@ -1,5 +1,8 @@
 """Import every ORM model so that `Base.metadata` is complete (Alembic autogenerate, tests)."""
 
 from app.db.base import Base
+from app.modules.audit.models import AuditLog
+from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
+from app.modules.users.models import User
 
-__all__ = ["Base"]
+__all__ = ["AuditLog", "Base", "PasswordResetToken", "RefreshToken", "User", "UserSession"]
