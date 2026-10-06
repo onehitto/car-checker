@@ -75,3 +75,7 @@ def ensure_not_future(value: date | None, today: date, field: str) -> None:
     """
     if value is not None and value > today + timedelta(days=1):
         raise ValidationAppError(fields={field: "Date cannot be in the future."})
+
+
+class MessageResponse(BaseModel):
+    message: str

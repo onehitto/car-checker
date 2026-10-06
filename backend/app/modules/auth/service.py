@@ -5,6 +5,7 @@ import hashlib
 import uuid
 from dataclasses import dataclass
 from datetime import timedelta
+from urllib.parse import urlencode
 
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
@@ -17,7 +18,9 @@ from app.core.exceptions import (
     ConflictError,
     InvalidCredentialsError,
     InvalidTokenError,
+    ValidationAppError,
 )
+from app.core.i18n import translate
 from app.core.logging import get_logger
 from app.core.security import (
     create_access_token,
@@ -26,16 +29,19 @@ from app.core.security import (
     hash_opaque_token,
     hash_password,
     password_needs_rehash,
+    password_policy_violation,
     verify_password,
 )
 from app.modules.audit.service import RequestMeta, record_audit
-from app.modules.auth.models import RefreshToken, UserSession
+from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 from app.modules.auth.schemas import RegisterRequest
+from app.modules.notifications.email import EmailMessage
 from app.modules.users.models import User
 
 logger = get_logger(__name__)
 
 REFRESH_PURPOSE = "refresh"
+RESET_PURPOSE = "password_reset"
 
 
 @dataclass(frozen=True, slots=True)
@@ -240,6 +246,114 @@ class AuthService:
             expires_in=self.settings.access_token_expires_in,
             refresh_expires_in=self.settings.refresh_token_expires_in,
         )
+
+    # --- Passwords -------------------------------------------------------------------------------
+
+    async def request_password_reset(self, email: str, meta: RequestMeta) -> EmailMessage | None:
+        """Create a reset token and return the email to send (None when nothing to send).
+
+        The caller answers 202 in every case so the endpoint does not reveal accounts.
+        """
+        user = await find_user_by_email(self.session, email)
+        if user is None or not user.is_active:
+            logger.info("password_reset_requested", outcome="ignored")
+            return None
+
+        now = self.clock.now()
+        # Only the most recent link stays valid.
+        await self.session.execute(
+            update(PasswordResetToken)
+            .where(PasswordResetToken.user_id == user.id, PasswordResetToken.used_at.is_(None))
+            .values(used_at=now)
+        )
+        raw_token = generate_opaque_token()
+        self.session.add(
+            PasswordResetToken(
+                user_id=user.id,
+                token_hash=hash_opaque_token(self.settings, raw_token, RESET_PURPOSE),
+                expires_at=now + timedelta(seconds=self.settings.password_reset_expires_in),
+            )
+        )
+        record_audit(self.session, "auth.password_reset_requested", user_id=user.id, meta=meta)
+        await self.session.commit()
+
+        reset_url = (
+            f"{self.settings.frontend_url.rstrip('/')}{self.settings.password_reset_path}"
+            f"?{urlencode({'token': raw_token})}"
+        )
+        language = user.preferred_language
+        return EmailMessage(
+            to=user.email,
+            subject=translate("email.password_reset.subject", language),
+            body=translate(
+                "email.password_reset.body",
+                language,
+                first_name=user.first_name,
+                reset_url=reset_url,
+                expires_minutes=self.settings.password_reset_expires_in // 60,
+            ),
+        )
+
+    async def reset_password(self, raw_token: str, new_password: str, meta: RequestMeta) -> None:
+        now = self.clock.now()
+        token_hash = hash_opaque_token(self.settings, raw_token, RESET_PURPOSE)
+        row = (
+            await self.session.execute(
+                select(PasswordResetToken, User)
+                .join(User, PasswordResetToken.user_id == User.id)
+                .where(PasswordResetToken.token_hash == token_hash)
+                .with_for_update(of=PasswordResetToken)
+            )
+        ).one_or_none()
+        if row is None:
+            raise InvalidTokenError("The reset link is invalid or has expired.")
+        reset_token, user = row
+        if reset_token.used_at is not None or reset_token.expires_at <= now or not user.is_active:
+            raise InvalidTokenError("The reset link is invalid or has expired.")
+
+        self._check_new_password(new_password, user.email)
+        reset_token.used_at = now
+        await self._set_password(user, new_password)
+        await revoke_user_sessions(self.session, user.id, self.clock)
+        record_audit(self.session, "auth.password_reset", user_id=user.id, meta=meta)
+        await self.session.commit()
+
+    async def change_password(
+        self,
+        user: User,
+        session_id: uuid.UUID,
+        current_password: str,
+        new_password: str,
+        meta: RequestMeta,
+    ) -> EmailMessage:
+        if not await asyncio.to_thread(verify_password, user.password_hash, current_password):
+            raise ValidationAppError(fields={"current_password": "Current password is incorrect."})
+        if current_password == new_password:
+            raise ValidationAppError(
+                fields={"new_password": "New password must differ from the current one."}
+            )
+        self._check_new_password(new_password, user.email)
+        await self._set_password(user, new_password)
+        await revoke_user_sessions(self.session, user.id, self.clock, keep=session_id)
+        record_audit(self.session, "auth.password_changed", user_id=user.id, meta=meta)
+        await self.session.commit()
+        return EmailMessage(
+            to=user.email,
+            subject=translate("email.password_changed.subject", user.preferred_language),
+            body=translate(
+                "email.password_changed.body", user.preferred_language, first_name=user.first_name
+            ),
+        )
+
+    @staticmethod
+    def _check_new_password(password: str, email: str) -> None:
+        violation = password_policy_violation(password, email)
+        if violation:
+            raise ValidationAppError(fields={"new_password": violation})
+
+    async def _set_password(self, user: User, password: str) -> None:
+        user.password_hash = await asyncio.to_thread(hash_password, password)
+        user.password_changed_at = self.clock.now()
 
     @staticmethod
     def _email_taken() -> ConflictError:

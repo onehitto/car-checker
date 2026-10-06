@@ -60,6 +60,22 @@ class RefreshRequest(RequestModel):
     refresh_token: str = _OPAQUE_TOKEN
 
 
+class ForgotPasswordRequest(RequestModel):
+    email: EmailStr
+
+    _lower_email = field_validator("email")(_normalize_email)
+
+
+class ResetPasswordRequest(RequestModel):
+    token: str = _OPAQUE_TOKEN
+    new_password: str = Field(max_length=PASSWORD_MAX_LENGTH)
+
+
+class ChangePasswordRequest(RequestModel):
+    current_password: str = Field(min_length=1, max_length=PASSWORD_MAX_LENGTH)
+    new_password: str = Field(max_length=PASSWORD_MAX_LENGTH)
+
+
 class TokenPair(ResponseModel):
     access_token: str
     refresh_token: str
