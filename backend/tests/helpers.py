@@ -176,3 +176,16 @@ async def create_part(
         201,
     )
     return result
+
+
+async def create_document(
+    client: AsyncClient, user: AuthenticatedUser, vehicle_id: str, **fields: Any
+) -> dict[str, Any]:
+    payload = {"document_type": "insurance", "title": "Insurance 2026", **fields}
+    result: dict[str, Any] = data(
+        await client.post(
+            f"{API}/vehicles/{vehicle_id}/documents", headers=user.headers, json=payload
+        ),
+        201,
+    )
+    return result

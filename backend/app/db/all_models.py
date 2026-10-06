@@ -3,6 +3,7 @@
 from app.db.base import Base
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
+from app.modules.documents.models import VehicleDocument
 from app.modules.garages.models import Garage
 from app.modules.maintenance.models import (
     MaintenanceRecord,
@@ -30,4 +31,5 @@ __all__ = [
     "UserSession",
     "Vehicle",
     "VehicleAccess",
+    "VehicleDocument",
 ]
