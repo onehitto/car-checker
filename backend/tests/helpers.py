@@ -151,3 +151,28 @@ async def create_maintenance(
         201,
     )
     return result
+
+
+async def part_type_id(client: AsyncClient, user: AuthenticatedUser, code: str) -> str:
+    types = data(await client.get(f"{API}/part-types", headers=user.headers))
+    return str(next(t["id"] for t in types if t["code"] == code))
+
+
+async def create_part(
+    client: AsyncClient,
+    user: AuthenticatedUser,
+    vehicle_id: str,
+    *,
+    code: str = "brake_pads",
+    **fields: Any,
+) -> dict[str, Any]:
+    payload = {
+        "part_type_id": await part_type_id(client, user, code),
+        "installed_date": "2026-01-10",
+        **fields,
+    }
+    result: dict[str, Any] = data(
+        await client.post(f"{API}/vehicles/{vehicle_id}/parts", headers=user.headers, json=payload),
+        201,
+    )
+    return result

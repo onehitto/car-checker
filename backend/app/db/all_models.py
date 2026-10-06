@@ -10,6 +10,7 @@ from app.modules.maintenance.models import (
     MaintenanceType,
 )
 from app.modules.mileage.models import MileageEntry
+from app.modules.parts.models import PartReplacement, PartType
 from app.modules.users.models import User
 from app.modules.vehicles.models import Vehicle, VehicleAccess
 
@@ -21,6 +22,8 @@ __all__ = [
     "MaintenanceSchedule",
     "MaintenanceType",
     "MileageEntry",
+    "PartReplacement",
+    "PartType",
     "PasswordResetToken",
     "RefreshToken",
     "User",
