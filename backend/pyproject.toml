@@ -45,7 +45,7 @@ target-version = "py312"
 extend-exclude = ["migrations/versions"]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "N", "UP", "B", "S", "A", "C4", "SIM", "RUF", "ASYNC", "DTZ"]
+select = ["E", "F", "W", "I", "N", "UP", "B", "BLE", "S", "A", "C4", "SIM", "RUF", "ASYNC", "DTZ"]
 ignore = [
     "B008",   # FastAPI dependencies are declared as default arguments
     "RUF012", # SQLAlchemy/Pydantic class attributes
