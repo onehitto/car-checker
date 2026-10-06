@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.pagination import Page, PageParams
 from app.modules.documents.models import VehicleDocument
 from app.modules.expenses.models import Expense
+from app.modules.fuel.models import FuelRecord
 from app.modules.maintenance.models import MaintenanceKind, MaintenanceRecord, MaintenanceType
 from app.modules.mileage.models import MileageEntry, MileageSource
 from app.modules.parts.models import PartReplacement
@@ -32,6 +33,7 @@ class TimelineEventType(StrEnum):
     PART = "part"
     EXPENSE = "expense"
     DOCUMENT = "document"
+    FUEL = "fuel"
 
 
 @dataclass(frozen=True, slots=True)
@@ -156,6 +158,7 @@ def expense_events(vehicle_id: uuid.UUID) -> Select[Any]:
         expense.vehicle_id == vehicle_id,
         expense.maintenance_record_id.is_(None),
         expense.part_replacement_id.is_(None),
+        expense.fuel_record_id.is_(None),
     )
 
 
@@ -175,6 +178,22 @@ def document_events(vehicle_id: uuid.UUID) -> Select[Any]:
     ).where(document.vehicle_id == vehicle_id, document.issue_date.is_not(None))
 
 
+def fuel_events(vehicle_id: uuid.UUID) -> Select[Any]:
+    record = FuelRecord
+    return select(
+        *_row(
+            literal(TimelineEventType.FUEL.value),
+            record.id,
+            record.fill_date,
+            record.mileage,
+            func.concat(func.round(record.liters, 2), " L"),
+            record.total_price,
+            record.fuel_type,
+            record.created_at,
+        )
+    ).where(record.vehicle_id == vehicle_id)
+
+
 EVENT_SOURCES: dict[TimelineEventType, EventSource] = {
     TimelineEventType.MILEAGE: mileage_events,
     TimelineEventType.MAINTENANCE: maintenance_events,
@@ -182,6 +201,7 @@ EVENT_SOURCES: dict[TimelineEventType, EventSource] = {
     TimelineEventType.PART: part_events,
     TimelineEventType.EXPENSE: expense_events,
     TimelineEventType.DOCUMENT: document_events,
+    TimelineEventType.FUEL: fuel_events,
 }
 
 

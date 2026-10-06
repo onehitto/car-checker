@@ -78,5 +78,6 @@
   "document_type.road_tax": "Vignette",
   "document_type.warranty": "Garantie",
   "document_type.leasing": "Leasing",
-  "document_type.other": "Document"
+  "document_type.other": "Document",
+  "expense.fuel.title": "Carburant ({liters} L)"
 }

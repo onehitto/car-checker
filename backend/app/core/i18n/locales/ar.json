@@ -78,5 +78,6 @@
   "document_type.road_tax": "الضريبة على السيارات",
   "document_type.warranty": "الضمان",
   "document_type.leasing": "الإيجار التمويلي",
-  "document_type.other": "وثيقة"
+  "document_type.other": "وثيقة",
+  "expense.fuel.title": "وقود ({liters} لتر)"
 }

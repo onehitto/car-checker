@@ -208,3 +208,14 @@ async def create_expense(
         201,
     )
     return result
+
+
+async def create_fuel(
+    client: AsyncClient, user: AuthenticatedUser, vehicle_id: str, **fields: Any
+) -> dict[str, Any]:
+    payload = {"fill_date": "2026-09-01", "mileage": 80_500, "liters": "40", **fields}
+    result: dict[str, Any] = data(
+        await client.post(f"{API}/vehicles/{vehicle_id}/fuel", headers=user.headers, json=payload),
+        201,
+    )
+    return result

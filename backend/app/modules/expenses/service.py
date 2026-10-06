@@ -16,11 +16,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.clock import Clock
 from app.core.exceptions import ConflictError, NotFoundError
+from app.core.i18n import translate
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
 from app.modules.expenses.models import Expense, ExpenseCategory, ExpenseSource
 from app.modules.expenses.schemas import ExpenseCreate, ExpenseUpdate
+from app.modules.fuel.models import FuelRecord
 from app.modules.maintenance.models import MaintenanceKind, MaintenanceRecord
 from app.modules.parts.models import PartReplacement
 from app.modules.vehicles.access import VehicleContext
@@ -50,7 +52,13 @@ def source_clause(source: ExpenseSource) -> ColumnElement[bool]:
         return Expense.maintenance_record_id.is_not(None)
     if source is ExpenseSource.PART:
         return Expense.part_replacement_id.is_not(None)
-    return and_(Expense.maintenance_record_id.is_(None), Expense.part_replacement_id.is_(None))
+    if source is ExpenseSource.FUEL:
+        return Expense.fuel_record_id.is_not(None)
+    return and_(
+        Expense.maintenance_record_id.is_(None),
+        Expense.part_replacement_id.is_(None),
+        Expense.fuel_record_id.is_(None),
+    )
 
 
 class ExpenseLedger:
@@ -107,6 +115,20 @@ class ExpenseLedger:
             mileage=part.installed_mileage,
             vendor=part.brand,
             created_by_id=part.created_by_id,
+        )
+
+    async def sync_fuel(self, record: FuelRecord) -> None:
+        liters = format(record.liters.normalize(), "f")
+        await self._upsert(
+            {"fuel_record_id": record.id},
+            record.total_price,
+            vehicle_id=record.vehicle_id,
+            category=ExpenseCategory.FUEL,
+            title=translate("expense.fuel.title", liters=liters),
+            expense_date=record.fill_date,
+            mileage=record.mileage,
+            vendor=record.gas_station,
+            created_by_id=record.created_by_id,
         )
 
 

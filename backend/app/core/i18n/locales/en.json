@@ -78,5 +78,6 @@
   "document_type.road_tax": "Road tax",
   "document_type.warranty": "Warranty",
   "document_type.leasing": "Leasing",
-  "document_type.other": "Document"
+  "document_type.other": "Document",
+  "expense.fuel.title": "Fuel ({liters} L)"
 }

@@ -9,6 +9,7 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, column_property, mapped_column, relationship
 
 from app.db.base import BaseModel, StrEnumType, enum_check
+from app.modules.fuel.models import FuelRecord
 from app.modules.maintenance.models import MaintenanceRecord
 from app.modules.parts.models import PartReplacement
 from app.modules.vehicles.models import Vehicle
@@ -36,6 +37,7 @@ class ExpenseSource(StrEnum):
     MANUAL = "manual"
     MAINTENANCE = "maintenance"
     PART = "part"
+    FUEL = "fuel"
 
 
 class Expense(BaseModel):
@@ -54,6 +56,9 @@ class Expense(BaseModel):
     part_replacement_id: Mapped[uuid.UUID | None] = mapped_column(
         sa.ForeignKey("part_replacements.id", ondelete="CASCADE"), unique=True
     )
+    fuel_record_id: Mapped[uuid.UUID | None] = mapped_column(
+        sa.ForeignKey("fuel_records.id", ondelete="CASCADE"), unique=True
+    )
     notes: Mapped[str | None] = mapped_column(sa.Text)
     created_by_id: Mapped[uuid.UUID | None] = mapped_column(
         sa.ForeignKey("users.id", ondelete="SET NULL")
@@ -67,13 +72,15 @@ class Expense(BaseModel):
     vehicle: Mapped[Vehicle] = relationship(lazy="raise")
     maintenance_record: Mapped[MaintenanceRecord | None] = relationship(lazy="raise")
     part_replacement: Mapped[PartReplacement | None] = relationship(lazy="raise")
+    fuel_record: Mapped[FuelRecord | None] = relationship(lazy="raise")
 
     __table_args__ = (
         enum_check("category", ExpenseCategory),
         sa.CheckConstraint("amount >= 0", name="amount_positive"),
         sa.CheckConstraint("mileage >= 0", name="mileage_positive"),
         sa.CheckConstraint(
-            "num_nonnulls(maintenance_record_id, part_replacement_id) <= 1", name="single_source"
+            "num_nonnulls(maintenance_record_id, part_replacement_id, fuel_record_id) <= 1",
+            name="single_source",
         ),
         sa.Index(None, "vehicle_id", "expense_date"),
         sa.Index(None, "vehicle_id", "category"),
@@ -85,8 +92,10 @@ class Expense(BaseModel):
             return ExpenseSource.MAINTENANCE
         if self.part_replacement_id:
             return ExpenseSource.PART
+        if self.fuel_record_id:
+            return ExpenseSource.FUEL
         return ExpenseSource.MANUAL
 
     @property
     def source_id(self) -> uuid.UUID | None:
-        return self.maintenance_record_id or self.part_replacement_id
+        return self.maintenance_record_id or self.part_replacement_id or self.fuel_record_id
