@@ -14,6 +14,7 @@ from app.modules.maintenance.types_router import router as maintenance_types_rou
 from app.modules.mileage.router import router as mileage_router
 from app.modules.parts.router import router as parts_router
 from app.modules.parts.types_router import router as part_types_router
+from app.modules.timeline.router import router as timeline_router
 from app.modules.users.router import router as users_router
 from app.modules.vehicles.router import router as vehicles_router
 
@@ -32,3 +33,4 @@ api_router.include_router(parts_router)
 api_router.include_router(documents_router)
 api_router.include_router(expenses_router)
 api_router.include_router(alerts_router)
+api_router.include_router(timeline_router)
