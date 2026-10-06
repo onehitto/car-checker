@@ -2,8 +2,9 @@
 
 import uuid
 from datetime import datetime
+from typing import Annotated
 
-from pydantic import Field
+from pydantic import BeforeValidator, Field
 
 from app.core.i18n import Language
 from app.core.schemas import (
@@ -37,7 +38,7 @@ class UserResponse(ResponseModel):
 
 
 class UserUpdate(RequestModel):
-    """Partial profile update; only provided fields change."""
+    """Partial profile update; only provided fields change. `phone_number` may be null."""
 
     first_name: PersonName | None = None
     last_name: PersonName | None = None
@@ -53,10 +54,15 @@ class DeleteAccountRequest(RequestModel):
     password: str = Field(min_length=1, max_length=128, description="Current password.")
 
 
+def _ip_to_str(value: object) -> object:
+    # asyncpg returns INET values as ipaddress objects.
+    return None if value is None else str(value)
+
+
 class SessionResponse(ResponseModel):
     id: uuid.UUID
     user_agent: str | None
-    ip_address: str | None
+    ip_address: Annotated[str | None, BeforeValidator(_ip_to_str)]
     created_at: datetime
     last_used_at: datetime
     expires_at: datetime
