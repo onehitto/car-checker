@@ -11,10 +11,13 @@ from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.logging import get_logger
 from app.core.security import verify_password
 from app.core.updates import apply_updates
+from app.modules.attachments.service import delete_stored_files, storage_keys_for_vehicles
+from app.modules.attachments.storage import StorageBackend
 from app.modules.audit.service import RequestMeta, record_audit
 from app.modules.auth.models import UserSession
 from app.modules.users.models import User
 from app.modules.users.schemas import SessionResponse, UserUpdate
+from app.modules.vehicles.models import Vehicle
 
 logger = get_logger(__name__)
 
@@ -31,10 +34,19 @@ class UserService:
         await self.session.commit()
         return user
 
-    async def delete_account(self, user: User, password: str, meta: RequestMeta) -> None:
+    async def delete_account(
+        self,
+        user: User,
+        password: str,
+        meta: RequestMeta,
+        storage: StorageBackend | None = None,
+    ) -> None:
         if not await asyncio.to_thread(verify_password, user.password_hash, password):
             raise ValidationAppError(fields={"password": "Password is incorrect."})
         user_id = user.id
+        file_keys = await storage_keys_for_vehicles(
+            self.session, select(Vehicle.id).where(Vehicle.owner_id == user_id)
+        )
         # The audit entry outlives the account; it only keeps the pseudonymous id.
         record_audit(
             self.session,
@@ -47,6 +59,8 @@ class UserService:
         # Vehicles and every vehicle record are removed by ON DELETE CASCADE.
         await self.session.execute(delete(User).where(User.id == user_id))
         await self.session.commit()
+        if storage is not None:
+            await delete_stored_files(storage, file_keys)
         logger.info("user_deleted", user_id=str(user_id))
 
     async def list_sessions(

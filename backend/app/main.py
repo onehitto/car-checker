@@ -17,17 +17,20 @@ from app.core.error_handlers import register_error_handlers
 from app.core.logging import configure_logging, get_logger
 from app.core.middleware import (
     REQUEST_ID_HEADER,
+    BodySizeLimitMiddleware,
     RequestContextMiddleware,
     SecurityHeadersMiddleware,
 )
 from app.core.rate_limit import RateLimitMiddleware, build_rate_limiter, parse_rate
 from app.core.security import configure_password_hashing
 from app.db.session import Database
+from app.modules.attachments.storage import build_storage
 from app.modules.notifications.email import build_email_sender
 
 logger = get_logger(__name__)
 
 DOCS_PATHS = ("/docs", "/docs/oauth2-redirect", "/redoc")
+MULTIPART_OVERHEAD = 1024 * 1024  # form fields and boundaries around an uploaded file
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -64,8 +67,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.db = database
     app.state.rate_limiter = rate_limiter
     app.state.email_sender = build_email_sender(settings)
+    app.state.storage = build_storage(settings)
 
-    # Middleware added last runs first: request context -> security headers -> CORS -> limits.
+    # Middleware added last runs first:
+    # request context -> security headers -> CORS -> rate limit -> body size limit.
+    app.add_middleware(
+        BodySizeLimitMiddleware, max_bytes=settings.max_upload_size + MULTIPART_OVERHEAD
+    )
     if settings.rate_limit_enabled:
         app.add_middleware(
             RateLimitMiddleware,

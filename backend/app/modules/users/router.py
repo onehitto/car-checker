@@ -5,7 +5,14 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, status
 
-from app.api.deps import ClockDep, CurrentAuth, CurrentUser, DbSession, RequestMetaDep
+from app.api.deps import (
+    ClockDep,
+    CurrentAuth,
+    CurrentUser,
+    DbSession,
+    RequestMetaDep,
+    StorageDep,
+)
 from app.api.openapi import AUTHENTICATED_ERRORS, error_responses
 from app.core.responses import ApiResponse, success
 from app.modules.users.schemas import (
@@ -46,9 +53,13 @@ async def update_me(body: UserUpdate, user: CurrentUser, service: UserServiceDep
     ),
 )
 async def delete_me(
-    body: DeleteAccountRequest, user: CurrentUser, service: UserServiceDep, meta: RequestMetaDep
+    body: DeleteAccountRequest,
+    user: CurrentUser,
+    service: UserServiceDep,
+    meta: RequestMetaDep,
+    storage: StorageDep,
 ) -> None:
-    await service.delete_account(user, body.password, meta)
+    await service.delete_account(user, body.password, meta, storage)
 
 
 @router.get(

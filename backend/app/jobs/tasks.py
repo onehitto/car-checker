@@ -2,14 +2,19 @@
 
 from datetime import timedelta
 
-from sqlalchemy import delete, or_
+from sqlalchemy import delete, exists, or_, select
 
 from app.jobs.registry import JobContext, JobResult, job
 from app.modules.alerts.engine import sync_all_vehicles
+from app.modules.attachments.models import Attachment
+from app.modules.attachments.service import ENTITY_MODELS, delete_stored_files
+from app.modules.attachments.storage import build_storage
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 
 SESSION_RETENTION = timedelta(days=30)
 RESET_TOKEN_RETENTION = timedelta(days=1)
+# Files younger than this may belong to an upload whose transaction is still running.
+ORPHAN_FILE_GRACE = timedelta(hours=1)
 
 
 @job(
@@ -54,3 +59,39 @@ async def cleanup_expired_tokens(ctx: JobContext) -> JobResult:
         "reset_tokens": resets.rowcount,  # type: ignore[attr-defined]
         "sessions": sessions.rowcount,  # type: ignore[attr-defined]
     }
+
+
+@job(
+    "cleanup_orphan_files",
+    description="Delete attachments of deleted records and stored files without metadata.",
+    trigger="cron",
+    hour=4,
+    minute=0,
+)
+async def cleanup_orphan_files(ctx: JobContext) -> JobResult:
+    storage = ctx.extras.get("storage") or build_storage(ctx.settings)
+    async with ctx.session_factory() as session:
+        # 1. Attachments whose parent record was deleted (polymorphic: no foreign key).
+        orphan_keys: list[str] = []
+        for entity_type, model in ENTITY_MODELS.items():
+            result = await session.scalars(
+                delete(Attachment)
+                .where(
+                    Attachment.entity_type == entity_type,
+                    ~exists(select(model.id).where(model.id == Attachment.entity_id)),
+                )
+                .returning(Attachment.storage_key)
+            )
+            orphan_keys.extend(result)
+        await session.commit()
+        known = set(await session.scalars(select(Attachment.storage_key)))
+    await delete_stored_files(storage, orphan_keys)
+
+    # 2. Stored files without a metadata row (deleted vehicles/accounts, failed uploads).
+    stray = [
+        key
+        async for key in storage.list_keys(ctx.clock.now() - ORPHAN_FILE_GRACE)
+        if key not in known
+    ]
+    await delete_stored_files(storage, stray)
+    return {"orphan_attachments": len(orphan_keys), "stray_files": len(stray)}

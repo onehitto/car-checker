@@ -12,6 +12,8 @@ from app.core.pagination import Page, PageParams, apply_sort, like_pattern, pagi
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
 from app.modules.alerts.engine import AlertEngine
+from app.modules.attachments.service import delete_stored_files, storage_keys_for_vehicles
+from app.modules.attachments.storage import StorageBackend
 from app.modules.audit.service import RequestMeta, record_audit
 from app.modules.mileage.service import MileageService
 from app.modules.users.models import User
@@ -156,8 +158,11 @@ class VehicleService:
         await self.session.commit()
         return vehicle
 
-    async def delete(self, ctx: VehicleContext, meta: RequestMeta) -> None:
+    async def delete(
+        self, ctx: VehicleContext, meta: RequestMeta, storage: StorageBackend | None = None
+    ) -> None:
         vehicle = ctx.vehicle
+        file_keys = await storage_keys_for_vehicles(self.session, [vehicle.id])
         record_audit(
             self.session,
             "vehicle.deleted",
@@ -169,6 +174,8 @@ class VehicleService:
         )
         await self.session.execute(delete(Vehicle).where(Vehicle.id == vehicle.id))
         await self.session.commit()
+        if storage is not None:
+            await delete_stored_files(storage, file_keys)
 
     def _validate_dates_and_year(self, year: int | None, purchase_date: object) -> None:
         today = self.clock.today()

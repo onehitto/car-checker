@@ -4,7 +4,7 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, Query, status
 
-from app.api.deps import ClockDep, CurrentUser, DbSession, RequestMetaDep
+from app.api.deps import ClockDep, CurrentUser, DbSession, RequestMetaDep, StorageDep
 from app.api.openapi import VEHICLE_ERRORS, error_responses
 from app.core.pagination import PageDep, SearchQuery, SortQuery, paginated
 from app.core.responses import ApiResponse, PaginatedResponse, success
@@ -79,6 +79,6 @@ async def update_vehicle(
     description="Owner only. Consider setting `status` to `sold` or `archived` instead.",
 )
 async def delete_vehicle(
-    ctx: VehicleOwner, service: VehicleServiceDep, meta: RequestMetaDep
+    ctx: VehicleOwner, service: VehicleServiceDep, meta: RequestMetaDep, storage: StorageDep
 ) -> None:
-    await service.delete(ctx, meta)
+    await service.delete(ctx, meta, storage)

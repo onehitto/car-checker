@@ -2,6 +2,7 @@
 
 from app.db.base import Base
 from app.modules.alerts.models import Alert
+from app.modules.attachments.models import Attachment
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 from app.modules.documents.models import VehicleDocument
@@ -22,6 +23,7 @@ from app.modules.vehicles.models import Vehicle, VehicleAccess
 
 __all__ = [
     "Alert",
+    "Attachment",
     "AuditLog",
     "Base",
     "Expense",

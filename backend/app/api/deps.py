@@ -18,6 +18,7 @@ from app.core.exceptions import AuthenticationError
 from app.core.i18n import set_current_language
 from app.core.security import decode_access_token
 from app.db.session import Database
+from app.modules.attachments.storage import StorageBackend
 from app.modules.audit.service import RequestMeta
 from app.modules.auth.models import UserSession
 from app.modules.notifications.email import EmailSender
@@ -117,3 +118,11 @@ def get_email_sender(request: Request) -> EmailSender:
 
 
 EmailSenderDep = Annotated[EmailSender, Depends(get_email_sender)]
+
+
+def get_storage(request: Request) -> StorageBackend:
+    storage: StorageBackend = request.app.state.storage
+    return storage
+
+
+StorageDep = Annotated[StorageBackend, Depends(get_storage)]

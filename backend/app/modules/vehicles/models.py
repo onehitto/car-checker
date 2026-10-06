@@ -95,6 +95,10 @@ class Vehicle(BaseModel):
         default=VehicleStatus.ACTIVE,
         server_default=VehicleStatus.ACTIVE.value,
     )
+    # Picture of the vehicle (an attachment of the vehicle itself).
+    image_attachment_id: Mapped[uuid.UUID | None] = mapped_column(
+        sa.ForeignKey("attachments.id", ondelete="SET NULL", use_alter=True)
+    )
     notes: Mapped[str | None] = mapped_column(sa.Text)
 
     owner: Mapped[User] = relationship(lazy="raise")

@@ -1,5 +1,6 @@
 """Pure ASGI middleware (keeps streaming responses and contextvars intact)."""
 
+import json
 import re
 import time
 
@@ -7,6 +8,7 @@ import structlog
 from starlette.datastructures import Headers, MutableHeaders
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
+from app.core.exceptions import PayloadTooLargeError
 from app.core.ids import uuid7
 from app.core.logging import get_logger
 
@@ -109,3 +111,56 @@ class SecurityHeadersMiddleware:
             await send(message)
 
         await self.app(scope, receive, send_with_headers)
+
+
+class BodySizeLimitMiddleware:
+    """Reject request bodies larger than `max_bytes` before they are fully read."""
+
+    def __init__(self, app: ASGIApp, *, max_bytes: int) -> None:
+        self.app = app
+        self.max_bytes = max_bytes
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http":
+            await self.app(scope, receive, send)
+            return
+        declared = Headers(scope=scope).get("content-length")
+        if declared and declared.isdigit() and int(declared) > self.max_bytes:
+            await self._reject(scope, send)
+            return
+
+        received = 0
+
+        async def limited_receive() -> Message:
+            nonlocal received
+            message = await receive()
+            if message["type"] == "http.request":
+                received += len(message.get("body", b""))
+                if received > self.max_bytes:
+                    raise PayloadTooLargeError()
+            return message
+
+        await self.app(scope, limited_receive, send)
+
+    async def _reject(self, scope: Scope, send: Send) -> None:
+        body = json.dumps(
+            {
+                "success": False,
+                "error": {
+                    "code": PayloadTooLargeError.code,
+                    "message": PayloadTooLargeError.default_message,
+                    "request_id": scope.get("state", {}).get("request_id"),
+                },
+            }
+        ).encode()
+        await send(
+            {
+                "type": "http.response.start",
+                "status": 413,
+                "headers": [
+                    (b"content-type", b"application/json"),
+                    (b"content-length", str(len(body)).encode()),
+                ],
+            }
+        )
+        await send({"type": "http.response.body", "body": body})

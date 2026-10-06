@@ -110,6 +110,9 @@ class VehicleResponse(ResponseModel):
     initial_mileage: int
     current_mileage: int
     status: VehicleStatus
+    image_attachment_id: uuid.UUID | None = Field(
+        description="Download with /vehicles/{id}/attachments/{image_attachment_id}/download."
+    )
     notes: str | None
     access_role: VehicleRole | None = Field(
         default=None, description="Role of the caller on this vehicle."
