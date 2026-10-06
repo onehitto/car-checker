@@ -24,6 +24,7 @@ from app.modules.fuel.models import FuelRecord
 from app.modules.maintenance.models import MaintenanceKind, MaintenanceRecord, MaintenanceType
 from app.modules.mileage.models import MileageEntry, MileageSource
 from app.modules.parts.models import PartReplacement
+from app.modules.tires.models import Tire, TireEvent
 
 
 class TimelineEventType(StrEnum):
@@ -34,6 +35,7 @@ class TimelineEventType(StrEnum):
     EXPENSE = "expense"
     DOCUMENT = "document"
     FUEL = "fuel"
+    TIRE = "tire"
 
 
 @dataclass(frozen=True, slots=True)
@@ -194,6 +196,26 @@ def fuel_events(vehicle_id: uuid.UUID) -> Select[Any]:
     ).where(record.vehicle_id == vehicle_id)
 
 
+def tire_events(vehicle_id: uuid.UUID) -> Select[Any]:
+    event = TireEvent
+    return (
+        select(
+            *_row(
+                literal(TimelineEventType.TIRE.value),
+                event.id,
+                event.event_date,
+                event.mileage,
+                func.concat(Tire.brand, " ", Tire.size),
+                sa.null(),
+                event.event_type,
+                event.created_at,
+            )
+        )
+        .join(Tire, Tire.id == event.tire_id)
+        .where(event.vehicle_id == vehicle_id)
+    )
+
+
 EVENT_SOURCES: dict[TimelineEventType, EventSource] = {
     TimelineEventType.MILEAGE: mileage_events,
     TimelineEventType.MAINTENANCE: maintenance_events,
@@ -202,6 +224,7 @@ EVENT_SOURCES: dict[TimelineEventType, EventSource] = {
     TimelineEventType.EXPENSE: expense_events,
     TimelineEventType.DOCUMENT: document_events,
     TimelineEventType.FUEL: fuel_events,
+    TimelineEventType.TIRE: tire_events,
 }
 
 

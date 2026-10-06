@@ -16,6 +16,7 @@ from app.modules.maintenance.models import (
 )
 from app.modules.mileage.models import MileageEntry
 from app.modules.parts.models import PartReplacement, PartType
+from app.modules.tires.models import Tire, TireEvent
 from app.modules.users.models import User
 from app.modules.vehicles.models import Vehicle, VehicleAccess
 
@@ -35,6 +36,8 @@ __all__ = [
     "PartType",
     "PasswordResetToken",
     "RefreshToken",
+    "Tire",
+    "TireEvent",
     "User",
     "UserSession",
     "Vehicle",
