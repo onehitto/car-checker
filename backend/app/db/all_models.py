@@ -4,5 +4,15 @@ from app.db.base import Base
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 from app.modules.users.models import User
+from app.modules.vehicles.models import Vehicle, VehicleAccess
 
-__all__ = ["AuditLog", "Base", "PasswordResetToken", "RefreshToken", "User", "UserSession"]
+__all__ = [
+    "AuditLog",
+    "Base",
+    "PasswordResetToken",
+    "RefreshToken",
+    "User",
+    "UserSession",
+    "Vehicle",
+    "VehicleAccess",
+]

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from httpx import AsyncClient, Response
+from sqlalchemy.ext.asyncio import AsyncSession
 
 API = "/api/v1"
 DEFAULT_PASSWORD = "S3cure-pass"
@@ -79,3 +80,37 @@ async def login(
         refresh_token=body["tokens"]["refresh_token"],
         password=password,
     )
+
+
+VEHICLE_PAYLOAD: dict[str, Any] = {
+    "brand": "Dacia",
+    "model": "Logan",
+    "year": 2019,
+    "fuel_type": "diesel",
+    "initial_mileage": 80_000,
+    "current_mileage": 80_000,
+}
+
+
+async def create_vehicle(
+    client: AsyncClient, owner: AuthenticatedUser, **fields: Any
+) -> dict[str, Any]:
+    payload = {**VEHICLE_PAYLOAD, **fields}
+    result: dict[str, Any] = data(
+        await client.post(f"{API}/vehicles", headers=owner.headers, json=payload), 201
+    )
+    return result
+
+
+async def share_vehicle_in_db(
+    session: AsyncSession, vehicle_id: str, user_id: str, role: str
+) -> None:
+    """Grant access directly in the database (independent from the sharing endpoints)."""
+    from app.modules.vehicles.models import SharedRole, VehicleAccess
+
+    session.add(
+        VehicleAccess(
+            vehicle_id=uuid.UUID(vehicle_id), user_id=uuid.UUID(user_id), role=SharedRole(role)
+        )
+    )
+    await session.commit()
