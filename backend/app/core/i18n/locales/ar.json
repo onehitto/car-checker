@@ -1,0 +1,6 @@
+{
+  "email.password_reset.subject": "إعادة تعيين كلمة مرور Car Checker",
+  "email.password_reset.body": "مرحباً {first_name}،\n\nتلقينا طلباً لإعادة تعيين كلمة مرور حسابك في Car Checker.\nافتح الرابط أدناه لاختيار كلمة مرور جديدة. تنتهي صلاحية الرابط خلال {expires_minutes} دقيقة.\n\n{reset_url}\n\nإذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة ولن تتغير كلمة المرور.\n\nفريق Car Checker",
+  "email.password_changed.subject": "تم تغيير كلمة مرور Car Checker",
+  "email.password_changed.body": "مرحباً {first_name}،\n\nتم تغيير كلمة مرور حسابك في Car Checker للتو وتم تسجيل الخروج من جلساتك الأخرى.\nإذا لم تقم بهذا التغيير، أعد تعيين كلمة المرور فوراً.\n\nفريق Car Checker"
+}

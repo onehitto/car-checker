@@ -1,0 +1,6 @@
+{
+  "email.password_reset.subject": "Reset your Car Checker password",
+  "email.password_reset.body": "Hello {first_name},\n\nWe received a request to reset your Car Checker password.\nOpen the link below to choose a new password. It expires in {expires_minutes} minutes.\n\n{reset_url}\n\nIf you did not request this, you can ignore this email: your password will not change.\n\nThe Car Checker team",
+  "email.password_changed.subject": "Your Car Checker password was changed",
+  "email.password_changed.body": "Hello {first_name},\n\nThe password of your Car Checker account was just changed and your other sessions were signed out.\nIf you did not make this change, reset your password immediately.\n\nThe Car Checker team"
+}
