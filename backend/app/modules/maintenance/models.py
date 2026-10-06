@@ -92,3 +92,41 @@ class MaintenanceRecord(BaseModel):
         sa.CheckConstraint("parts_cost >= 0", name="parts_cost_positive"),
         sa.Index(None, "vehicle_id", "service_date"),
     )
+
+
+class MaintenanceSchedule(BaseModel):
+    """Recurring maintenance plan of a vehicle (by mileage, time, or both)."""
+
+    __tablename__ = "maintenance_schedules"
+
+    vehicle_id: Mapped[uuid.UUID] = mapped_column(sa.ForeignKey("vehicles.id", ondelete="CASCADE"))
+    maintenance_type_id: Mapped[uuid.UUID] = mapped_column(
+        sa.ForeignKey("maintenance_types.id", ondelete="RESTRICT"), index=True
+    )
+    interval_km: Mapped[int | None]
+    interval_months: Mapped[int | None] = mapped_column(sa.SmallInteger)
+    last_service_date: Mapped[date | None]
+    last_service_mileage: Mapped[int | None]
+    # Derived from the last service and the intervals; persisted so jobs can scan them.
+    next_service_date: Mapped[date | None]
+    next_service_mileage: Mapped[int | None]
+    warning_before_km: Mapped[int] = mapped_column(default=1000, server_default="1000")
+    warning_before_days: Mapped[int] = mapped_column(default=30, server_default="30")
+    enabled: Mapped[bool] = mapped_column(default=True, server_default=sa.true())
+    notes: Mapped[str | None] = mapped_column(sa.Text)
+
+    vehicle: Mapped[Vehicle] = relationship(lazy="raise")
+    maintenance_type: Mapped[MaintenanceType] = relationship(lazy="raise")
+
+    __table_args__ = (
+        sa.UniqueConstraint("vehicle_id", "maintenance_type_id"),
+        sa.CheckConstraint(
+            "interval_km IS NOT NULL OR interval_months IS NOT NULL", name="has_interval"
+        ),
+        sa.CheckConstraint("interval_km > 0", name="interval_km_positive"),
+        sa.CheckConstraint("interval_months > 0", name="interval_months_positive"),
+        sa.CheckConstraint("last_service_mileage >= 0", name="last_service_mileage_positive"),
+        sa.CheckConstraint("warning_before_km >= 0", name="warning_before_km_positive"),
+        sa.CheckConstraint("warning_before_days >= 0", name="warning_before_days_positive"),
+        sa.Index(None, "next_service_date", postgresql_where=sa.text("enabled")),
+    )

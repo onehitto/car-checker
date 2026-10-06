@@ -10,6 +10,7 @@ from pydantic import Field, StringConstraints
 from app.core.schemas import LongText, Mileage, Money, RequestModel, ResponseModel, ShortText
 from app.db.catalog import CatalogResponseModel
 from app.modules.garages.schemas import GarageSummary
+from app.modules.maintenance.calculator import DueReason, DueStatus
 from app.modules.maintenance.models import MaintenanceCategory, MaintenanceKind
 
 TypeName = Annotated[str, StringConstraints(min_length=1, max_length=100)]
@@ -101,5 +102,65 @@ class MaintenanceRecordResponse(ResponseModel):
     garage: GarageSummary | None
     notes: str | None
     created_by_id: uuid.UUID | None
+    created_at: datetime
+    updated_at: datetime
+
+
+# --- Maintenance schedules ------------------------------------------------------------------
+
+WarningKm = Annotated[int, Field(ge=0, le=100_000, description="Warn this many km before.")]
+WarningDays = Annotated[int, Field(ge=0, le=365, description="Warn this many days before.")]
+
+
+class ScheduleFields(RequestModel):
+    interval_km: IntervalKm | None = None
+    interval_months: IntervalMonths | None = None
+    last_service_date: date | None = None
+    last_service_mileage: Mileage | None = None
+    next_service_date: date | None = Field(
+        default=None, description="Explicit next date, used only when no last service is known."
+    )
+    next_service_mileage: Mileage | None = Field(
+        default=None, description="Explicit next mileage, used only when no last service is known."
+    )
+    notes: LongText | None = None
+
+
+class ScheduleCreate(ScheduleFields):
+    """Intervals default to the maintenance type defaults; the last service defaults to the
+    latest matching maintenance record."""
+
+    maintenance_type_id: uuid.UUID
+    warning_before_km: WarningKm = 1000
+    warning_before_days: WarningDays = 30
+    enabled: bool = True
+
+
+class ScheduleUpdate(ScheduleFields):
+    warning_before_km: WarningKm | None = None
+    warning_before_days: WarningDays | None = None
+    enabled: bool | None = None
+
+
+class ScheduleResponse(ResponseModel):
+    id: uuid.UUID
+    vehicle_id: uuid.UUID
+    maintenance_type: MaintenanceTypeSummary
+    interval_km: int | None
+    interval_months: int | None
+    last_service_date: date | None
+    last_service_mileage: int | None
+    next_service_date: date | None
+    next_service_mileage: int | None
+    warning_before_km: int
+    warning_before_days: int
+    enabled: bool
+    notes: str | None
+    remaining_km: int | None
+    remaining_days: int | None
+    overdue_km: int | None
+    overdue_days: int | None
+    status: DueStatus
+    due_reason: DueReason | None
     created_at: datetime
     updated_at: datetime

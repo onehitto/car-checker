@@ -17,6 +17,7 @@ from app.core.updates import apply_updates
 from app.modules.garages.service import ensure_garage_usable
 from app.modules.maintenance.catalog import CatalogService
 from app.modules.maintenance.models import MaintenanceKind, MaintenanceRecord, MaintenanceType
+from app.modules.maintenance.schedules import ScheduleService
 from app.modules.maintenance.schemas import MaintenanceRecordCreate, MaintenanceRecordUpdate
 from app.modules.mileage.models import MileageSource
 from app.modules.mileage.service import MileageService
@@ -46,6 +47,15 @@ class MaintenanceFilters:
     sort: str | None = None
 
 
+@dataclass(frozen=True, slots=True)
+class PreviousRecord:
+    """Values of a record before it was edited or deleted."""
+
+    type_id: uuid.UUID
+    service_date: date
+    mileage: int | None
+
+
 def with_relations(stmt: Select[tuple[MaintenanceRecord]]) -> Select[tuple[MaintenanceRecord]]:
     return stmt.options(
         joinedload(MaintenanceRecord.maintenance_type), joinedload(MaintenanceRecord.garage)
@@ -67,6 +77,7 @@ class MaintenanceRecordService:
         self.clock = clock
         self.types = CatalogService(session, MaintenanceType, "Maintenance type")
         self.mileage = MileageService(session, clock)
+        self.schedules = ScheduleService(session, clock)
 
     async def list_records(
         self, scope: ColumnElement[bool], filters: MaintenanceFilters, params: PageParams
@@ -142,6 +153,7 @@ class MaintenanceRecordService:
         self, ctx: VehicleContext, record_id: uuid.UUID, data: MaintenanceRecordUpdate
     ) -> MaintenanceRecord:
         record = await self.get(ctx.vehicle_id, record_id)
+        previous = PreviousRecord(record.maintenance_type_id, record.service_date, record.mileage)
         changes = data.model_dump(exclude_unset=True)
         if changes.get("maintenance_type_id"):
             await self.types.resolve_reference(
@@ -155,24 +167,42 @@ class MaintenanceRecordService:
             )
         apply_updates(record, data, required=REQUIRED_FIELDS)
         record.cost = default_total(record.cost, record.labor_cost, record.parts_cost)
-        await self._after_write(ctx, record)
+        await self._after_write(ctx, record, previous)
         await self.session.commit()
         return await self.get(ctx.vehicle_id, record.id)
 
     async def delete(self, ctx: VehicleContext, record_id: uuid.UUID) -> None:
-        result = await self.session.execute(
-            delete(MaintenanceRecord).where(
-                MaintenanceRecord.id == record_id, MaintenanceRecord.vehicle_id == ctx.vehicle_id
-            )
+        record = await self.get(ctx.vehicle_id, record_id)
+        previous = PreviousRecord(record.maintenance_type_id, record.service_date, record.mileage)
+        await self.session.execute(
+            delete(MaintenanceRecord).where(MaintenanceRecord.id == record.id)
         )
-        if result.rowcount == 0:  # type: ignore[attr-defined]
-            raise NotFoundError("Maintenance record")
+        await self.schedules.sync_with_records(
+            ctx.vehicle, previous.type_id, replaced=(previous.service_date, previous.mileage)
+        )
         await self.session.commit()
 
-    async def _after_write(self, ctx: VehicleContext, record: MaintenanceRecord) -> None:
-        """Side effects of a saved record, in the same transaction."""
+    async def _after_write(
+        self,
+        ctx: VehicleContext,
+        record: MaintenanceRecord,
+        previous: PreviousRecord | None = None,
+    ) -> None:
+        """Side effects of a saved record, in the same transaction: odometer and schedules."""
+        vehicle = ctx.vehicle
         if record.mileage is not None:
             vehicle = await self.mileage.lock_vehicle(ctx.vehicle_id)
             await self.mileage.record_odometer(
                 vehicle, record.mileage, record.service_date, MileageSource.MAINTENANCE, ctx.user.id
+            )
+        if previous is None:
+            await self.schedules.sync_with_records(vehicle, record.maintenance_type_id)
+            return
+        replaced = (previous.service_date, previous.mileage)
+        if previous.type_id != record.maintenance_type_id:
+            await self.schedules.sync_with_records(vehicle, previous.type_id, replaced=replaced)
+            await self.schedules.sync_with_records(vehicle, record.maintenance_type_id)
+        else:
+            await self.schedules.sync_with_records(
+                vehicle, record.maintenance_type_id, replaced=replaced
             )

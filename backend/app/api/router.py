@@ -6,6 +6,7 @@ from app.api import health
 from app.modules.auth.router import router as auth_router
 from app.modules.garages.router import router as garages_router
 from app.modules.maintenance.router import router as maintenance_router
+from app.modules.maintenance.schedules_router import router as schedules_router
 from app.modules.maintenance.types_router import router as maintenance_types_router
 from app.modules.mileage.router import router as mileage_router
 from app.modules.users.router import router as users_router
@@ -20,3 +21,4 @@ api_router.include_router(mileage_router)
 api_router.include_router(garages_router)
 api_router.include_router(maintenance_types_router)
 api_router.include_router(maintenance_router)
+api_router.include_router(schedules_router)
