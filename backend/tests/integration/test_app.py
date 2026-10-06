@@ -1,9 +1,9 @@
 """Cross-cutting HTTP behaviour: health, envelopes, headers, CORS and rate limiting."""
 
-from httpx import ASGITransport, AsyncClient
+from collections.abc import Callable
 
-from app.core.config import Settings
-from app.main import create_app
+from fastapi import FastAPI
+from httpx import ASGITransport, AsyncClient
 
 
 async def test_health_reports_api_and_database(client: AsyncClient) -> None:
@@ -59,11 +59,8 @@ async def test_openapi_is_served_outside_production(client: AsyncClient) -> None
     assert response.json()["info"]["title"] == "Car Checker API"
 
 
-async def test_global_rate_limit_returns_429_envelope(settings: Settings) -> None:
-    limited = settings.model_copy(
-        update={"rate_limit_enabled": True, "rate_limit_default": "2/minute"}
-    )
-    app = create_app(limited)
+async def test_global_rate_limit_returns_429_envelope(app_factory: Callable[..., FastAPI]) -> None:
+    app = app_factory(rate_limit_enabled=True, rate_limit_default="2/minute")
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
         statuses = [(await client.get("/api/v1/unknown")).status_code for _ in range(3)]
         response = await client.get("/api/v1/unknown")
