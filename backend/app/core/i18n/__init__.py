@@ -6,6 +6,9 @@ never breaks a notification.
 """
 
 import json
+from collections.abc import Iterator
+from contextlib import contextmanager
+from contextvars import ContextVar
 from enum import StrEnum
 from functools import cache
 from pathlib import Path
@@ -22,6 +25,26 @@ class Language(StrEnum):
 
 DEFAULT_LANGUAGE = Language.EN
 
+# Language of the current request (the authenticated user's preference) or job iteration.
+_current_language: ContextVar[Language] = ContextVar("language", default=DEFAULT_LANGUAGE)
+
+
+def get_current_language() -> Language:
+    return _current_language.get()
+
+
+def set_current_language(language: Language | str | None) -> None:
+    _current_language.set(resolve_language(language))
+
+
+@contextmanager
+def use_language(language: Language | str | None) -> Iterator[None]:
+    token = _current_language.set(resolve_language(language))
+    try:
+        yield
+    finally:
+        _current_language.reset(token)
+
 
 class _KeepMissing(dict[str, Any]):
     """format_map helper leaving unknown placeholders untouched instead of raising."""
@@ -37,7 +60,7 @@ def load_catalog(language: Language) -> dict[str, str]:
     return catalog
 
 
-def resolve_language(value: str | None) -> Language:
+def resolve_language(value: Language | str | None) -> Language:
     try:
         return Language(value) if value else DEFAULT_LANGUAGE
     except ValueError:
@@ -49,6 +72,7 @@ def has_translation(key: str, language: str | Language | None = None) -> bool:
 
 
 def translate(key: str, language: str | Language | None = None, **params: Any) -> str:
-    lang = resolve_language(language)
+    """Render `key`; without an explicit language, the current context language is used."""
+    lang = resolve_language(language) if language else get_current_language()
     template = load_catalog(lang).get(key) or load_catalog(DEFAULT_LANGUAGE).get(key) or key
     return template.format_map(_KeepMissing(params))

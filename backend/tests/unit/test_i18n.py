@@ -42,3 +42,15 @@ def test_every_catalog_has_the_same_keys_as_english(language: Language) -> None:
 @pytest.mark.parametrize("path", sorted(LOCALES.glob("*.json")))
 def test_catalog_files_are_valid_json(path: Path) -> None:
     assert isinstance(json.loads(path.read_text(encoding="utf-8")), dict)
+
+
+def test_context_language_is_used_by_default() -> None:
+    from app.core.i18n import get_current_language, use_language
+
+    with use_language("fr"):
+        assert get_current_language() is Language.FR
+        assert translate("email.password_reset.subject") == (
+            "Réinitialisez votre mot de passe Car Checker"
+        )
+        assert translate("email.password_reset.subject", "en").startswith("Reset")
+    assert get_current_language() is Language.EN

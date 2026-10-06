@@ -5,9 +5,10 @@ used for translations and seeds) or a *custom* type created by one user.
 """
 
 import uuid
+from typing import Any
 
 import sqlalchemy as sa
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, model_validator
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql.schema import SchemaItem
 
@@ -47,8 +48,11 @@ class CatalogTypeMixin:
     def is_system(self) -> bool:
         return self.user_id is None
 
-    def localized_name(self, language: Language | str | None) -> str:
-        """System types are translated from their code; custom types keep the user's name."""
+    def localized_name(self, language: Language | str | None = None) -> str:
+        """System types are translated from their code; custom types keep the user's name.
+
+        Without `language`, the current request/job language is used.
+        """
         if self.code and self.is_system:
             key = f"{self.translation_prefix}.{self.code}"
             if has_translation(key, language):
@@ -56,6 +60,18 @@ class CatalogTypeMixin:
         return self.name
 
 
-def localized[S: BaseModel](schema: type[S], item: CatalogTypeMixin, language: Language | str) -> S:
-    """Build a catalog response whose `name` is translated for system types."""
-    return schema.model_validate(item).model_copy(update={"name": item.localized_name(language)})
+class CatalogResponseModel(BaseModel):
+    """Response schema of a catalog row; `name` is localized for system types."""
+
+    model_config = ConfigDict(from_attributes=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _localize_name(cls, value: Any) -> Any:
+        if isinstance(value, CatalogTypeMixin):
+            fields = {
+                name: getattr(value, name) for name in cls.model_fields if hasattr(value, name)
+            }
+            fields["name"] = value.localized_name()
+            return fields
+        return value

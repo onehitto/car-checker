@@ -9,7 +9,6 @@ from app.api.deps import CurrentUser, DbSession
 from app.api.openapi import AUTHENTICATED_ERRORS, error_responses
 from app.core.pagination import SearchQuery
 from app.core.responses import ApiResponse, success
-from app.db.catalog import localized
 from app.modules.maintenance.catalog import CatalogService
 from app.modules.maintenance.models import MaintenanceCategory, MaintenanceType
 from app.modules.maintenance.schemas import (
@@ -42,9 +41,7 @@ async def list_types(
     q: SearchQuery = None,
     category: Annotated[MaintenanceCategory | None, Query()] = None,
 ) -> Any:
-    items = await catalog.list_types(user.id, q=q, category=category)
-    language = user.preferred_language
-    return success([localized(MaintenanceTypeResponse, item, language) for item in items])
+    return success(await catalog.list_types(user.id, q=q, category=category))
 
 
 @router.post(
@@ -55,8 +52,7 @@ async def list_types(
     responses=error_responses(409),
 )
 async def create_type(body: MaintenanceTypeCreate, user: CurrentUser, catalog: CatalogDep) -> Any:
-    item = await catalog.create(user.id, body)
-    return success(localized(MaintenanceTypeResponse, item, user.preferred_language))
+    return success(await catalog.create(user.id, body))
 
 
 @router.get(
@@ -66,8 +62,7 @@ async def create_type(body: MaintenanceTypeCreate, user: CurrentUser, catalog: C
     responses=error_responses(404),
 )
 async def get_type(type_id: uuid.UUID, user: CurrentUser, catalog: CatalogDep) -> Any:
-    item = await catalog.get_visible(user.id, type_id)
-    return success(localized(MaintenanceTypeResponse, item, user.preferred_language))
+    return success(await catalog.get_visible(user.id, type_id))
 
 
 @router.patch(
@@ -79,8 +74,7 @@ async def get_type(type_id: uuid.UUID, user: CurrentUser, catalog: CatalogDep) -
 async def update_type(
     type_id: uuid.UUID, body: MaintenanceTypeUpdate, user: CurrentUser, catalog: CatalogDep
 ) -> Any:
-    item = await catalog.update(user.id, type_id, body)
-    return success(localized(MaintenanceTypeResponse, item, user.preferred_language))
+    return success(await catalog.update(user.id, type_id, body))
 
 
 @router.delete(

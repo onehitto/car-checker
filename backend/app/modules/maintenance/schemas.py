@@ -6,7 +6,8 @@ from typing import Annotated
 
 from pydantic import Field, StringConstraints
 
-from app.core.schemas import LongText, RequestModel, ResponseModel
+from app.core.schemas import LongText, RequestModel
+from app.db.catalog import CatalogResponseModel
 from app.modules.maintenance.models import MaintenanceCategory
 
 TypeName = Annotated[str, StringConstraints(min_length=1, max_length=100)]
@@ -33,7 +34,7 @@ class MaintenanceTypeUpdate(RequestModel):
     default_interval_months: IntervalMonths | None = None
 
 
-class MaintenanceTypeResponse(ResponseModel):
+class MaintenanceTypeResponse(CatalogResponseModel):
     id: uuid.UUID
     code: str | None = Field(description="Stable identifier of system types (null for custom).")
     name: str = Field(description="Localized in the caller's language for system types.")
@@ -46,7 +47,7 @@ class MaintenanceTypeResponse(ResponseModel):
     updated_at: datetime
 
 
-class MaintenanceTypeSummary(ResponseModel):
+class MaintenanceTypeSummary(CatalogResponseModel):
     id: uuid.UUID
     code: str | None
     name: str

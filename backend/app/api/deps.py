@@ -15,6 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.clock import Clock, get_clock
 from app.core.config import Settings
 from app.core.exceptions import AuthenticationError
+from app.core.i18n import set_current_language
 from app.core.security import decode_access_token
 from app.db.session import Database
 from app.modules.audit.service import RequestMeta
@@ -87,6 +88,7 @@ async def get_auth_context(
         raise AuthenticationError("The session is no longer valid. Please sign in again.")
 
     structlog.contextvars.bind_contextvars(user_id=str(user.id))
+    set_current_language(user.preferred_language)
     return AuthContext(user=user, session_id=claims.session_id)
 
 
