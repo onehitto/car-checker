@@ -12,6 +12,7 @@ from app.core.clock import Clock
 from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.updates import apply_updates
+from app.modules.alerts.engine import AlertEngine
 from app.modules.documents.expiration import (
     DEFAULT_EXPIRING_SOON_DAYS,
     DocumentStatus,
@@ -61,6 +62,7 @@ class DocumentService:
     def __init__(self, session: AsyncSession, clock: Clock) -> None:
         self.session = session
         self.clock = clock
+        self.alerts = AlertEngine(session, clock)
 
     async def list_documents(
         self,
@@ -106,6 +108,7 @@ class DocumentService:
             **data.model_dump(), vehicle_id=ctx.vehicle_id, created_by_id=ctx.user.id
         )
         self.session.add(document)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return document
 
@@ -115,6 +118,7 @@ class DocumentService:
         document = await self.get(ctx.vehicle_id, document_id)
         apply_updates(document, data, required=REQUIRED_FIELDS)
         self._check_dates(document)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return document
 
@@ -126,6 +130,7 @@ class DocumentService:
         )
         if result.rowcount == 0:  # type: ignore[attr-defined]
             raise NotFoundError("Document")
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
 
     @staticmethod

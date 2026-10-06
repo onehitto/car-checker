@@ -14,6 +14,7 @@ from app.core.exceptions import NotFoundError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.alerts.engine import AlertEngine
 from app.modules.expenses.service import ExpenseLedger
 from app.modules.garages.service import ensure_garage_usable
 from app.modules.maintenance.catalog import CatalogService
@@ -80,6 +81,7 @@ class MaintenanceRecordService:
         self.mileage = MileageService(session, clock)
         self.schedules = ScheduleService(session, clock)
         self.ledger = ExpenseLedger(session)
+        self.alerts = AlertEngine(session, clock)
 
     async def list_records(
         self, scope: ColumnElement[bool], filters: MaintenanceFilters, params: PageParams
@@ -132,6 +134,7 @@ class MaintenanceRecordService:
 
     async def create(self, ctx: VehicleContext, data: MaintenanceRecordCreate) -> MaintenanceRecord:
         record = await self.add(ctx, data)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get(ctx.vehicle_id, record.id)
 
@@ -170,6 +173,7 @@ class MaintenanceRecordService:
         apply_updates(record, data, required=REQUIRED_FIELDS)
         record.cost = default_total(record.cost, record.labor_cost, record.parts_cost)
         await self._after_write(ctx, record, previous)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get(ctx.vehicle_id, record.id)
 
@@ -182,6 +186,7 @@ class MaintenanceRecordService:
         await self.schedules.sync_with_records(
             ctx.vehicle, previous.type_id, replaced=(previous.service_date, previous.mileage)
         )
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
 
     async def _after_write(

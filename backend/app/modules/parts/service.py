@@ -13,6 +13,7 @@ from app.core.exceptions import NotFoundError, ValidationAppError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.alerts.engine import AlertEngine
 from app.modules.expenses.service import ExpenseLedger
 from app.modules.garages.service import ensure_garage_usable
 from app.modules.maintenance.catalog import CatalogService
@@ -70,6 +71,7 @@ class PartService:
         self.types = CatalogService(session, PartType, "Part type")
         self.mileage = MileageService(session, clock)
         self.ledger = ExpenseLedger(session)
+        self.alerts = AlertEngine(session, clock)
 
     def today(self, ctx: VehicleContext) -> date:
         return self.clock.today(ctx.user.timezone)
@@ -134,6 +136,7 @@ class PartService:
         await self._retire_previous(part)
         await self._advance_odometer(ctx, part)
         await self.ledger.sync_part(part)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get(ctx, part.id)
 
@@ -161,6 +164,7 @@ class PartService:
             )
         await self._advance_odometer(ctx, part)
         await self.ledger.sync_part(part)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get(ctx, part.id)
 
@@ -172,6 +176,7 @@ class PartService:
         )
         if result.rowcount == 0:  # type: ignore[attr-defined]
             raise NotFoundError("Part")
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
 
     async def _retire_previous(self, part: PartReplacement) -> None:

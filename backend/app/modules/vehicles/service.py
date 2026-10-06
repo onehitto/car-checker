@@ -11,6 +11,7 @@ from app.core.exceptions import ConflictError, ValidationAppError
 from app.core.pagination import Page, PageParams, apply_sort, like_pattern, paginate_rows
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.alerts.engine import AlertEngine
 from app.modules.audit.service import RequestMeta, record_audit
 from app.modules.mileage.service import MileageService
 from app.modules.users.models import User
@@ -51,6 +52,7 @@ class VehicleService:
     def __init__(self, session: AsyncSession, clock: Clock) -> None:
         self.session = session
         self.clock = clock
+        self.alerts = AlertEngine(session, clock)
 
     async def list_for_user(
         self, user: User, filters: VehicleFilters, params: PageParams
@@ -124,6 +126,7 @@ class VehicleService:
                 fields={"initial_mileage": "Cannot exceed the current mileage of the vehicle."}
             )
         apply_updates(vehicle, data, required=REQUIRED_FIELDS)
+        await self.alerts.sync_vehicle(vehicle.id)
         await self.session.commit()
         return vehicle
 

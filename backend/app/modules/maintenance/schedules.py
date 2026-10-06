@@ -13,6 +13,7 @@ from app.core.clock import Clock
 from app.core.exceptions import ConflictError, NotFoundError, ValidationAppError
 from app.core.schemas import ensure_not_future
 from app.core.updates import apply_updates
+from app.modules.alerts.engine import AlertEngine
 from app.modules.maintenance.calculator import (
     DueBaseline,
     DueRule,
@@ -103,6 +104,7 @@ class ScheduleService:
         self.session = session
         self.clock = clock
         self.types = CatalogService(session, MaintenanceType, "Maintenance type")
+        self.alerts = AlertEngine(session, clock)
 
     # --- Queries ---------------------------------------------------------------------------------
 
@@ -202,6 +204,7 @@ class ScheduleService:
             schedule.last_service_date, schedule.last_service_mileage = last_date, last_mileage
         recompute_next(schedule, ctx.vehicle, data.next_service_date, data.next_service_mileage)
         self.session.add(schedule)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get_view(ctx, schedule.id)
 
@@ -234,6 +237,7 @@ class ScheduleService:
             explicit["next_service_mileage"],
         )
         recompute_next(schedule, ctx.vehicle, explicit_date, explicit_mileage)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
         return await self.get_view(ctx, schedule.id)
 
@@ -246,6 +250,7 @@ class ScheduleService:
         )
         if result.rowcount == 0:  # type: ignore[attr-defined]
             raise NotFoundError("Maintenance schedule")
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
         await self.session.commit()
 
     # --- Synchronisation with maintenance records ------------------------------------------------

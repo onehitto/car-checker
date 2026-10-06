@@ -17,6 +17,7 @@ from app.core.clock import Clock
 from app.core.exceptions import AppError, NotFoundError, ValidationAppError
 from app.core.pagination import Page, PageParams, paginate
 from app.core.schemas import ensure_not_future
+from app.modules.alerts.engine import AlertEngine
 from app.modules.audit.service import RequestMeta, record_audit
 from app.modules.mileage.models import MileageEntry, MileageSource
 from app.modules.mileage.schemas import MileageCreate
@@ -41,6 +42,7 @@ class MileageService:
     def __init__(self, session: AsyncSession, clock: Clock) -> None:
         self.session = session
         self.clock = clock
+        self.alerts = AlertEngine(session, clock)
 
     async def list_entries(
         self, vehicle_id: uuid.UUID, filters: MileageFilters, params: PageParams
@@ -94,6 +96,7 @@ class MileageService:
             self.session.add(entry)
         if after is None:  # the newest reading defines the current odometer
             vehicle.current_mileage = data.mileage
+        await self.alerts.sync_vehicle(vehicle.id)
         await self.session.commit()
         return entry
 
@@ -113,6 +116,7 @@ class MileageService:
             .limit(1)
         )
         vehicle.current_mileage = latest if latest is not None else vehicle.initial_mileage
+        await self.alerts.sync_vehicle(vehicle.id)
         await self.session.commit()
         return vehicle.current_mileage
 
