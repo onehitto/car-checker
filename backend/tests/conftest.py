@@ -28,6 +28,7 @@ from sqlalchemy.pool import NullPool
 from app.api.deps import get_db
 from app.core.clock import FixedClock, get_clock
 from app.core.config import Environment, Settings
+from app.db.seeds import seed_reference_data
 from app.main import create_app
 from tests.helpers import AuthenticatedUser, register_user
 
@@ -77,6 +78,9 @@ async def engine(settings: Settings) -> AsyncIterator[AsyncEngine]:
         await connection.execute(text("DROP SCHEMA IF EXISTS public CASCADE"))
         await connection.execute(text("CREATE SCHEMA public"))
         await connection.run_sync(_run_migrations, settings.database_url)
+        async with AsyncSession(bind=connection) as session:
+            await seed_reference_data(session)
+            await session.flush()
     yield engine
     await engine.dispose()
 
