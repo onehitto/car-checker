@@ -10,6 +10,7 @@ from app.modules.documents.router import router as documents_router
 from app.modules.expenses.router import router as expenses_router
 from app.modules.fuel.router import router as fuel_router
 from app.modules.garages.router import router as garages_router
+from app.modules.maintenance.oil_changes_router import router as oil_changes_router
 from app.modules.maintenance.router import router as maintenance_router
 from app.modules.maintenance.schedules_router import router as schedules_router
 from app.modules.maintenance.types_router import router as maintenance_types_router
@@ -31,6 +32,7 @@ api_router.include_router(garages_router)
 api_router.include_router(maintenance_types_router)
 api_router.include_router(maintenance_router)
 api_router.include_router(schedules_router)
+api_router.include_router(oil_changes_router)
 api_router.include_router(part_types_router)
 api_router.include_router(parts_router)
 api_router.include_router(documents_router)

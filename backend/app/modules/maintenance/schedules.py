@@ -288,6 +288,27 @@ class ScheduleService:
             schedule.last_service_mileage = _max(schedule.last_service_mileage, latest_mileage)
         recompute_next(schedule, vehicle)
 
+    async def record_service(
+        self,
+        vehicle: Vehicle,
+        maintenance_type_id: uuid.UUID,
+        service_date: date,
+        mileage: int | None,
+    ) -> None:
+        """Move a schedule forward for a service recorded under another type (no commit),
+        e.g. the oil filter replaced during an oil change."""
+        schedule = await self.session.scalar(
+            select(MaintenanceSchedule).where(
+                MaintenanceSchedule.vehicle_id == vehicle.id,
+                MaintenanceSchedule.maintenance_type_id == maintenance_type_id,
+            )
+        )
+        if schedule is None:
+            return
+        schedule.last_service_date = _max(schedule.last_service_date, service_date)
+        schedule.last_service_mileage = _max(schedule.last_service_mileage, mileage)
+        recompute_next(schedule, vehicle)
+
     async def _latest_service(
         self, vehicle_id: uuid.UUID, maintenance_type_id: uuid.UUID
     ) -> tuple[date | None, int | None]:

@@ -12,6 +12,7 @@ from app.modules.maintenance.models import (
     MaintenanceRecord,
     MaintenanceSchedule,
     MaintenanceType,
+    OilChange,
 )
 from app.modules.mileage.models import MileageEntry
 from app.modules.parts.models import PartReplacement, PartType
@@ -29,6 +30,7 @@ __all__ = [
     "MaintenanceSchedule",
     "MaintenanceType",
     "MileageEntry",
+    "OilChange",
     "PartReplacement",
     "PartType",
     "PasswordResetToken",

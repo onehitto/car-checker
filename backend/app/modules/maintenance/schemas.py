@@ -11,7 +11,7 @@ from app.core.schemas import LongText, Mileage, Money, RequestModel, ResponseMod
 from app.db.catalog import CatalogResponseModel
 from app.modules.garages.schemas import GarageSummary
 from app.modules.maintenance.calculator import DueReason, DueStatus
-from app.modules.maintenance.models import MaintenanceCategory, MaintenanceKind
+from app.modules.maintenance.models import MaintenanceCategory, MaintenanceKind, OilType
 
 TypeName = Annotated[str, StringConstraints(min_length=1, max_length=100)]
 IntervalKm = Annotated[int, Field(gt=0, le=1_000_000, examples=[10_000])]
@@ -164,3 +164,66 @@ class ScheduleResponse(ResponseModel):
     due_reason: DueReason | None
     created_at: datetime
     updated_at: datetime
+
+
+# --- Oil changes ----------------------------------------------------------------------------
+
+Viscosity = Annotated[
+    str,
+    StringConstraints(pattern=r"^(\d{1,2}W-?\d{2}|SAE ?\d{2})$", max_length=20),
+    Field(examples=["5W-30"]),
+]
+OilText = Annotated[str, StringConstraints(min_length=1, max_length=80)]
+
+
+class OilFields(RequestModel):
+    oil_brand: OilText | None = None
+    oil_type: OilType | None = None
+    oil_viscosity: Viscosity | None = None
+    oil_quantity_liters: (
+        Annotated[Decimal, Field(gt=0, le=50, max_digits=5, decimal_places=2, examples=["4.80"])]
+        | None
+    ) = None
+    filter_brand: OilText | None = None
+    filter_reference: OilText | None = None
+    notes: LongText | None = None
+    title: ShortText | None = None
+    description: LongText | None = None
+    mileage: Mileage | None = None
+    cost: Money | None = None
+    labor_cost: Money | None = None
+    parts_cost: Money | None = None
+    garage_id: uuid.UUID | None = None
+
+
+class OilChangeCreate(OilFields):
+    service_date: date
+    oil_filter_changed: bool = False
+
+
+class OilChangeUpdate(OilFields):
+    service_date: date | None = None
+    oil_filter_changed: bool | None = None
+
+
+OIL_FIELDS = frozenset(
+    {
+        "oil_brand",
+        "oil_type",
+        "oil_viscosity",
+        "oil_quantity_liters",
+        "oil_filter_changed",
+        "filter_brand",
+        "filter_reference",
+    }
+)
+
+
+class OilChangeResponse(MaintenanceRecordResponse):
+    oil_brand: str | None
+    oil_type: OilType | None
+    oil_viscosity: str | None
+    oil_quantity_liters: Decimal | None
+    oil_filter_changed: bool
+    filter_brand: str | None
+    filter_reference: str | None

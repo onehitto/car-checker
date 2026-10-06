@@ -8,7 +8,7 @@ from enum import StrEnum
 import sqlalchemy as sa
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.db.base import BaseModel, StrEnumType, enum_check
+from app.db.base import Base, BaseModel, StrEnumType, TimestampMixin, enum_check
 from app.db.catalog import CatalogTypeMixin, catalog_table_args
 from app.modules.garages.models import Garage
 from app.modules.vehicles.models import Vehicle
@@ -129,4 +129,36 @@ class MaintenanceSchedule(BaseModel):
         sa.CheckConstraint("warning_before_km >= 0", name="warning_before_km_positive"),
         sa.CheckConstraint("warning_before_days >= 0", name="warning_before_days_positive"),
         sa.Index(None, "next_service_date", postgresql_where=sa.text("enabled")),
+    )
+
+
+class OilType(StrEnum):
+    SYNTHETIC = "synthetic"
+    SEMI_SYNTHETIC = "semi_synthetic"
+    MINERAL = "mineral"
+    HIGH_MILEAGE = "high_mileage"
+    OTHER = "other"
+
+
+class OilChange(TimestampMixin, Base):
+    """Oil-specific details of a maintenance record (shares its primary key)."""
+
+    __tablename__ = "oil_changes"
+
+    maintenance_record_id: Mapped[uuid.UUID] = mapped_column(
+        sa.ForeignKey("maintenance_records.id", ondelete="CASCADE"), primary_key=True
+    )
+    oil_brand: Mapped[str | None] = mapped_column(sa.String(80))
+    oil_type: Mapped[OilType | None] = mapped_column(StrEnumType(OilType))
+    oil_viscosity: Mapped[str | None] = mapped_column(sa.String(20))
+    oil_quantity_liters: Mapped[Decimal | None] = mapped_column(sa.Numeric(5, 2))
+    oil_filter_changed: Mapped[bool] = mapped_column(default=False, server_default=sa.false())
+    filter_brand: Mapped[str | None] = mapped_column(sa.String(80))
+    filter_reference: Mapped[str | None] = mapped_column(sa.String(80))
+
+    maintenance_record: Mapped[MaintenanceRecord] = relationship(lazy="raise")
+
+    __table_args__ = (
+        enum_check("oil_type", OilType),
+        sa.CheckConstraint("oil_quantity_liters > 0", name="oil_quantity_positive"),
     )

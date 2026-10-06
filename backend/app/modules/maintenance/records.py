@@ -157,6 +157,15 @@ class MaintenanceRecordService:
     async def update(
         self, ctx: VehicleContext, record_id: uuid.UUID, data: MaintenanceRecordUpdate
     ) -> MaintenanceRecord:
+        record = await self.change(ctx, record_id, data)
+        await self.alerts.sync_vehicle(ctx.vehicle_id)
+        await self.session.commit()
+        return await self.get(ctx.vehicle_id, record.id)
+
+    async def change(
+        self, ctx: VehicleContext, record_id: uuid.UUID, data: MaintenanceRecordUpdate
+    ) -> MaintenanceRecord:
+        """Update a record inside the caller's transaction (also used by oil changes)."""
         record = await self.get(ctx.vehicle_id, record_id)
         previous = PreviousRecord(record.maintenance_type_id, record.service_date, record.mileage)
         changes = data.model_dump(exclude_unset=True)
@@ -173,9 +182,7 @@ class MaintenanceRecordService:
         apply_updates(record, data, required=REQUIRED_FIELDS)
         record.cost = default_total(record.cost, record.labor_cost, record.parts_cost)
         await self._after_write(ctx, record, previous)
-        await self.alerts.sync_vehicle(ctx.vehicle_id)
-        await self.session.commit()
-        return await self.get(ctx.vehicle_id, record.id)
+        return record
 
     async def delete(self, ctx: VehicleContext, record_id: uuid.UUID) -> None:
         record = await self.get(ctx.vehicle_id, record_id)
