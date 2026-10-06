@@ -114,3 +114,13 @@ async def share_vehicle_in_db(
         )
     )
     await session.commit()
+
+
+async def create_garage(
+    client: AsyncClient, user: AuthenticatedUser, **fields: Any
+) -> dict[str, Any]:
+    payload = {"name": "Garage Atlas", "city": "Casablanca", **fields}
+    result: dict[str, Any] = data(
+        await client.post(f"{API}/garages", headers=user.headers, json=payload), 201
+    )
+    return result
