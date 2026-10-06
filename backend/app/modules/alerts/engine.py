@@ -194,27 +194,27 @@ class AlertEngine:
         )
         rows = []
         for user in recipients:
-            for alert in desired:
-                if (user.id, alert.dedup_key) in existing:
+            for wanted_alert in desired:
+                if (user.id, wanted_alert.dedup_key) in existing:
                     continue
-                rendered = alert.render(user.preferred_language)
+                rendered = wanted_alert.render(user.preferred_language)
                 rows.append(
                     {
                         "id": uuid7(),
                         "user_id": user.id,
                         "vehicle_id": vehicle.id,
-                        "alert_type": alert.alert_type,
-                        "source_type": alert.source_type,
-                        "source_id": alert.source_id,
-                        "dedup_key": alert.dedup_key,
+                        "alert_type": wanted_alert.alert_type,
+                        "source_type": wanted_alert.source_type,
+                        "source_id": wanted_alert.source_id,
+                        "dedup_key": wanted_alert.dedup_key,
                         "title": rendered.title,
                         "message": rendered.message,
-                        "template_key": alert.template,
+                        "template_key": wanted_alert.template,
                         "template_params": rendered.params,
-                        "priority": alert.priority,
+                        "priority": wanted_alert.priority,
                         "status": AlertStatus.ACTIVE,
-                        "trigger_date": alert.trigger_date,
-                        "trigger_mileage": alert.trigger_mileage,
+                        "trigger_date": wanted_alert.trigger_date,
+                        "trigger_mileage": wanted_alert.trigger_mileage,
                         "created_at": now,
                         "updated_at": now,
                     }

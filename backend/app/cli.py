@@ -7,7 +7,8 @@ import argparse
 import asyncio
 import sys
 import time
-from collections.abc import Awaitable, Callable, Sequence
+from collections.abc import Callable, Coroutine, Sequence
+from typing import Any
 
 from app.core.clock import Clock
 from app.core.config import get_settings
@@ -77,7 +78,7 @@ async def _run_job(args: argparse.Namespace) -> int:
     return 0 if outcome is not JobOutcome.FAILED else 1
 
 
-COMMANDS: dict[str, Callable[[argparse.Namespace], Awaitable[int]]] = {
+COMMANDS: dict[str, Callable[[argparse.Namespace], Coroutine[Any, Any, int]]] = {
     "wait-db": _wait_db,
     "seed": _seed,
     "list-jobs": _list_jobs,

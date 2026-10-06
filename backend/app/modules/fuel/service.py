@@ -191,7 +191,7 @@ class FuelService:
             cost_per_distance_unit=_round(cost_per_unit, 4),
             average_price_per_liter=_round(stats.average_price_per_liter, 4),
             monthly=[
-                {"month": month.month, "liters": month.liters, "cost": month.cost}  # type: ignore[misc]
+                {"month": month.month, "liters": month.liters, "cost": month.cost}
                 for month in stats.monthly
             ],
         )

@@ -58,7 +58,7 @@ class PreviousRecord:
     mileage: int | None
 
 
-def with_relations(stmt: Select[tuple[MaintenanceRecord]]) -> Select[tuple[MaintenanceRecord]]:
+def with_relations(stmt: Select[MaintenanceRecord]) -> Select[MaintenanceRecord]:
     return stmt.options(
         joinedload(MaintenanceRecord.maintenance_type), joinedload(MaintenanceRecord.garage)
     )

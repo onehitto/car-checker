@@ -45,7 +45,7 @@ def build_catalog_router(
     )
     async def list_types(
         user: CurrentUser,
-        catalog: catalog_dep,  # type: ignore[valid-type]
+        catalog: catalog_dep,
         q: SearchQuery = None,
         category: Annotated[category_enum | None, Query()] = None,  # type: ignore[valid-type]
     ) -> Any:
@@ -61,7 +61,7 @@ def build_catalog_router(
     async def create_type(
         body: create_schema,  # type: ignore[valid-type]
         user: CurrentUser,
-        catalog: catalog_dep,  # type: ignore[valid-type]
+        catalog: catalog_dep,
     ) -> Any:
         return success(await catalog.create(user.id, body))
 
@@ -74,7 +74,7 @@ def build_catalog_router(
     async def get_type(
         type_id: uuid.UUID,
         user: CurrentUser,
-        catalog: catalog_dep,  # type: ignore[valid-type]
+        catalog: catalog_dep,
     ) -> Any:
         return success(await catalog.get_visible(user.id, type_id))
 
@@ -88,7 +88,7 @@ def build_catalog_router(
         type_id: uuid.UUID,
         body: update_schema,  # type: ignore[valid-type]
         user: CurrentUser,
-        catalog: catalog_dep,  # type: ignore[valid-type]
+        catalog: catalog_dep,
     ) -> Any:
         return success(await catalog.update(user.id, type_id, body))
 
@@ -102,7 +102,7 @@ def build_catalog_router(
     async def delete_type(
         type_id: uuid.UUID,
         user: CurrentUser,
-        catalog: catalog_dep,  # type: ignore[valid-type]
+        catalog: catalog_dep,
     ) -> None:
         await catalog.delete(user.id, type_id)
 

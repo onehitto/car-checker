@@ -6,8 +6,9 @@ from dataclasses import dataclass
 from typing import Annotated, Any
 
 from fastapi import Depends, Query
-from sqlalchemy import ColumnElement, Select, func, select
+from sqlalchemy import ColumnElement, Select, SQLColumnExpression, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import QueryableAttribute
 
 from app.core.exceptions import ValidationAppError
 
@@ -77,7 +78,7 @@ async def count_rows(session: AsyncSession, stmt: Select[Any]) -> int:
     return int(await session.scalar(count_stmt) or 0)
 
 
-async def paginate[T](session: AsyncSession, stmt: Select[tuple[T]], params: PageParams) -> Page[T]:
+async def paginate[T](session: AsyncSession, stmt: Select[T], params: PageParams) -> Page[T]:
     """Paginate a statement selecting one entity/column."""
     total = await count_rows(session, stmt)
     result = await session.scalars(stmt.limit(params.limit).offset(params.offset))
@@ -96,12 +97,15 @@ def paginated(page: Page[Any]) -> dict[str, Any]:
     return {"success": True, "data": page.items, "meta": page.meta}
 
 
+SortColumn = ColumnElement[Any] | SQLColumnExpression[Any] | QueryableAttribute[Any]
+
+
 def apply_sort[S: Select[Any]](
     stmt: S,
     sort: str | None,
-    allowed: Mapping[str, ColumnElement[Any]],
+    allowed: Mapping[str, SortColumn],
     default: str,
-    tiebreaker: ColumnElement[Any] | None = None,
+    tiebreaker: SortColumn | None = None,
 ) -> S:
     """Apply `sort=field,-other` ordering restricted to whitelisted fields."""
     clauses: list[ColumnElement[Any]] = []

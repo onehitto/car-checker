@@ -57,7 +57,8 @@ class CatalogService[M: CatalogTypeMixin]:
     async def create(self, user_id: uuid.UUID, data: Schema) -> M:
         values = data.model_dump()
         await self._ensure_name_available(user_id, values["name"])
-        item: Any = self.model(user_id=user_id, **values)
+        model: Any = self.model
+        item = model(user_id=user_id, **values)
         self.session.add(item)
         await self.session.commit()
         return item  # type: ignore[no-any-return]

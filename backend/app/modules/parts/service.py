@@ -60,7 +60,7 @@ def to_response(part: PartReplacement, current_mileage: int, today: date) -> Par
     return PartResponse.model_validate(part).model_copy(update={"lifetime": lifetime})
 
 
-def with_relations(stmt: Select[tuple[PartReplacement]]) -> Select[tuple[PartReplacement]]:
+def with_relations(stmt: Select[PartReplacement]) -> Select[PartReplacement]:
     return stmt.options(joinedload(PartReplacement.part_type), joinedload(PartReplacement.garage))
 
 

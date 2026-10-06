@@ -142,7 +142,7 @@ class DashboardService:
         )
         return AlertsOverview(
             summary=await self.alerts.summary(user_id, vehicle_id),
-            latest=list(latest),  # type: ignore[arg-type]
+            latest=list(latest),
         )
 
     # --- Vehicle dashboard --------------------------------------------------------------------
@@ -198,8 +198,8 @@ class DashboardService:
             ),
             worn_parts=[part_response(part, vehicle.current_mileage, today) for part in parts],
             alerts=await self._alerts_overview(user.id, vehicle.id),
-            recent_maintenance=list(recent_maintenance),  # type: ignore[arg-type]
-            recent_expenses=list(recent_expenses),  # type: ignore[arg-type]
+            recent_maintenance=list(recent_maintenance),
+            recent_expenses=list(recent_expenses),
             fuel=FuelOverview(
                 total_liters=fuel.total_liters,
                 total_cost=fuel.total_cost,
@@ -221,7 +221,7 @@ class DashboardService:
 
         first_month = add_months(today.replace(day=1), -11)
         label = func.to_char(Expense.expense_date, "YYYY-MM")
-        monthly_rows = dict(
+        monthly_rows: dict[str, Decimal] = dict(
             (
                 await self.session.execute(
                     select(label, amount)

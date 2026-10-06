@@ -233,13 +233,15 @@ class StatisticsService:
         for type_, total, cost, first, last, low, high, with_mileage in rows:
             result.append(
                 MaintenanceFrequency(
-                    maintenance_type=type_,  # type: ignore[arg-type]
+                    maintenance_type=type_,
                     count=total,
                     total_cost=cost,
                     last_service_date=last,
                     average_interval_days=(last - first).days // (total - 1) if total > 1 else None,
                     average_interval_km=(
-                        (high - low) // (with_mileage - 1) if with_mileage > 1 else None
+                        (high - low) // (with_mileage - 1)
+                        if with_mileage > 1 and high is not None and low is not None
+                        else None
                     ),
                 )
             )

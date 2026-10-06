@@ -57,7 +57,7 @@ async def resolve_vehicle_role(
     return vehicle, VehicleRole(shared_role.value)
 
 
-def accessible_vehicle_ids(user_id: uuid.UUID) -> Select[tuple[uuid.UUID]]:
+def accessible_vehicle_ids(user_id: uuid.UUID) -> Select[uuid.UUID]:
     """Select of vehicle ids visible to the user (owned or shared), for `IN` filters."""
     return (
         select(Vehicle.id)
