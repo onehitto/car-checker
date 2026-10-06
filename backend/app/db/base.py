@@ -58,6 +58,11 @@ class BaseModel(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 
     __abstract__ = True
 
+    def __init__(self, **kwargs: Any) -> None:
+        # Assign the id at construction (not at flush) so related rows can reference it at once.
+        kwargs.setdefault("id", uuid7())
+        super().__init__(**kwargs)
+
 
 class StrEnumType(sa.types.TypeDecorator[Any]):
     """StrEnum stored as VARCHAR. Pair every column with `enum_check()` in `__table_args__`.
