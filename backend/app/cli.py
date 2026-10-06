@@ -6,6 +6,7 @@ python -m app.cli seed            # upsert reference data (system catalogs)
 import argparse
 import asyncio
 import sys
+import time
 from collections.abc import Awaitable, Callable, Sequence
 
 from app.core.clock import Clock
@@ -17,6 +18,25 @@ from app.jobs.registry import JOBS, JobContext
 from app.jobs.runner import JobOutcome, run_job
 
 logger = get_logger("app.cli")
+
+
+async def _wait_db(args: argparse.Namespace) -> int:
+    database = Database.from_settings(get_settings())
+    deadline = time.monotonic() + args.timeout
+    try:
+        while True:
+            try:
+                await database.ping()
+            except Exception as exc:  # noqa: BLE001 - any failure means "not ready yet"
+                if time.monotonic() >= deadline:
+                    logger.error("database_unreachable", error=type(exc).__name__)
+                    return 1
+                await asyncio.sleep(1)
+            else:
+                logger.info("database_ready")
+                return 0
+    finally:
+        await database.dispose()
 
 
 async def _seed(_args: argparse.Namespace) -> int:
@@ -58,6 +78,7 @@ async def _run_job(args: argparse.Namespace) -> int:
 
 
 COMMANDS: dict[str, Callable[[argparse.Namespace], Awaitable[int]]] = {
+    "wait-db": _wait_db,
     "seed": _seed,
     "list-jobs": _list_jobs,
     "run-job": _run_job,
@@ -67,6 +88,8 @@ COMMANDS: dict[str, Callable[[argparse.Namespace], Awaitable[int]]] = {
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="python -m app.cli", description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    wait = commands.add_parser("wait-db", help="Wait until the database is reachable.")
+    wait.add_argument("--timeout", type=int, default=60, help="Seconds (default 60).")
     commands.add_parser("seed", help="Upsert reference data (system catalogs).")
     commands.add_parser("list-jobs", help="List registered background jobs.")
     run = commands.add_parser("run-job", help="Run a background job once.")
