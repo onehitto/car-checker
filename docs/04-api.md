@@ -124,17 +124,18 @@ Legend for the "Role" column on vehicle routes: **V** viewer, **E** editor,
 | GET    | `/alerts/summary`                                   | —    | Counts of open alerts by priority |
 | POST   | `/alerts/read-all`                                  | —    | Mark all active alerts as read |
 | GET    | `/alerts/{alert_id}`                                | —    | Details |
-| PATCH  | `/alerts/{alert_id}`                                | —    | `status`: `read`, `dismissed`, `resolved` |
+| PATCH  | `/alerts/{alert_id}`                                | —    | `status`: `read`, `dismissed`, `resolved`, or `active` (unread) |
 | GET    | `/vehicles/{vehicle_id}/alerts`                     | V    | Own alerts for a vehicle |
 | GET    | `/vehicles/{vehicle_id}/reminders`                  | V    | Custom reminders |
 | POST   | `/vehicles/{vehicle_id}/reminders`                  | E    | Create |
-| PATCH/DELETE | `/vehicles/{vehicle_id}/reminders/{reminder_id}` | E | Update / complete / delete |
+| GET    | `/vehicles/{vehicle_id}/reminders/{reminder_id}`    | V    | Details with computed status |
+| PATCH/DELETE | `/vehicles/{vehicle_id}/reminders/{reminder_id}` | E | Update, complete (`completed: true`), reopen, delete |
 
 ### Expenses & fuel
 | Method | Path                                              | Role | Description |
 |--------|---------------------------------------------------|------|-------------|
 | GET    | `/expenses`                                       | —    | Across vehicles (`vehicle_id`, `category`, `date_from`, `date_to`, `amount_min`, `amount_max`, `q`) |
-| GET    | `/vehicles/{vehicle_id}/expenses`                 | V    | Same filters |
+| GET    | `/vehicles/{vehicle_id}/expenses`                 | V    | Same filters + `source` (`manual`, `maintenance`, `part`, `fuel`) |
 | POST   | `/vehicles/{vehicle_id}/expenses`                 | E    | Create |
 | GET/PATCH/DELETE | `/vehicles/{vehicle_id}/expenses/{expense_id}` | V/E/E | Linked expenses are read-only (409) |
 | GET    | `/vehicles/{vehicle_id}/fuel`                     | V    | Fill-ups with per-fill consumption |
@@ -158,10 +159,10 @@ Legend for the "Role" column on vehicle routes: **V** viewer, **E** editor,
 ### Timeline, dashboard, statistics
 | Method | Path                                     | Role | Description |
 |--------|------------------------------------------|------|-------------|
-| GET    | `/vehicles/{vehicle_id}/timeline`        | V    | Chronological history; `types`, `date_from`, `date_to`, pagination |
+| GET    | `/vehicles/{vehicle_id}/timeline`        | V    | Chronological history; `type` (repeatable), `date_from`, `date_to`, pagination |
 | GET    | `/vehicles/{vehicle_id}/dashboard`       | V    | Vehicle dashboard |
 | GET    | `/dashboard`                             | —    | All vehicles of the user |
-| GET    | `/vehicles/{vehicle_id}/statistics`      | V    | `date_from`, `date_to`, `year`, `category`, units |
+| GET    | `/vehicles/{vehicle_id}/statistics`      | V    | `date_from`, `date_to` or `year`, `category` (repeatable) |
 | GET    | `/statistics`                            | —    | Across vehicles, grouped by currency (`vehicle_id` filter) |
 
 ## 11. Request and response DTOs (main schemas)
@@ -187,7 +188,7 @@ such as `password_hash` or `token_hash`.
   "purchase_date": "date?", "purchase_price": "decimal?", "currency": "EUR?",
   "initial_mileage": 80000, "current_mileage": 80000, "status": "active", "notes": "str?" }
 
-// MileageCreate
+// MileageCreate (POST /vehicles/{id}/mileage)
 { "mileage": 59400, "recorded_on": "date? (default today)", "notes": "str?",
   "record_history": true, "force": false }
 
@@ -245,7 +246,11 @@ floating-point loss in clients.
 | Schedule                         | At least one of `interval_km`, `interval_months`; intervals > 0                  |
 | Fuel liters                      | > 0 and ≤ 1 000                                                                  |
 | Fuel price consistency           | When `liters`, `price_per_liter` and `total_price` are all given, `|liters × price − total| ≤ 0.05` |
-| Tire rotation                    | Final mounted positions must be unique                                           |
+| Tire rotation                    | Final mounted positions must be unique; only mounted tires can rotate            |
+| Fuel fill-ups                    | Mileage must grow with the date across fill-ups                                  |
+| Shares                           | Registered, active user; not the owner; once per vehicle                         |
+| Attachment / note parent         | `entity_id` must be a record of the same vehicle                                 |
+| Request body size                | ≤ `MAX_UPLOAD_SIZE` + 1 MiB, rejected before reading (`413`)                      |
 | Uploads                          | ≤ `MAX_UPLOAD_SIZE`; PDF, JPEG, PNG, WebP or HEIC detected from content; extension consistent |
 | Pagination                       | `page ≥ 1`, `1 ≤ limit ≤ 100`                                                     |
 | Sorting                          | Whitelisted fields only, `-field` for descending                                 |
@@ -279,7 +284,10 @@ Every error uses the same envelope:
 | HTTP | Code                         | When                                                   |
 |------|------------------------------|--------------------------------------------------------|
 | 400  | `BAD_REQUEST`                | Malformed request outside schema validation            |
-| 401  | `AUTHENTICATION_REQUIRED`    | Missing/invalid/expired access token                   |
+| 405  | `METHOD_NOT_ALLOWED`         | Unsupported HTTP method on a path                      |
+| 401  | `AUTHENTICATION_REQUIRED`    | Missing/invalid access token or revoked session        |
+| 401  | `TOKEN_EXPIRED`              | Expired access token (refresh it)                      |
+| 401  | `ACCOUNT_DISABLED`           | Login to a disabled account                            |
 | 401  | `INVALID_CREDENTIALS`        | Wrong email or password                                |
 | 401  | `INVALID_TOKEN`              | Bad refresh / reset token                              |
 | 403  | `FORBIDDEN`                  | Authenticated but role too low                         |
@@ -287,6 +295,11 @@ Every error uses the same envelope:
 | 409  | `CONFLICT`                   | Unique constraint, resource in use                     |
 | 409  | `EMAIL_ALREADY_REGISTERED`   | Registration with an existing email                    |
 | 409  | `EXPENSE_LINKED_TO_SOURCE`   | Editing a linked expense directly                      |
+| 409  | `VIN_ALREADY_REGISTERED`     | Same VIN twice for one owner                           |
+| 409  | `SCHEDULE_EXISTS`            | Second schedule for the same type on a vehicle         |
+| 409  | `TYPE_IN_USE`                | Deleting a custom type used by records                 |
+| 409  | `TIRE_POSITION_TAKEN`        | Mounting a tire on an occupied position                |
+| 409  | `ALREADY_SHARED`             | Sharing twice with the same user                       |
 | 413  | `PAYLOAD_TOO_LARGE`          | Upload over the limit                                  |
 | 415  | `UNSUPPORTED_MEDIA_TYPE`     | File type not allowed                                  |
 | 422  | `VALIDATION_ERROR`           | Schema validation failed                               |
@@ -392,14 +405,19 @@ GET /api/v1/vehicles/0192.../maintenance?page=1&limit=20&sort=-service_date&kind
 ```json
 { "success": true,
   "data": {
-    "vehicle": { "id": "...", "brand": "Dacia", "model": "Logan", "current_mileage": 90150 },
-    "health": { "score": 85, "level": "good" },
-    "maintenance": { "overdue": [], "upcoming": [ { "maintenance_type": "Brake fluid", "status": "due_soon", "remaining_days": 21 } ] },
-    "documents": { "expiring": [ { "title": "Insurance 2026", "days_until_expiration": 12 } ], "expired": [] },
-    "alerts": { "active_count": 2, "by_priority": { "high": 1, "medium": 1 } },
-    "recent_maintenance": [ ... ], "recent_expenses": [ ... ],
-    "fuel": { "average_consumption_l_100km": 5.4, "last_consumption_l_100km": 5.1 },
-    "costs": { "currency": "MAD", "total_maintenance_cost": "6350.00", "this_month": "450.00",
-               "monthly": [ { "month": "2026-09", "total": "820.00" } ] }
+    "vehicle": { "id": "...", "display_name": "Family Logan", "current_mileage": 98400, "access_role": "owner" },
+    "current_mileage": 98400,
+    "health": { "score": 40, "level": "critical", "overdue_maintenance": 1, "due_maintenance": 1,
+                "expired_documents": 1, "expiring_documents": 1, "worn_parts": 0 },
+    "maintenance": { "overdue": [ { "maintenance_type": { "code": "brake_fluid" }, "status": "overdue", "overdue_days": 70 } ],
+                     "upcoming": [ { "maintenance_type": { "code": "vehicle_inspection" }, "status": "due_soon", "remaining_days": 15 } ] },
+    "documents": { "expired": [ { "title": "Road tax", "status": "expired" } ],
+                   "expiring": [ { "title": "Car insurance", "days_until_expiration": 20 } ] },
+    "worn_parts": [],
+    "alerts": { "summary": { "open": 5, "unread": 5, "by_priority": { "critical": 2, "high": 1, "medium": 2 } }, "latest": [ "..." ] },
+    "recent_maintenance": [ "..." ], "recent_expenses": [ "..." ],
+    "fuel": { "average_consumption_l_100km": 5.8, "last_consumption_l_100km": 5.6, "cost_per_km": 0.1043 },
+    "costs": { "currency": "EUR", "total": "6930.20", "this_month": "8.00", "this_year": "1170.72",
+               "total_maintenance_cost": "4410.00", "monthly": [ { "month": "2025-11", "total": "0.00" } ] }
   } }
 ```
