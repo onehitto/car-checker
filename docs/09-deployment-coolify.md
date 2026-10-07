@@ -74,7 +74,9 @@ availability enabled. The Compose file passes configuration explicitly into
 both backend containers; an arbitrary new Coolify variable is not automatically
 application configuration unless it is referenced by the Compose definition.
 
-Use the following values, replacing every example:
+For the initial deployment without email, use these values, replacing every
+example. Database, both JWT secrets, frontend URL and trusted proxy CIDR are
+required; CORS defaults to the frontend URL.
 
 ```dotenv
 DATABASE_URL=postgresql+asyncpg://USER:PASSWORD@INTERNAL_DATABASE_HOST:5432/car_checker
@@ -83,12 +85,7 @@ JWT_REFRESH_SECRET=REPLACE_WITH_A_DIFFERENT_RANDOM_REFRESH_TOKEN_SECRET
 FRONTEND_URL=https://cars.example.com
 CORS_ORIGINS=https://cars.example.com
 TRUSTED_PROXY_CIDR=REPLACE_WITH_VERIFIED_PROXY_CIDR
-EMAIL_FROM=Car Checker <no-reply@example.com>
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USERNAME=REPLACE_WITH_YOUR_SMTP_USERNAME
-SMTP_PASSWORD=REPLACE_WITH_YOUR_SMTP_PASSWORD
-SMTP_STARTTLS=true
+EMAIL_BACKEND=console
 ```
 
 Generate each JWT secret separately:
@@ -128,18 +125,36 @@ FastAPI separately needs to trust its immediate nginx peer.
 tighter isolation, override it with the specific application subnet or nginx
 address; include the matching IPv6 range if your Docker network uses IPv6.
 
-The production Compose file fixes `APP_ENV=production`, `EMAIL_BACKEND=smtp`,
-`LOG_FORMAT=json`, `STORAGE_BACKEND=local`, `UPLOAD_DIRECTORY=/data/uploads` and
+The production Compose file fixes `APP_ENV=production`, `LOG_FORMAT=json`,
+`STORAGE_BACKEND=local`, `UPLOAD_DIRECTORY=/data/uploads` and
 the private Redis connection. It keeps migrations enabled only on `api`.
 `LOG_LEVEL` defaults to `INFO` and can be overridden. Swagger and OpenAPI are
 disabled by the application's production default.
 
-Use your email provider's approved sender address and STARTTLS settings,
-typically port `587`. The current mail sender supports SMTP with STARTTLS;
-implicit SMTPS on port `465` is not implemented. Set both SMTP credentials
-for an authenticated provider. A trusted relay that requires no authentication
-can leave them empty. Email must work on both API and worker: the API sends
-password-reset email, and the worker dispatches notification email.
+`EMAIL_BACKEND` defaults to `console`, allowing the API and worker to start
+without SMTP settings. **Password-reset emails and email notifications are
+unavailable in this mode.** In production, the console backend withholds email
+content instead of printing messages or reset links. `EMAIL_FROM` is optional
+and defaults to `Car Checker <no-reply@carchecker.local>`.
+
+To enable email later, add this configuration in Coolify and redeploy:
+
+```dotenv
+EMAIL_BACKEND=smtp
+EMAIL_FROM=Car Checker <no-reply@example.com>
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USERNAME=REPLACE_WITH_YOUR_SMTP_USERNAME
+SMTP_PASSWORD=REPLACE_WITH_YOUR_SMTP_PASSWORD
+SMTP_STARTTLS=true
+```
+
+SMTP mode requires `SMTP_HOST` before the API can start. Use your provider's
+approved sender address and STARTTLS settings, typically port `587`. The current
+sender supports SMTP with STARTTLS; implicit SMTPS on port `465` is not
+implemented. Set both credentials for an authenticated provider; a trusted
+relay can leave them empty. The API sends password-reset email, and the worker
+dispatches notification email.
 
 Do not commit real `.env` files or place credentials in frontend build arguments.
 
@@ -180,9 +195,10 @@ and lets API rate limits identify clients correctly.
    The response should contain `data.status=ok` and `data.database=ok`.
 3. Register an account, sign in, create a vehicle, and upload/download an
    attachment. Redeploy and confirm that the attachment remains available.
-4. Request a password reset; verify email delivery and that the link uses the
-   public HTTPS origin. Check worker logs for `worker_started` and subsequent
-   successful scheduled jobs. Notification delivery runs every minute.
+4. With `EMAIL_BACKEND=smtp`, request a password reset; verify email delivery
+   and that the link uses the public HTTPS origin. Check worker logs for
+   `worker_started` and subsequent successful scheduled jobs. Notification
+   delivery runs every minute; email is disabled with `EMAIL_BACKEND=console`.
 5. Inspect logs for database, Redis or SMTP errors and confirm client addresses
    are preserved when requests reach API rate limits.
 

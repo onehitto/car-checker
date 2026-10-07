@@ -21,9 +21,10 @@ x-backend: &backend
     UPLOAD_DIRECTORY: /data/uploads
     LOG_FORMAT: json
     LOG_LEVEL: ${LOG_LEVEL:-INFO}
-    EMAIL_BACKEND: smtp
-    EMAIL_FROM: ${EMAIL_FROM:?}
-    SMTP_HOST: ${SMTP_HOST:?}
+    # Start without outbound email; select smtp when a provider is configured.
+    EMAIL_BACKEND: ${EMAIL_BACKEND:-console}
+    EMAIL_FROM: ${EMAIL_FROM:-Car Checker <no-reply@carchecker.local>}
+    SMTP_HOST: ${SMTP_HOST:-}
     SMTP_PORT: ${SMTP_PORT:-587}
     SMTP_USERNAME: ${SMTP_USERNAME:-}
     SMTP_PASSWORD: ${SMTP_PASSWORD:-}
