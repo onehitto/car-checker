@@ -99,3 +99,31 @@ class Alert(BaseModel):
         sa.Index(None, "vehicle_id", "status"),
         sa.Index(None, "source_type", "source_id"),
     )
+
+
+class Reminder(BaseModel):
+    """A user-defined reminder for a vehicle, due at a date and/or a mileage."""
+
+    __tablename__ = "reminders"
+
+    vehicle_id: Mapped[uuid.UUID] = mapped_column(sa.ForeignKey("vehicles.id", ondelete="CASCADE"))
+    created_by_id: Mapped[uuid.UUID | None] = mapped_column(
+        sa.ForeignKey("users.id", ondelete="SET NULL")
+    )
+    title: Mapped[str] = mapped_column(sa.String(200))
+    notes: Mapped[str | None] = mapped_column(sa.Text)
+    due_date: Mapped[date | None]
+    due_mileage: Mapped[int | None]
+    warning_before_days: Mapped[int] = mapped_column(default=7, server_default="7")
+    warning_before_km: Mapped[int] = mapped_column(default=500, server_default="500")
+    completed_at: Mapped[datetime | None]
+
+    vehicle: Mapped[Vehicle] = relationship(lazy="raise")
+
+    __table_args__ = (
+        sa.CheckConstraint("due_date IS NOT NULL OR due_mileage IS NOT NULL", name="has_due"),
+        sa.CheckConstraint("due_mileage >= 0", name="due_mileage_positive"),
+        sa.CheckConstraint("warning_before_days >= 0", name="warning_before_days_positive"),
+        sa.CheckConstraint("warning_before_km >= 0", name="warning_before_km_positive"),
+        sa.Index(None, "vehicle_id"),
+    )

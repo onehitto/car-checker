@@ -11,7 +11,7 @@ from datetime import date, timedelta
 from typing import Any
 
 from app.core.i18n import Language, has_translation, translate
-from app.modules.alerts.models import AlertPriority, AlertSource, AlertType
+from app.modules.alerts.models import AlertPriority, AlertSource, AlertType, Reminder
 from app.modules.documents.expiration import DocumentStatus, document_state
 from app.modules.documents.models import DocumentType, VehicleDocument
 from app.modules.maintenance.calculator import DueState, DueStatus
@@ -210,6 +210,26 @@ def document_alert(document: VehicleDocument, vehicle: Vehicle, today: date) -> 
             "days": abs(state.days_until_expiration),
         },
         trigger_date=document.expiration_date,
+    )
+
+
+def reminder_alert(reminder: Reminder, state: DueState, vehicle: Vehicle) -> DesiredAlert | None:
+    if reminder.completed_at is not None or not state.status.is_at_least(DueStatus.DUE_SOON):
+        return None
+    return DesiredAlert(
+        source_type=AlertSource.REMINDER,
+        source_id=reminder.id,
+        alert_type=AlertType.CUSTOM_REMINDER,
+        priority=DUE_PRIORITY[state.status],
+        dedup_key=_due_key(AlertSource.REMINDER.value, reminder.id, state),
+        template=f"alert.reminder.{state.status.value}",
+        params={
+            "title": reminder.title,
+            "vehicle": vehicle.display_name,
+            "deadline": deadline_text(state),
+        },
+        trigger_date=state.next_service_date,
+        trigger_mileage=state.next_service_mileage,
     )
 
 

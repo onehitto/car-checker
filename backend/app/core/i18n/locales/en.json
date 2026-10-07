@@ -79,5 +79,11 @@
   "document_type.warranty": "Warranty",
   "document_type.leasing": "Leasing",
   "document_type.other": "Document",
-  "expense.fuel.title": "Fuel ({liters} L)"
+  "expense.fuel.title": "Fuel ({liters} L)",
+  "alert.reminder.due_soon.title": "Reminder: {title}",
+  "alert.reminder.due_soon.message": "\"{title}\" for {vehicle} is due {deadline}.",
+  "alert.reminder.due.title": "Reminder due: {title}",
+  "alert.reminder.due.message": "\"{title}\" for {vehicle} is due now ({deadline}).",
+  "alert.reminder.overdue.title": "Overdue reminder: {title}",
+  "alert.reminder.overdue.message": "\"{title}\" for {vehicle} is overdue ({deadline})."
 }

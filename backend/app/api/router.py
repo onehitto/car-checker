@@ -3,6 +3,7 @@
 from fastapi import APIRouter
 
 from app.api import health
+from app.modules.alerts.reminders_router import router as reminders_router
 from app.modules.alerts.router import router as alerts_router
 from app.modules.attachments.router import router as attachments_router
 from app.modules.auth.router import router as auth_router
@@ -45,6 +46,7 @@ api_router.include_router(expenses_router)
 api_router.include_router(fuel_router)
 api_router.include_router(tires_router)
 api_router.include_router(alerts_router)
+api_router.include_router(reminders_router)
 api_router.include_router(timeline_router)
 api_router.include_router(statistics_router)
 api_router.include_router(dashboard_router)

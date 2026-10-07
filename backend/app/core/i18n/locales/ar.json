@@ -79,5 +79,11 @@
   "document_type.warranty": "الضمان",
   "document_type.leasing": "الإيجار التمويلي",
   "document_type.other": "وثيقة",
-  "expense.fuel.title": "وقود ({liters} لتر)"
+  "expense.fuel.title": "وقود ({liters} لتر)",
+  "alert.reminder.due_soon.title": "تذكير: {title}",
+  "alert.reminder.due_soon.message": "\"{title}\" لـ {vehicle} مستحق {deadline}.",
+  "alert.reminder.due.title": "تذكير مستحق: {title}",
+  "alert.reminder.due.message": "\"{title}\" لـ {vehicle} مستحق الآن ({deadline}).",
+  "alert.reminder.overdue.title": "تذكير متأخر: {title}",
+  "alert.reminder.overdue.message": "\"{title}\" لـ {vehicle} متأخر ({deadline})."
 }

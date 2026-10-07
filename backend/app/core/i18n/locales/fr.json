@@ -79,5 +79,11 @@
   "document_type.warranty": "Garantie",
   "document_type.leasing": "Leasing",
   "document_type.other": "Document",
-  "expense.fuel.title": "Carburant ({liters} L)"
+  "expense.fuel.title": "Carburant ({liters} L)",
+  "alert.reminder.due_soon.title": "Rappel : {title}",
+  "alert.reminder.due_soon.message": "« {title} » pour {vehicle} arrive {deadline}.",
+  "alert.reminder.due.title": "Rappel à traiter : {title}",
+  "alert.reminder.due.message": "« {title} » pour {vehicle} est à traiter maintenant ({deadline}).",
+  "alert.reminder.overdue.title": "Rappel en retard : {title}",
+  "alert.reminder.overdue.message": "« {title} » pour {vehicle} est en retard ({deadline})."
 }

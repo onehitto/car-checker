@@ -25,12 +25,15 @@ from app.modules.alerts.models import (
     AlertSource,
     AlertStatus,
     AlertType,
+    Reminder,
 )
+from app.modules.alerts.reminder_state import evaluate_reminder
 from app.modules.alerts.rules import (
     DesiredAlert,
     document_alert,
     mileage_alert,
     part_alert,
+    reminder_alert,
     schedule_alert,
 )
 from app.modules.documents.models import VehicleDocument
@@ -50,6 +53,7 @@ MANAGED_SOURCES = (
     AlertSource.VEHICLE_DOCUMENT,
     AlertSource.PART_REPLACEMENT,
     AlertSource.VEHICLE,
+    AlertSource.REMINDER,
 )
 
 
@@ -127,6 +131,15 @@ class AlertEngine:
             part_state = evaluate_part(part, vehicle.current_mileage, today)
             if part_state is not None:
                 desired.append(part_alert(part, part_state, vehicle))
+
+        reminders = await self.session.scalars(
+            select(Reminder).where(
+                Reminder.vehicle_id == vehicle.id, Reminder.completed_at.is_(None)
+            )
+        )
+        for reminder in reminders:
+            state = evaluate_reminder(reminder, vehicle.current_mileage, today)
+            desired.append(reminder_alert(reminder, state, vehicle))
 
         last_reading = await self.session.scalar(
             select(func.max(MileageEntry.recorded_on)).where(MileageEntry.vehicle_id == vehicle.id)
