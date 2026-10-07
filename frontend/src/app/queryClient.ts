@@ -1,9 +1,24 @@
-import { QueryClient } from "@tanstack/react-query";
+import { MutationCache, QueryClient } from "@tanstack/react-query";
 
 import { isApiError } from "@/api/errors";
 
+declare module "@tanstack/react-query" {
+  interface Register {
+    mutationMeta: {
+      /** Set to false when the mutation refreshes the cache itself (e.g. deleting a vehicle). */
+      invalidate?: boolean;
+    };
+  }
+}
+
 export function createQueryClient(): QueryClient {
-  return new QueryClient({
+  const queryClient: QueryClient = new QueryClient({
+    mutationCache: new MutationCache({
+      // One write can change derived data anywhere (mileage, due dates, alerts, dashboards,
+      // statistics), so every successful write refreshes the queries on screen.
+      onSuccess: (_data, _variables, _context, mutation) =>
+        mutation.meta?.invalidate === false ? undefined : queryClient.invalidateQueries(),
+    }),
     defaultOptions: {
       queries: {
         staleTime: 30_000,
@@ -14,4 +29,5 @@ export function createQueryClient(): QueryClient {
       mutations: { retry: false },
     },
   });
+  return queryClient;
 }

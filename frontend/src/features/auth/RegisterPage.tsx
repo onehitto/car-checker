@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router";
 import { z } from "zod";
 
 import { api, unwrap } from "@/api/client";
-import { Button, Field, Input, Select } from "@/components/ui";
+import { Button, Field, FormAlert, Input, Select } from "@/components/ui";
 import { currentLanguage, LANGUAGES } from "@/i18n";
 import { applyServerErrors } from "@/lib/forms";
 import { CURRENCIES } from "@/lib/currencies";
@@ -92,11 +92,7 @@ export function RegisterPage() {
           register.mutate(values);
         })}
       >
-        {formError && (
-          <p role="alert" className="rounded-md bg-overdue-soft px-3 py-2 text-sm text-overdue">
-            {formError}
-          </p>
-        )}
+        {formError && <FormAlert>{formError}</FormAlert>}
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label={t("auth.firstName")} error={errors.first_name?.message}>
             {(props) => (

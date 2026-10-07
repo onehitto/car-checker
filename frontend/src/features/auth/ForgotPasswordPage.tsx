@@ -7,7 +7,7 @@ import { Link } from "react-router";
 import { z } from "zod";
 
 import { api, unwrap } from "@/api/client";
-import { Button, errorMessage, Field, Input } from "@/components/ui";
+import { Button, errorMessage, Field, FormAlert, Input } from "@/components/ui";
 
 import { emailSchema } from "./schemas";
 
@@ -46,11 +46,7 @@ export function ForgotPasswordPage() {
         noValidate
         onSubmit={form.handleSubmit((values) => request.mutate(values))}
       >
-        {request.isError && (
-          <p role="alert" className="rounded-md bg-overdue-soft px-3 py-2 text-sm text-overdue">
-            {errorMessage(request.error, t)}
-          </p>
-        )}
+        {request.isError && <FormAlert>{errorMessage(request.error, t)}</FormAlert>}
         <Field label={t("auth.email")} error={form.formState.errors.email?.message}>
           {(props) => (
             <Input type="email" autoComplete="email" {...props} {...form.register("email")} />

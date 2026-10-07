@@ -7,7 +7,7 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { z } from "zod";
 
 import { api, expectNoContent } from "@/api/client";
-import { Button, Field, Input, useToast } from "@/components/ui";
+import { Button, Field, FormAlert, Input, useToast } from "@/components/ui";
 import { applyServerErrors } from "@/lib/forms";
 
 import { passwordSchema } from "./schemas";
@@ -72,11 +72,7 @@ export function ResetPasswordPage() {
           reset.mutate(values);
         })}
       >
-        {formError && (
-          <p role="alert" className="rounded-md bg-overdue-soft px-3 py-2 text-sm text-overdue">
-            {formError}
-          </p>
-        )}
+        {formError && <FormAlert>{formError}</FormAlert>}
         <Field
           label={t("auth.newPassword")}
           error={form.formState.errors.new_password?.message}

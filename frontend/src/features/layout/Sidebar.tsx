@@ -12,13 +12,14 @@ import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, NavLink } from "react-router";
 
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { api, unwrap } from "@/api/client";
 import { useAlertSummary } from "@/features/alerts/queries";
 import { useAuth } from "@/features/auth/authContext";
 import { ME_QUERY_KEY } from "@/features/auth/meQuery";
 import { useVehicleList } from "@/features/vehicles/queries";
+import type { Language } from "@/i18n";
 import { cn } from "@/lib/cn";
 import { useFormat } from "@/lib/useFormat";
 
@@ -68,6 +69,12 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const vehicles = useVehicleList({ status: "active", limit: 100, sort: "created_at" });
   const alerts = useAlertSummary();
   const unread = alerts.data?.unread ?? 0;
+  // The profile language is also used for alerts, e-mails and catalog names sent by the API.
+  const saveLanguage = useMutation({
+    mutationFn: (language: Language) =>
+      unwrap(api.PATCH("/api/v1/users/me", { body: { preferred_language: language } })),
+    onSuccess: (updated) => queryClient.setQueryData(ME_QUERY_KEY, updated),
+  });
 
   return (
     <div className="flex h-full flex-col gap-6 bg-ink px-3 py-5 text-white">
@@ -144,12 +151,7 @@ export function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         </p>
         <LanguageSwitcher
           className="text-white/80"
-          onChange={(language) => {
-            // Remember the choice in the profile (alerts and e-mails use it too).
-            void unwrap(
-              api.PATCH("/api/v1/users/me", { body: { preferred_language: language } }),
-            ).then((updated) => queryClient.setQueryData(ME_QUERY_KEY, updated));
-          }}
+          onChange={(language) => saveLanguage.mutate(language)}
         />
         <button
           type="button"

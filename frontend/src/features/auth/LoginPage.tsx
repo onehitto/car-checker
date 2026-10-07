@@ -7,7 +7,7 @@ import { Link, useNavigate, useSearchParams } from "react-router";
 import { z } from "zod";
 
 import { api, unwrap } from "@/api/client";
-import { Button, errorMessage, Field, Input } from "@/components/ui";
+import { Button, errorMessage, Field, FormAlert, Input } from "@/components/ui";
 
 import { useAuth } from "./authContext";
 import { emailSchema } from "./schemas";
@@ -51,11 +51,7 @@ export function LoginPage() {
           login.mutate(values);
         })}
       >
-        {formError && (
-          <p role="alert" className="rounded-md bg-overdue-soft px-3 py-2 text-sm text-overdue">
-            {formError}
-          </p>
-        )}
+        {formError && <FormAlert>{formError}</FormAlert>}
         <Field label={t("auth.email")} error={form.formState.errors.email?.message}>
           {(props) => (
             <Input type="email" autoComplete="email" {...props} {...form.register("email")} />

@@ -1,8 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import type { TFunction } from "i18next";
-import type { FieldValues, Path, UseFormSetError } from "react-hook-form";
+import { useState } from "react";
+import {
+  type DefaultValues,
+  type FieldValues,
+  type Path,
+  useForm,
+  type UseFormReturn,
+  type UseFormSetError,
+} from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import type { z } from "zod";
 
 import { isApiError } from "@/api/errors";
 import { errorMessage } from "@/components/ui/errorMessage";
+import { useToast } from "@/components/ui/toastContext";
 
 /**
  * Show API validation errors next to their inputs. Returns the message to display above the
@@ -38,4 +51,49 @@ export function emptyToNull<T extends Record<string, unknown>>(values: T): T {
   return Object.fromEntries(
     Object.entries(values).map(([key, value]) => [key, value === "" ? null : value]),
   ) as T;
+}
+
+/** react-hook-form bound to a zod schema: inputs are the schema input, submit gets its output. */
+export function useZodForm<S extends z.ZodType<FieldValues, FieldValues>>(
+  schema: S,
+  defaultValues: z.input<S>,
+): UseFormReturn<z.input<S>, unknown, z.output<S>> {
+  return useForm<z.input<S>, unknown, z.output<S>>({
+    resolver: zodResolver(schema as never),
+    defaultValues: defaultValues as DefaultValues<z.input<S>>,
+  });
+}
+
+interface FormSubmitOptions<TResult> {
+  /** Toast shown after saving ("Service recorded"). */
+  successMessage?: string;
+  onSuccess?: (result: TResult) => void;
+}
+
+/**
+ * Submit a form through a mutation: API field errors go to their inputs, other errors to the
+ * returned `formError`, success shows a toast.
+ */
+export function useFormSubmit<TInput extends FieldValues, TOutput, TResult>(
+  form: UseFormReturn<TInput, unknown, TOutput>,
+  mutationFn: (values: TOutput) => Promise<TResult>,
+  { successMessage, onSuccess }: FormSubmitOptions<TResult> = {},
+) {
+  const { t } = useTranslation();
+  const toast = useToast();
+  const [formError, setFormError] = useState<string | null>(null);
+  const mutation = useMutation({
+    mutationFn,
+    onSuccess: (result) => {
+      if (successMessage) toast.success(successMessage);
+      onSuccess?.(result);
+    },
+    onError: (error) =>
+      setFormError(applyServerErrors(error, form.setError, Object.keys(form.getValues()), t)),
+  });
+  const onSubmit = form.handleSubmit((values) => {
+    setFormError(null);
+    mutation.mutate(values);
+  });
+  return { onSubmit, pending: mutation.isPending, formError, mutation };
 }
