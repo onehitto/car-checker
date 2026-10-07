@@ -123,7 +123,7 @@ export function RotationDialog({
             <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} {...props} />
           )}
         </Field>
-        <Field label={t("common.mileageIn", { unit: format.unit })} optional>
+        <Field label={t("common.mileageIn", { unit: format.unitLabel })} optional>
           {(props) => (
             <Input
               inputMode="numeric"

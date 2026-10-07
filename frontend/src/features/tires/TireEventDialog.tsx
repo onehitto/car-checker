@@ -113,7 +113,7 @@ export function TireEventDialog({
           {(props) => <Input type="date" {...props} {...form.register("event_date")} />}
         </Field>
         <Field
-          label={t("common.mileageIn", { unit: format.unit })}
+          label={t("common.mileageIn", { unit: format.unitLabel })}
           optional
           error={errors.mileage?.message}
         >

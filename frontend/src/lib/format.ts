@@ -36,8 +36,24 @@ export function formatNumber(locale: string, value: number, digits = 0): string 
   }).format(value);
 }
 
+const INTL_UNITS: Record<DistanceUnit, string> = { km: "kilometer", mi: "mile" };
+
+/** "98,400 km", "98 400 km", "98.400 كم" (unit written the local way). */
 export function formatDistance(locale: string, km: number, unit: DistanceUnit): string {
-  return `${formatNumber(locale, Math.round(toDisplayDistance(km, unit)))} ${unit}`;
+  return new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: INTL_UNITS[unit],
+    maximumFractionDigits: 0,
+  }).format(Math.round(toDisplayDistance(km, unit)));
+}
+
+/** The unit alone, for labels: "km", "mi", "كم". */
+export function distanceUnitLabel(locale: string, unit: DistanceUnit): string {
+  const parts = new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: INTL_UNITS[unit],
+  }).formatToParts(1);
+  return parts.find((part) => part.type === "unit")?.value ?? unit;
 }
 
 export function formatMoney(locale: string, amount: string | number, currency: string): string {

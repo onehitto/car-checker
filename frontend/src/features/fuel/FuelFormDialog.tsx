@@ -96,7 +96,10 @@ export function FuelFormDialog({
         <Field label={t("common.date")} error={errors.fill_date?.message}>
           {(props) => <Input type="date" {...props} {...form.register("fill_date")} />}
         </Field>
-        <Field label={t("common.mileageIn", { unit: format.unit })} error={errors.mileage?.message}>
+        <Field
+          label={t("common.mileageIn", { unit: format.unitLabel })}
+          error={errors.mileage?.message}
+        >
           {(props) => <Input inputMode="numeric" {...props} {...form.register("mileage")} />}
         </Field>
         <Field label={t("fuel.fields.liters")} error={errors.liters?.message}>

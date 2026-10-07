@@ -23,7 +23,7 @@ export function MonthlyCostChart({
   if (data.length === 0) return <p className="text-steel">{t("statistics.noData")}</p>;
   const long = data.length > 12;
   return (
-    <figure>
+    <figure dir="ltr">
       <figcaption className="sr-only">{label}</figcaption>
       <ResponsiveContainer width="100%" height={240}>
         <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>

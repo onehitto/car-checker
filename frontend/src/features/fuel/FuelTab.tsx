@@ -188,7 +188,7 @@ function FuelSummary({ statistics }: { statistics: FuelStatistics }) {
             },
             { label: t("fuel.lastConsumption"), value: consumption(statistics.last_consumption) },
             {
-              label: t("fuel.costPerDistance", { unit: statistics.distance_unit }),
+              label: t("fuel.costPerDistance", { unit: format.unitLabel }),
               value:
                 statistics.cost_per_distance_unit === null
                   ? null
@@ -209,14 +209,14 @@ function FuelSummary({ statistics }: { statistics: FuelStatistics }) {
             { label: t("fuel.fillUpCount"), value: format.number(statistics.fill_up_count) },
             {
               label: t("fuel.distanceTracked"),
-              value: `${format.number(statistics.distance_tracked)} ${statistics.distance_unit}`,
+              value: `${format.number(statistics.distance_tracked)} ${format.unitLabel}`,
             },
           ]}
         />
       </Panel>
       {monthly.length > 0 && (
         <Panel title={t("fuel.monthlyCost")}>
-          <figure>
+          <figure dir="ltr">
             <figcaption className="sr-only">{t("fuel.monthlyCost")}</figcaption>
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={monthly} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>

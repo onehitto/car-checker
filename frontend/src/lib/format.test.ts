@@ -16,6 +16,7 @@ describe("format", () => {
     expect(clean(formatDistance("en-GB", 98_400, "km"))).toBe("98,400 km");
     expect(clean(formatDistance("fr-FR", 98_400, "km"))).toBe("98 400 km");
     expect(clean(formatDistance("en-GB", 160_934, "mi"))).toBe("100,000 mi");
+    expect(formatDistance("ar-MA", 98_400, "km")).toContain("كم");
   });
 
   it("converts entered miles back to kilometres", () => {

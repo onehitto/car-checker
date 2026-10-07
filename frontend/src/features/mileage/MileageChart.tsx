@@ -26,7 +26,7 @@ export function MileageChart({ entries }: { entries: MileageEntry[] }) {
     }));
   if (data.length < 2) return null;
   return (
-    <figure>
+    <figure dir="ltr">
       <figcaption className="sr-only">{t("mileage.chartLabel")}</figcaption>
       <ResponsiveContainer width="100%" height={220}>
         <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
@@ -58,7 +58,7 @@ export function MileageChart({ entries }: { entries: MileageEntry[] }) {
             tickFormatter={(value: number) => format.number(value)}
           />
           <Tooltip
-            formatter={(value) => [`${format.number(Number(value))} ${format.unit}`, ""]}
+            formatter={(value) => [`${format.number(Number(value))} ${format.unitLabel}`, ""]}
             labelFormatter={(value) => format.date(new Date(Number(value)).toISOString())}
             separator=""
           />

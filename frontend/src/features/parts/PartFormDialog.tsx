@@ -88,7 +88,7 @@ export function PartFormDialog({
     { successMessage: part ? t("parts.updated") : t("parts.added"), onSuccess: onClose },
   );
 
-  const unit = format.unit;
+  const unit = format.unitLabel;
   return (
     <FormDialog
       size="lg"

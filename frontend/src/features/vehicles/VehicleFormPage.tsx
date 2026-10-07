@@ -128,7 +128,7 @@ function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
     },
   );
 
-  const unit = format.unit;
+  const unit = format.unitLabel;
   const backTo = vehicle ? `/vehicles/${vehicle.id}` : "/vehicles";
 
   return (

@@ -55,7 +55,10 @@ export function MileageDialog({ vehicle, onClose }: { vehicle: Vehicle; onClose:
       error={formError}
     >
       <FieldRow>
-        <Field label={t("mileage.reading", { unit: format.unit })} error={errors.mileage?.message}>
+        <Field
+          label={t("mileage.reading", { unit: format.unitLabel })}
+          error={errors.mileage?.message}
+        >
           {(props) => (
             <Input inputMode="numeric" autoFocus {...props} {...form.register("mileage")} />
           )}

@@ -85,7 +85,7 @@ function Statistics({ data }: { data: VehicleStatistics }) {
               value: format.money(data.average_monthly_cost, currency),
             },
             {
-              label: t("statistics.costPerDistance", { unit: format.unit }),
+              label: t("statistics.costPerDistance", { unit: format.unitLabel }),
               value: format.perDistance(data.cost_per_km, currency),
             },
             {

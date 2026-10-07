@@ -61,7 +61,7 @@ export function RemovePartDialog({
           {(props) => <Input type="date" {...props} {...form.register("removed_date")} />}
         </Field>
         <Field
-          label={t("common.mileageIn", { unit: format.unit })}
+          label={t("common.mileageIn", { unit: format.unitLabel })}
           optional
           error={errors.removed_mileage?.message}
         >

@@ -122,8 +122,8 @@ export function TypeFormDialog(props: TypeFormProps) {
         <Field
           label={
             kind === "maintenance"
-              ? t("schedules.fields.everyDistance", { unit: format.unit })
-              : t("parts.fields.lifetimeKm", { unit: format.unit })
+              ? t("schedules.fields.everyDistance", { unit: format.unitLabel })
+              : t("parts.fields.lifetimeKm", { unit: format.unitLabel })
           }
           optional
           error={errors.every_km?.message}

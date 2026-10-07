@@ -7,6 +7,7 @@ import { FORMAT_LOCALES, isLanguage } from "@/i18n";
 import {
   type ConsumptionUnit,
   convertConsumption,
+  distanceUnitLabel,
   type DistanceUnit,
   formatBytes,
   formatDate,
@@ -31,6 +32,8 @@ export function useFormat() {
     () => ({
       locale,
       unit,
+      /** Distance unit as written in the interface language ("km", "كم"). */
+      unitLabel: distanceUnitLabel(locale, unit),
       date: (iso: string | null | undefined) => (iso ? formatDate(locale, iso) : "—"),
       dateTime: (iso: string | null | undefined) => (iso ? formatDateTime(locale, iso) : "—"),
       number: (value: number, digits = 0) => formatNumber(locale, value, digits),
@@ -49,7 +52,7 @@ export function useFormat() {
       perDistance: (amountPerKm: number | null | undefined, currency: string) =>
         amountPerKm === null || amountPerKm === undefined
           ? "—"
-          : `${formatMoney(locale, unit === "mi" ? amountPerKm * 1.609344 : amountPerKm, currency)}/${unit}`,
+          : `${formatMoney(locale, unit === "mi" ? amountPerKm * 1.609344 : amountPerKm, currency)}/${distanceUnitLabel(locale, unit)}`,
       /** Kilometres -> number in the display unit (for inputs). */
       toUnit: (km: number) => Math.round(toDisplayDistance(km, unit)),
       /** Number typed in the display unit -> kilometres for the API. */

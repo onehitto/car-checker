@@ -27,7 +27,10 @@ export const CATEGORY_COLORS = [
   "#3a4856",
 ];
 
-/** Charts are drawn left to right; in Arabic the time axis runs right to left. */
+/**
+ * Charts are drawn in an LTR box (SVG text anchors flip under dir="rtl"); in Arabic the time axis
+ * is reversed and the value axis moves to the right instead.
+ */
 export function useChartDirection() {
   const { i18n } = useTranslation();
   const rtl = i18n.dir() === "rtl";

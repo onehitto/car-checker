@@ -69,7 +69,7 @@ export function ReminderFormDialog({
     },
   );
 
-  const unit = format.unit;
+  const unit = format.unitLabel;
   return (
     <FormDialog
       title={reminder ? t("reminders.editTitle") : t("reminders.addTitle")}

@@ -124,7 +124,7 @@ export function RecordFormDialog({ vehicle, record, typeId, onClose }: RecordFor
           {(props) => <Input type="date" {...props} {...form.register("service_date")} />}
         </Field>
         <Field
-          label={t("common.mileageIn", { unit: format.unit })}
+          label={t("common.mileageIn", { unit: format.unitLabel })}
           optional
           error={errors.mileage?.message}
         >
