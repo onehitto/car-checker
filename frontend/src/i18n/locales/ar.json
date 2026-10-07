@@ -44,5 +44,21 @@
     "en": "English",
     "fr": "Français",
     "ar": "العربية"
+  },
+  "status": {
+    "ok": "جيد",
+    "upcoming": "قادم",
+    "due_soon": "قريباً",
+    "due": "مستحق",
+    "overdue": "متأخر",
+    "unknown": "غير معروف",
+    "valid": "ساري",
+    "expiring_soon": "ينتهي قريباً",
+    "expired": "منتهي",
+    "info": "معلومة",
+    "low": "منخفض",
+    "medium": "متوسط",
+    "high": "مرتفع",
+    "critical": "حرج"
   }
 }

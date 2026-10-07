@@ -44,5 +44,21 @@
     "en": "English",
     "fr": "Français",
     "ar": "العربية"
+  },
+  "status": {
+    "ok": "OK",
+    "upcoming": "À prévoir",
+    "due_soon": "Bientôt",
+    "due": "À faire",
+    "overdue": "En retard",
+    "unknown": "Inconnu",
+    "valid": "Valide",
+    "expiring_soon": "Expire bientôt",
+    "expired": "Expiré",
+    "info": "Info",
+    "low": "Faible",
+    "medium": "Moyen",
+    "high": "Élevé",
+    "critical": "Critique"
   }
 }
