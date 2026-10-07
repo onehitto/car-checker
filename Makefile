@@ -5,7 +5,8 @@ VENV := .venv/bin
 COMPOSE := docker compose
 
 .DEFAULT_GOAL := help
-.PHONY: help up down logs infra install run worker test cov lint format typecheck check migrate revision seed jobs
+.PHONY: help up down logs infra install run worker test cov lint format typecheck check migrate revision seed jobs \
+	fe-up fe-npm fe-types fe-lint fe-test fe-check fe-build fe-e2e
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -62,3 +63,30 @@ typecheck: ## Static type checking (strict mypy)
 	cd $(BACKEND) && $(VENV)/mypy app
 
 check: lint typecheck test ## Lint, type check and test
+
+# --- Web frontend (runs in Docker, no local Node.js needed) -------------------------
+FE_RUN := $(COMPOSE) run --rm --no-deps frontend
+
+fe-up: ## Start the web app dev server on http://localhost:5173 (with the API)
+	$(COMPOSE) up -d --build frontend
+
+fe-npm: ## Run an npm command in the frontend container: make fe-npm c="install dayjs"
+	$(FE_RUN) npm $(c)
+
+fe-types: ## Regenerate the typed API client from the running API
+	$(COMPOSE) run --rm frontend npm run api:types
+
+fe-lint: ## Lint and check formatting of the frontend
+	$(FE_RUN) sh -c "npm run lint && npm run format:check"
+
+fe-test: ## Run the frontend unit tests
+	$(FE_RUN) npm test
+
+fe-check: ## Type check, lint and test the frontend
+	$(FE_RUN) sh -c "npm run typecheck && npm run lint && npm run format:check && npm test"
+
+fe-build: ## Build the production web image (nginx)
+	$(COMPOSE) --profile production build web
+
+fe-e2e: ## End-to-end tests (Playwright) against the running stack
+	$(COMPOSE) --profile test run --rm e2e
