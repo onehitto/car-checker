@@ -543,7 +543,27 @@
     }
   },
   "alerts": {
-    "unread": "Unread"
+    "unread": "Unread",
+    "title": "Alerts",
+    "description": "What needs doing across your vehicles. Alerts close by themselves once the service is recorded or the document renewed.",
+    "markAllRead": "Mark all as read",
+    "allRead": "All alerts marked as read",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "dismiss": "Dismiss",
+    "restore": "Restore",
+    "show": "Show",
+    "priority": "Priority",
+    "anyPriority": "Any priority",
+    "filters": {
+      "open": "Open",
+      "unread": "Unread",
+      "dismissed": "Dismissed",
+      "resolved": "Resolved",
+      "all": "All alerts"
+    },
+    "emptyTitle": "Nothing to do",
+    "emptyBody": "No alert matches. Services, documents and reminders raise alerts as they come due."
   },
   "catalog": {
     "chooseType": "Choose a type"

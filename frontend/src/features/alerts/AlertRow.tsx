@@ -21,10 +21,12 @@ interface AlertRowProps {
   compact?: boolean;
   vehicleName?: string;
   actions?: ReactNode;
+  /** Go to where the alert can be acted on. */
+  onOpen?: () => void;
 }
 
 /** One alert: priority lamp, title, message; unread alerts are set in bold. */
-export function AlertRow({ alert, compact, vehicleName, actions }: AlertRowProps) {
+export function AlertRow({ alert, compact, vehicleName, actions, onOpen }: AlertRowProps) {
   const { t } = useTranslation();
   const format = useFormat();
   const unread = alert.status === "active";
@@ -37,7 +39,13 @@ export function AlertRow({ alert, compact, vehicleName, actions }: AlertRowProps
       <div className="min-w-0 flex-1">
         <p className={cn(unread ? "font-semibold" : "font-medium text-ink/80")}>
           {unread && <span className="sr-only">{t("alerts.unread")}: </span>}
-          {alert.title}
+          {onOpen ? (
+            <button type="button" onClick={onOpen} className="text-start hover:text-petrol">
+              {alert.title}
+            </button>
+          ) : (
+            alert.title
+          )}
         </p>
         {!compact && <p className="text-sm text-steel">{alert.message}</p>}
         <p className="mt-0.5 flex flex-wrap gap-x-3 text-sm text-steel">

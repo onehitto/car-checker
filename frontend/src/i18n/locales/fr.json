@@ -558,7 +558,27 @@
     }
   },
   "alerts": {
-    "unread": "Non lue"
+    "unread": "Non lue",
+    "title": "Alertes",
+    "description": "Ce qu'il faut faire sur vos véhicules. Les alertes se ferment d'elles-mêmes une fois l'entretien enregistré ou le document renouvelé.",
+    "markAllRead": "Tout marquer comme lu",
+    "allRead": "Toutes les alertes sont marquées comme lues",
+    "markRead": "Marquer comme lue",
+    "markUnread": "Marquer comme non lue",
+    "dismiss": "Ignorer",
+    "restore": "Rétablir",
+    "show": "Afficher",
+    "priority": "Priorité",
+    "anyPriority": "Toutes priorités",
+    "filters": {
+      "open": "Ouvertes",
+      "unread": "Non lues",
+      "dismissed": "Ignorées",
+      "resolved": "Résolues",
+      "all": "Toutes les alertes"
+    },
+    "emptyTitle": "Rien à faire",
+    "emptyBody": "Aucune alerte ne correspond. Entretiens, documents et rappels déclenchent des alertes à l'approche de leur échéance."
   },
   "catalog": {
     "chooseType": "Choisir un type"

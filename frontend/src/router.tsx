@@ -103,6 +103,13 @@ export const router = createBrowserRouter([
                 children: vehicleTabs(),
               },
               {
+                path: "alerts",
+                lazy: page(
+                  () => import("@/features/alerts/AlertsPage"),
+                  (m) => m.AlertsPage,
+                ),
+              },
+              {
                 path: "statistics",
                 lazy: page(
                   () => import("@/features/statistics/StatisticsPage"),
