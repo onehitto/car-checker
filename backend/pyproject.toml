@@ -83,3 +83,5 @@ markers = [
 [tool.coverage.run]
 source = ["app"]
 omit = ["app/worker.py"]
+# SQLAlchemy's asyncio layer runs code in greenlets: trace them too.
+concurrency = ["greenlet", "thread"]
