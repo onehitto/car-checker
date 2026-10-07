@@ -1,7 +1,7 @@
 import { ChevronRight, Plus, Search } from "lucide-react";
 import { useDeferredValue } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useSearchParams } from "react-router";
+import { Link } from "react-router";
 
 import { VEHICLE_STATUSES } from "@/api/enums";
 import type { Vehicle } from "@/api/types";
@@ -18,6 +18,7 @@ import {
   Select,
 } from "@/components/ui";
 import { useFormat } from "@/lib/useFormat";
+import { useSearchFilters } from "@/lib/useSearchFilters";
 
 import { vehicleDescription } from "./describe";
 import { useVehicleList } from "./queries";
@@ -26,10 +27,8 @@ const PAGE_SIZE = 20;
 
 export function VehiclesPage() {
   const { t } = useTranslation();
-  const [params, setParams] = useSearchParams();
-  const q = params.get("q") ?? "";
-  const status = params.get("status") ?? "active";
-  const page = Number(params.get("page") ?? 1);
+  const { values, page, update, setPage } = useSearchFilters({ q: "", status: "active" });
+  const { q, status } = values;
   const search = useDeferredValue(q);
 
   const vehicles = useVehicleList({
@@ -39,16 +38,6 @@ export function VehiclesPage() {
     limit: PAGE_SIZE,
     sort: "created_at",
   });
-
-  function update(changes: Record<string, string>) {
-    const next = new URLSearchParams(params);
-    for (const [key, value] of Object.entries(changes)) {
-      if (value) next.set(key, value);
-      else next.delete(key);
-    }
-    if (!("page" in changes)) next.delete("page");
-    setParams(next, { replace: true });
-  }
 
   const filtered = q !== "" || status !== "active";
   const items = vehicles.data?.items ?? [];
@@ -120,7 +109,7 @@ export function VehiclesPage() {
             page={vehicles.data.meta.page}
             totalPages={vehicles.data.meta.total_pages}
             total={vehicles.data.meta.total}
-            onPageChange={(next) => update({ page: String(next) })}
+            onPageChange={setPage}
           />
         </>
       )}

@@ -121,5 +121,35 @@ function vehicleTabs() {
         (m) => m.OverviewTab,
       ),
     },
+    {
+      path: "maintenance",
+      lazy: page(
+        () => import("@/features/maintenance/MaintenanceSection"),
+        (m) => m.MaintenanceSection,
+      ),
+      children: [
+        {
+          index: true,
+          lazy: page(
+            () => import("@/features/maintenance/RecordsTab"),
+            (m) => m.RecordsTab,
+          ),
+        },
+        {
+          path: "schedules",
+          lazy: page(
+            () => import("@/features/maintenance/SchedulesTab"),
+            (m) => m.SchedulesTab,
+          ),
+        },
+        {
+          path: "oil-changes",
+          lazy: page(
+            () => import("@/features/maintenance/OilChangesTab"),
+            (m) => m.OilChangesTab,
+          ),
+        },
+      ],
+    },
   ];
 }

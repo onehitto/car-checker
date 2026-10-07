@@ -17,5 +17,6 @@ export { EmptyState, ErrorState, LoadingState } from "./States";
 export { Badge, StatusBadge } from "./StatusBadge";
 export { type TabItem, TabNav } from "./TabNav";
 export { ToastProvider } from "./Toast";
+export { FilterSelect, Toolbar } from "./Toolbar";
 export { useToast } from "./toastContext";
 export { type Tone, toneFor } from "./tones";

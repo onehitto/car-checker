@@ -38,7 +38,11 @@
     "results_many": "{{count}} نتيجة",
     "results_other": "{{count}} نتيجة",
     "notSet": "غير محدد",
-    "date": "التاريخ"
+    "date": "التاريخ",
+    "details": "التفاصيل",
+    "mileageIn": "العداد ({{unit}})",
+    "totalIn": "المجموع ({{currency}})",
+    "total": "المجموع"
   },
   "errors": {
     "generic": "حدث خطأ. حاول مرة أخرى بعد قليل.",
@@ -272,6 +276,45 @@
       "read": "مقروء",
       "dismissed": "متجاهل",
       "resolved": "تمت معالجته"
+    },
+    "maintenanceKind": {
+      "maintenance": "صيانة",
+      "repair": "إصلاح"
+    },
+    "maintenanceCategory": {
+      "engine": "المحرك",
+      "filters": "المرشحات",
+      "fluids": "السوائل",
+      "brakes": "الفرامل",
+      "electrical": "الكهرباء",
+      "tires": "الإطارات والعجلات",
+      "suspension": "التعليق",
+      "transmission": "ناقل الحركة",
+      "climate": "التكييف",
+      "inspection": "الفحص",
+      "body": "الهيكل",
+      "repair": "الإصلاحات",
+      "other": "أخرى"
+    },
+    "partCategory": {
+      "engine": "المحرك",
+      "filters": "المرشحات",
+      "brakes": "الفرامل",
+      "electrical": "الكهرباء",
+      "tires": "الإطارات والعجلات",
+      "suspension": "التعليق",
+      "transmission": "ناقل الحركة",
+      "cooling": "التبريد",
+      "lighting": "الإضاءة",
+      "body": "الهيكل",
+      "other": "أخرى"
+    },
+    "oilType": {
+      "synthetic": "اصطناعي",
+      "semi_synthetic": "نصف اصطناعي",
+      "mineral": "معدني",
+      "high_mileage": "للمسافات العالية",
+      "other": "أخرى"
     }
   },
   "vehicles": {
@@ -439,5 +482,102 @@
   },
   "alerts": {
     "unread": "غير مقروء"
+  },
+  "catalog": {
+    "chooseType": "اختر نوعًا"
+  },
+  "maintenance": {
+    "sections": {
+      "history": "سجل الصيانة",
+      "schedules": "الجداول",
+      "oil": "تغيير الزيت"
+    },
+    "record": "تسجيل صيانة",
+    "recordTitle": "تسجيل صيانة",
+    "editTitle": "تعديل الصيانة",
+    "recorded": "تم تسجيل الصيانة",
+    "updated": "تم تعديل الصيانة",
+    "deleted": "تم حذف الصيانة",
+    "deleteBody": "تُحذف المصاريف المرتبطة به أيضًا. لا يمكن التراجع عن ذلك.",
+    "allKinds": "الصيانة والإصلاحات",
+    "allTypes": "كل الأنواع",
+    "noMatch": "لا توجد صيانة مطابقة لهذه الفلاتر.",
+    "fields": {
+      "type": "النوع",
+      "kind": "الطبيعة",
+      "title": "العنوان",
+      "titleHint": "افتراضيًا اسم النوع، مثل «تغيير الزيت».",
+      "garage": "الورشة",
+      "costHint": "اتركه فارغًا لجمع اليد العاملة والقطع.",
+      "labor": "اليد العاملة",
+      "parts": "القطع",
+      "workDone": "الأشغال المنجزة"
+    }
+  },
+  "schedules": {
+    "intro": "يحسب كل جدول الصيانة القادمة انطلاقًا من آخر صيانة وفاصلها الزمني، أيهما يأتي أولًا.",
+    "create": "إضافة جدول",
+    "createTitle": "إضافة جدول صيانة",
+    "editTitle": "تعديل جدول {{name}}",
+    "formBody": "اترك الفواصل فارغة لاستخدام القيم المعتادة. تُحسب الصيانة القادمة انطلاقًا من آخر صيانة.",
+    "created": "تمت إضافة الجدول",
+    "updated": "تم تعديل الجدول",
+    "deleted": "تم حذف الجدول",
+    "deleteBody": "تتوقف تنبيهاته. يُحتفظ بسجل الصيانة.",
+    "paused": "تم إيقاف الجدول مؤقتًا",
+    "resumed": "تمت إعادة تفعيل الجدول",
+    "pause": "إيقاف مؤقت",
+    "resume": "إعادة التفعيل",
+    "pausedBadge": "متوقف",
+    "recordService": "تسجيل هذه الصيانة",
+    "emptyTitle": "لا يوجد برنامج صيانة بعد",
+    "emptyBody": "أضف الصيانات التي يوصي بها دليل المركبة (تغيير الزيت، حزام التوقيت، الفحص...) لتُنبَّه قبل موعدها.",
+    "months_zero": "{{count}} شهر",
+    "months_one": "شهر واحد",
+    "months_two": "شهران",
+    "months_few": "{{count}} أشهر",
+    "months_many": "{{count}} شهرًا",
+    "months_other": "{{count}} شهر",
+    "every": "كل {{interval}}",
+    "last": "الأخيرة: {{value}}.",
+    "next": "التالية: {{value}}.",
+    "neverDone": "لم تُسجّل قط.",
+    "fields": {
+      "everyDistance": "كل ({{unit}})",
+      "everyMonths": "كل (أشهر)",
+      "usual": "عادةً {{value}}.",
+      "lastDate": "آخر مرة في",
+      "lastHint": "يُملأ تلقائيًا عند تسجيل هذه الصيانة.",
+      "lastMileage": "آخر مرة عند ({{unit}})",
+      "nextDate": "الموعد القادم في",
+      "nextHint": "فقط لتجاوز التاريخ المحسوب.",
+      "nextMileage": "الموعد القادم عند ({{unit}})",
+      "warnKm": "التنبيه قبل ({{unit}})",
+      "warnDays": "التنبيه قبل (أيام)",
+      "enabled": "نشط: حساب المواعيد وإرسال التنبيهات"
+    }
+  },
+  "oil": {
+    "record": "تسجيل تغيير زيت",
+    "recordTitle": "تسجيل تغيير زيت",
+    "editTitle": "تعديل تغيير الزيت",
+    "formBody": "يُحفظ في سجل الصيانة؛ ويبدأ جدول تغيير الزيت من جديد انطلاقًا منه.",
+    "recorded": "تم تسجيل تغيير الزيت",
+    "emptyTitle": "لم يُسجّل أي تغيير زيت",
+    "emptyBody": "سجّل الزيت ولزوجته والمرشح لتعرف ما تشتريه في المرة القادمة.",
+    "liters": "{{value}} ل",
+    "withFilter": "تم تغيير مرشح الزيت",
+    "withoutFilter": "لم يُغيَّر مرشح الزيت",
+    "fields": {
+      "brand": "علامة الزيت",
+      "type": "نوع الزيت",
+      "viscosity": "اللزوجة",
+      "viscosityHint": "كما هو مكتوب على العبوة، مثل 5W-30.",
+      "viscosityInvalid": "استخدم اللزوجة المكتوبة على العبوة، مثل 5W-30 أو SAE 30.",
+      "quantity": "الكمية (ل)",
+      "filterChanged": "تم تغيير مرشح الزيت",
+      "filterBrand": "علامة المرشح",
+      "filterReference": "مرجع المرشح"
+    }
   }
 }

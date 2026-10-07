@@ -41,7 +41,10 @@ function VehiclePage({ context }: { context: ReturnType<typeof vehicleContextFor
   const base = `/vehicles/${vehicle.id}`;
   const role = vehicle.access_role;
 
-  const tabs: TabItem[] = [{ to: base, label: t("vehicle.tabs.overview"), end: true }];
+  const tabs: TabItem[] = [
+    { to: base, label: t("vehicle.tabs.overview"), end: true },
+    { to: `${base}/maintenance`, label: t("vehicle.tabs.maintenance") },
+  ];
 
   return (
     <>

@@ -35,7 +35,11 @@
     "results_other": "{{count}} résultats",
     "results_many": "{{count}} résultats",
     "notSet": "Non renseigné",
-    "date": "Date"
+    "date": "Date",
+    "details": "Détails",
+    "mileageIn": "Kilométrage ({{unit}})",
+    "totalIn": "Total ({{currency}})",
+    "total": "Total"
   },
   "errors": {
     "generic": "Une erreur est survenue. Réessayez dans un instant.",
@@ -245,6 +249,45 @@
       "read": "Lue",
       "dismissed": "Ignorée",
       "resolved": "Résolue"
+    },
+    "maintenanceKind": {
+      "maintenance": "Entretien",
+      "repair": "Réparation"
+    },
+    "maintenanceCategory": {
+      "engine": "Moteur",
+      "filters": "Filtres",
+      "fluids": "Liquides",
+      "brakes": "Freinage",
+      "electrical": "Électricité",
+      "tires": "Pneus et roues",
+      "suspension": "Suspension",
+      "transmission": "Transmission",
+      "climate": "Climatisation",
+      "inspection": "Contrôle",
+      "body": "Carrosserie",
+      "repair": "Réparations",
+      "other": "Autre"
+    },
+    "partCategory": {
+      "engine": "Moteur",
+      "filters": "Filtres",
+      "brakes": "Freinage",
+      "electrical": "Électricité",
+      "tires": "Pneus et roues",
+      "suspension": "Suspension",
+      "transmission": "Transmission",
+      "cooling": "Refroidissement",
+      "lighting": "Éclairage",
+      "body": "Carrosserie",
+      "other": "Autre"
+    },
+    "oilType": {
+      "synthetic": "Synthétique",
+      "semi_synthetic": "Semi-synthétique",
+      "mineral": "Minérale",
+      "high_mileage": "Haut kilométrage",
+      "other": "Autre"
     }
   },
   "vehicles": {
@@ -394,5 +437,99 @@
   },
   "alerts": {
     "unread": "Non lue"
+  },
+  "catalog": {
+    "chooseType": "Choisir un type"
+  },
+  "maintenance": {
+    "sections": {
+      "history": "Historique",
+      "schedules": "Programmes",
+      "oil": "Vidanges"
+    },
+    "record": "Enregistrer un entretien",
+    "recordTitle": "Enregistrer un entretien",
+    "editTitle": "Modifier l'entretien",
+    "recorded": "Entretien enregistré",
+    "updated": "Entretien modifié",
+    "deleted": "Entretien supprimé",
+    "deleteBody": "La dépense liée est aussi supprimée. Cette action est irréversible.",
+    "allKinds": "Entretiens et réparations",
+    "allTypes": "Tous les types",
+    "noMatch": "Aucun entretien ne correspond à ces filtres.",
+    "fields": {
+      "type": "Type",
+      "kind": "Nature",
+      "title": "Intitulé",
+      "titleHint": "Par défaut, le type, par ex. « Vidange ».",
+      "garage": "Garage",
+      "costHint": "Laissez vide pour additionner main-d'œuvre et pièces.",
+      "labor": "Main-d'œuvre",
+      "parts": "Pièces",
+      "workDone": "Travaux effectués"
+    }
+  },
+  "schedules": {
+    "intro": "Chaque programme calcule le prochain entretien à partir du dernier et de son intervalle, au premier des deux termes atteint.",
+    "create": "Ajouter un programme",
+    "createTitle": "Ajouter un programme d'entretien",
+    "editTitle": "Modifier le programme {{name}}",
+    "formBody": "Laissez les intervalles vides pour utiliser les valeurs habituelles. Le prochain entretien est calculé à partir du dernier.",
+    "created": "Programme ajouté",
+    "updated": "Programme modifié",
+    "deleted": "Programme supprimé",
+    "deleteBody": "Ses alertes s'arrêtent. L'historique d'entretien est conservé.",
+    "paused": "Programme suspendu",
+    "resumed": "Programme réactivé",
+    "pause": "Suspendre",
+    "resume": "Réactiver",
+    "pausedBadge": "Suspendu",
+    "recordService": "Enregistrer cet entretien",
+    "emptyTitle": "Pas encore de programme d'entretien",
+    "emptyBody": "Ajoutez les entretiens recommandés par le carnet (vidange, courroie de distribution, contrôle technique...) pour être prévenu avant l'échéance.",
+    "months_one": "{{count}} mois",
+    "months_other": "{{count}} mois",
+    "months_many": "{{count}} mois",
+    "every": "Tous les {{interval}}",
+    "last": "Dernier : {{value}}.",
+    "next": "Prochain : {{value}}.",
+    "neverDone": "Jamais enregistré.",
+    "fields": {
+      "everyDistance": "Tous les ({{unit}})",
+      "everyMonths": "Tous les (mois)",
+      "usual": "Habituellement {{value}}.",
+      "lastDate": "Dernière fois le",
+      "lastHint": "Rempli automatiquement quand vous enregistrez cet entretien.",
+      "lastMileage": "Dernière fois à ({{unit}})",
+      "nextDate": "Prochaine échéance le",
+      "nextHint": "Uniquement pour remplacer la date calculée.",
+      "nextMileage": "Prochaine échéance à ({{unit}})",
+      "warnKm": "Prévenir avant ({{unit}})",
+      "warnDays": "Prévenir avant (jours)",
+      "enabled": "Actif : calculer les échéances et envoyer les alertes"
+    }
+  },
+  "oil": {
+    "record": "Enregistrer une vidange",
+    "recordTitle": "Enregistrer une vidange",
+    "editTitle": "Modifier la vidange",
+    "formBody": "Enregistrée dans l'historique ; le programme de vidange repart de cette date.",
+    "recorded": "Vidange enregistrée",
+    "emptyTitle": "Aucune vidange enregistrée",
+    "emptyBody": "Notez l'huile, sa viscosité et le filtre pour savoir quoi acheter la prochaine fois.",
+    "liters": "{{value}} L",
+    "withFilter": "Filtre à huile remplacé",
+    "withoutFilter": "Filtre à huile conservé",
+    "fields": {
+      "brand": "Marque d'huile",
+      "type": "Type d'huile",
+      "viscosity": "Viscosité",
+      "viscosityHint": "Comme indiqué sur le bidon, par ex. 5W-30.",
+      "viscosityInvalid": "Utilisez la viscosité du bidon, par ex. 5W-30 ou SAE 30.",
+      "quantity": "Quantité (L)",
+      "filterChanged": "Filtre à huile remplacé",
+      "filterBrand": "Marque du filtre",
+      "filterReference": "Référence du filtre"
+    }
   }
 }

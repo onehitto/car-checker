@@ -34,7 +34,11 @@
     "results_one": "{{count}} result",
     "results_other": "{{count}} results",
     "notSet": "Not set",
-    "date": "Date"
+    "date": "Date",
+    "details": "Details",
+    "mileageIn": "Mileage ({{unit}})",
+    "totalIn": "Total ({{currency}})",
+    "total": "Total"
   },
   "errors": {
     "generic": "Something went wrong. Try again in a moment.",
@@ -236,6 +240,45 @@
       "read": "Read",
       "dismissed": "Dismissed",
       "resolved": "Resolved"
+    },
+    "maintenanceKind": {
+      "maintenance": "Maintenance",
+      "repair": "Repair"
+    },
+    "maintenanceCategory": {
+      "engine": "Engine",
+      "filters": "Filters",
+      "fluids": "Fluids",
+      "brakes": "Brakes",
+      "electrical": "Electrical",
+      "tires": "Tires and wheels",
+      "suspension": "Suspension",
+      "transmission": "Transmission",
+      "climate": "Air conditioning",
+      "inspection": "Inspection",
+      "body": "Body",
+      "repair": "Repairs",
+      "other": "Other"
+    },
+    "partCategory": {
+      "engine": "Engine",
+      "filters": "Filters",
+      "brakes": "Brakes",
+      "electrical": "Electrical",
+      "tires": "Tires and wheels",
+      "suspension": "Suspension",
+      "transmission": "Transmission",
+      "cooling": "Cooling",
+      "lighting": "Lighting",
+      "body": "Body",
+      "other": "Other"
+    },
+    "oilType": {
+      "synthetic": "Synthetic",
+      "semi_synthetic": "Semi-synthetic",
+      "mineral": "Mineral",
+      "high_mileage": "High mileage",
+      "other": "Other"
     }
   },
   "vehicles": {
@@ -379,5 +422,98 @@
   },
   "alerts": {
     "unread": "Unread"
+  },
+  "catalog": {
+    "chooseType": "Choose a type"
+  },
+  "maintenance": {
+    "sections": {
+      "history": "Service history",
+      "schedules": "Schedules",
+      "oil": "Oil changes"
+    },
+    "record": "Record a service",
+    "recordTitle": "Record a service",
+    "editTitle": "Edit the service",
+    "recorded": "Service recorded",
+    "updated": "Service updated",
+    "deleted": "Service deleted",
+    "deleteBody": "Its linked expense is deleted too. This cannot be undone.",
+    "allKinds": "Services and repairs",
+    "allTypes": "All types",
+    "noMatch": "No service matches these filters.",
+    "fields": {
+      "type": "Type",
+      "kind": "Kind",
+      "title": "Title",
+      "titleHint": "Defaults to the type, e.g. \"Oil change\".",
+      "garage": "Garage",
+      "costHint": "Leave empty to add up labor and parts.",
+      "labor": "Labor",
+      "parts": "Parts",
+      "workDone": "Work done"
+    }
+  },
+  "schedules": {
+    "intro": "Each schedule computes the next service from the last one and its interval, whichever comes first.",
+    "create": "Add a schedule",
+    "createTitle": "Add a maintenance schedule",
+    "editTitle": "Edit the {{name}} schedule",
+    "formBody": "Leave the intervals empty to use the usual ones. The next service is calculated from the last one.",
+    "created": "Schedule added",
+    "updated": "Schedule updated",
+    "deleted": "Schedule deleted",
+    "deleteBody": "Its alerts stop. The service history is kept.",
+    "paused": "Schedule paused",
+    "resumed": "Schedule resumed",
+    "pause": "Pause",
+    "resume": "Resume",
+    "pausedBadge": "Paused",
+    "recordService": "Record this service",
+    "emptyTitle": "No maintenance plan yet",
+    "emptyBody": "Add the services your manual recommends (oil change, timing belt, inspection...) to be warned before they are due.",
+    "months_one": "{{count}} month",
+    "months_other": "{{count}} months",
+    "every": "Every {{interval}}",
+    "last": "Last: {{value}}.",
+    "next": "Next: {{value}}.",
+    "neverDone": "Never recorded.",
+    "fields": {
+      "everyDistance": "Every ({{unit}})",
+      "everyMonths": "Every (months)",
+      "usual": "Usually {{value}}.",
+      "lastDate": "Last done on",
+      "lastHint": "Filled in automatically when you record this service.",
+      "lastMileage": "Last done at ({{unit}})",
+      "nextDate": "Next due on",
+      "nextHint": "Only to override the calculated date.",
+      "nextMileage": "Next due at ({{unit}})",
+      "warnKm": "Warn before ({{unit}})",
+      "warnDays": "Warn before (days)",
+      "enabled": "Active: compute due dates and send alerts"
+    }
+  },
+  "oil": {
+    "record": "Record an oil change",
+    "recordTitle": "Record an oil change",
+    "editTitle": "Edit the oil change",
+    "formBody": "Saved in the service history; the oil change schedule restarts from it.",
+    "recorded": "Oil change recorded",
+    "emptyTitle": "No oil change recorded",
+    "emptyBody": "Record the oil, its grade and the filter to know what to buy next time.",
+    "liters": "{{value}} L",
+    "withFilter": "Oil filter replaced",
+    "withoutFilter": "Oil filter kept",
+    "fields": {
+      "brand": "Oil brand",
+      "type": "Oil type",
+      "viscosity": "Viscosity",
+      "viscosityHint": "As printed on the can, e.g. 5W-30.",
+      "viscosityInvalid": "Use the grade printed on the can, e.g. 5W-30 or SAE 30.",
+      "quantity": "Quantity (L)",
+      "filterChanged": "Oil filter replaced",
+      "filterBrand": "Filter brand",
+      "filterReference": "Filter reference"
+    }
   }
 }
