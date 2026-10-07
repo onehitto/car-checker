@@ -19,6 +19,13 @@ htmlcov/
 .env.*
 !.env.example
 
+# Frontend build and test output
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+frontend/.vite/
+
 # Local runtime data
 backend/var/
 uploads/

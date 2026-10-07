@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+/* Design tokens: docs/08-frontend.md */
+@theme {
+  --color-ink: #17212b;
+  --color-ink-soft: #2a3744;
+  --color-ink-line: #3a4856;
+  --color-paper: #f2f4f5;
+  --color-sheet: #ffffff;
+  --color-rule: #d5dbe0;
+  --color-steel: #5e6b78;
+  --color-petrol: #0b6e75;
+  --color-petrol-soft: #e3f1f2;
+
+  /* Dashboard lamps */
+  --color-ok: #2f7d4f;
+  --color-ok-soft: #e4f2e9;
+  --color-upcoming: #2b6cb0;
+  --color-upcoming-soft: #e5eef8;
+  --color-soon: #b7791f;
+  --color-soon-soft: #fcf1dc;
+  --color-due: #c2410c;
+  --color-due-soft: #fbe8dd;
+  --color-overdue: #b42318;
+  --color-overdue-soft: #fbe5e3;
+
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Barlow Condensed", "Barlow", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-panel: 8px;
+}
+
+:root[lang="ar"] {
+  --font-sans: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "IBM Plex Sans Arabic", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: "tnum" 0;
+  }
+
+  body {
+    @apply bg-paper font-sans text-[15px] leading-6 text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-semibold tracking-[0.01em];
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-petrol);
+    outline-offset: 2px;
+  }
+}
+
+@utility numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

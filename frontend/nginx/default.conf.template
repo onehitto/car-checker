@@ -1,0 +1,43 @@
+# Static single-page app + same-origin proxy to the API (no CORS needed).
+# ${API_UPSTREAM} is substituted at container start; nginx variables stay untouched.
+
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+    server_tokens off;
+    client_max_body_size 12m;
+
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "no-referrer" always;
+    add_header Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+
+    location /api/ {
+        proxy_pass ${API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Request-ID $request_id;
+    }
+
+    location = /health {
+        proxy_pass ${API_UPSTREAM}/health;
+    }
+
+    # Fingerprinted build output: cache for a year.
+    location /assets/ {
+        expires 1y;
+        try_files $uri =404;
+    }
+
+    # Client-side routes all serve the app shell, never cached.
+    location / {
+        expires -1;
+        try_files $uri /index.html;
+    }
+}
