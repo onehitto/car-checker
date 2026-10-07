@@ -1,7 +1,7 @@
-# Car Checker — backend design
+# Car Checker — design documentation
 
-Design documentation of the Car Checker backend API and database. The sections
-follow the order requested in the specification.
+Design documentation of the Car Checker backend API, database and web app. The
+backend sections follow the order requested in the specification.
 
 | #  | Section                                         | Document                                                   |
 |----|-------------------------------------------------|------------------------------------------------------------|
@@ -34,4 +34,5 @@ follow the order requested in the specification.
 | 27 | Example API requests and responses              | [04-api.md](04-api.md#27-example-requests-and-responses)   |
 | 28 | Step-by-step implementation plan                | [07-implementation-plan.md](07-implementation-plan.md)     |
 
-Web frontend (stack, Docker workflow, authentication, design plan): [08-frontend.md](08-frontend.md).
+Web app (stack, Docker workflow, screens, data refresh, authentication, design
+plan, tests): [08-frontend.md](08-frontend.md).
