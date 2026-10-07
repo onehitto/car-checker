@@ -24,6 +24,11 @@ export default defineConfig({
       "/health": { target: apiTarget },
     },
   },
+  build: {
+    // Fonts stay separate files: the production CSP allows fonts from 'self' only, not data: URIs
+    // (small font subsets would otherwise be inlined).
+    assetsInlineLimit: (filePath) => (/\.(woff2?|ttf|otf)$/.test(filePath) ? false : undefined),
+  },
   preview: { host: "0.0.0.0", port: 4173 },
   test: {
     environment: "jsdom",
