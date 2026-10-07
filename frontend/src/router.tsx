@@ -123,6 +123,50 @@ export const router = createBrowserRouter([
                   (m) => m.StatisticsPage,
                 ),
               },
+              {
+                path: "settings",
+                lazy: page(
+                  () => import("@/features/settings/SettingsLayout"),
+                  (m) => m.SettingsLayout,
+                ),
+                children: [
+                  {
+                    index: true,
+                    lazy: page(
+                      () => import("@/features/settings/ProfileSettings"),
+                      (m) => m.ProfileSettings,
+                    ),
+                  },
+                  {
+                    path: "security",
+                    lazy: page(
+                      () => import("@/features/settings/SecuritySettings"),
+                      (m) => m.SecuritySettings,
+                    ),
+                  },
+                  {
+                    path: "notifications",
+                    lazy: page(
+                      () => import("@/features/settings/NotificationSettings"),
+                      (m) => m.NotificationSettings,
+                    ),
+                  },
+                  {
+                    path: "types",
+                    lazy: page(
+                      () => import("@/features/settings/TypesSettings"),
+                      (m) => m.TypesSettings,
+                    ),
+                  },
+                  {
+                    path: "account",
+                    lazy: page(
+                      () => import("@/features/settings/AccountSettings"),
+                      (m) => m.AccountSettings,
+                    ),
+                  },
+                ],
+              },
               { path: "*", element: <NotFoundPage /> },
             ],
           },

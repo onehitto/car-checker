@@ -72,6 +72,8 @@ interface FormSubmitOptions<TResult> {
   /** Toast shown after saving ("Service recorded"). */
   successMessage?: string;
   onSuccess?: (result: TResult) => void;
+  /** false: do not refresh the queries on screen afterwards (e.g. the account is gone). */
+  invalidate?: boolean;
 }
 
 /**
@@ -81,13 +83,14 @@ interface FormSubmitOptions<TResult> {
 export function useFormSubmit<TInput extends FieldValues, TOutput, TResult>(
   form: UseFormReturn<TInput, unknown, TOutput>,
   mutationFn: (values: TOutput) => Promise<TResult>,
-  { successMessage, onSuccess }: FormSubmitOptions<TResult> = {},
+  { successMessage, onSuccess, invalidate }: FormSubmitOptions<TResult> = {},
 ) {
   const { t } = useTranslation();
   const toast = useToast();
   const [formError, setFormError] = useState<string | null>(null);
   const mutation = useMutation({
     mutationFn,
+    meta: { invalidate },
     onSuccess: (result) => {
       if (successMessage) toast.success(successMessage);
       onSuccess?.(result);

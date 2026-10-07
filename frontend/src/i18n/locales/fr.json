@@ -443,7 +443,7 @@
     "tabsLabel": "Rubriques du véhicule",
     "tabs": {
       "overview": "Vue d'ensemble",
-      "timeline": "Historique",
+      "timeline": "Chronologie",
       "maintenance": "Entretien",
       "mileage": "Kilométrage et carburant",
       "costs": "Coûts",
@@ -1002,6 +1002,83 @@
       "country": "Pays",
       "website": "Site web",
       "websiteInvalid": "Saisissez l'adresse complète, commençant par https://"
+    }
+  },
+  "settings": {
+    "title": "Paramètres",
+    "sections": {
+      "profile": "Profil",
+      "security": "Mot de passe et appareils",
+      "notifications": "Notifications",
+      "types": "Types d'entretien et de pièces",
+      "account": "Compte"
+    },
+    "profile": {
+      "you": "Vous",
+      "preferences": "Préférences",
+      "saved": "Profil enregistré",
+      "emailHint": "L'e-mail de connexion ne peut pas être modifié ici.",
+      "languageHint": "Utilisée aussi pour les alertes et les e-mails.",
+      "timezone": "Fuseau horaire",
+      "timezoneHint": "Détermine quand commence un jour pour les échéances.",
+      "currencyHint": "Par défaut pour les nouveaux véhicules.",
+      "consumption": "Consommation"
+    },
+    "security": {
+      "passwordTitle": "Changer le mot de passe",
+      "passwordBody": "Vos autres appareils seront déconnectés.",
+      "current": "Mot de passe actuel",
+      "changePassword": "Changer le mot de passe",
+      "passwordChanged": "Mot de passe changé. Les autres appareils sont déconnectés.",
+      "sessionsTitle": "Appareils connectés",
+      "signOutEverywhere": "Se déconnecter partout",
+      "device": "{{browser}} sur {{os}}",
+      "unknownDevice": "Appareil inconnu",
+      "thisDevice": "Cet appareil",
+      "lastUsed": "Dernière utilisation {{date}}",
+      "revoke": "Déconnecter",
+      "revokeTitle": "Déconnecter cet appareil ?",
+      "revokeBody": "Il faudra le mot de passe pour se reconnecter.",
+      "revoked": "Appareil déconnecté",
+      "apiClient": "Client d'API"
+    },
+    "notifications": {
+      "title": "Comment être prévenu",
+      "body": "Les alertes apparaissent toujours dans Car Checker. Choisissez lesquelles vous parviennent aussi, à partir de quelle priorité.",
+      "from": "À partir de",
+      "saved": "Réglages de notification enregistrés",
+      "channels": {
+        "in_app": "Dans Car Checker",
+        "email": "Par e-mail"
+      },
+      "channelHints": {
+        "in_app": "La liste des alertes et le compteur du menu.",
+        "email": "Un e-mail par alerte, dans votre langue."
+      }
+    },
+    "types": {
+      "maintenance": "Types d'entretien",
+      "parts": "Types de pièces",
+      "addMaintenance": "Ajouter un type d'entretien",
+      "addPart": "Ajouter un type de pièce",
+      "editTitle": "Modifier le type",
+      "description": "Description",
+      "added": "Type ajouté",
+      "updated": "Type modifié",
+      "deleted": "Type supprimé",
+      "builtIn_one": "{{count}} type intégré, plus les vôtres :",
+      "builtIn_other": "{{count}} types intégrés, plus les vôtres :",
+      "builtIn_many": "{{count}} types intégrés, plus les vôtres :",
+      "builtInOnly_one": "{{count}} type intégré. Ajoutez les vôtres pour ce qui manque.",
+      "builtInOnly_other": "{{count}} types intégrés. Ajoutez les vôtres pour ce qui manque.",
+      "builtInOnly_many": "{{count}} types intégrés. Ajoutez les vôtres pour ce qui manque."
+    },
+    "account": {
+      "deleteTitle": "Supprimer le compte",
+      "deleteBody": "Supprime le compte {{email}}, vos véhicules et tout leur historique, fichiers compris. Les véhicules partagés avec vous restent à leurs propriétaires.",
+      "delete": "Supprimer mon compte",
+      "confirmTitle": "Supprimer votre compte ?",
+      "confirmBody": "Saisissez votre mot de passe pour confirmer. Cette action est irréversible."
     }
   }
 }

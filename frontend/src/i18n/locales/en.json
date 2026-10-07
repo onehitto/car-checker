@@ -986,5 +986,80 @@
       "website": "Website",
       "websiteInvalid": "Enter the full address, starting with https://"
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "sections": {
+      "profile": "Profile",
+      "security": "Password and devices",
+      "notifications": "Notifications",
+      "types": "Maintenance and part types",
+      "account": "Account"
+    },
+    "profile": {
+      "you": "You",
+      "preferences": "Preferences",
+      "saved": "Profile saved",
+      "emailHint": "The email you sign in with cannot be changed here.",
+      "languageHint": "Also used for alerts and emails.",
+      "timezone": "Time zone",
+      "timezoneHint": "Decides when a day starts for due dates.",
+      "currencyHint": "Default for new vehicles.",
+      "consumption": "Fuel consumption"
+    },
+    "security": {
+      "passwordTitle": "Change the password",
+      "passwordBody": "Your other devices will be signed out.",
+      "current": "Current password",
+      "changePassword": "Change the password",
+      "passwordChanged": "Password changed. Other devices are signed out.",
+      "sessionsTitle": "Signed-in devices",
+      "signOutEverywhere": "Sign out everywhere",
+      "device": "{{browser}} on {{os}}",
+      "unknownDevice": "Unknown device",
+      "thisDevice": "This device",
+      "lastUsed": "Last used {{date}}",
+      "revoke": "Sign out",
+      "revokeTitle": "Sign out this device?",
+      "revokeBody": "It will need the password to sign in again.",
+      "revoked": "Device signed out",
+      "apiClient": "API client"
+    },
+    "notifications": {
+      "title": "How you are told",
+      "body": "Alerts always appear in Car Checker. Choose which ones also reach you, from what priority.",
+      "from": "From",
+      "saved": "Notification settings saved",
+      "channels": {
+        "in_app": "In Car Checker",
+        "email": "By email"
+      },
+      "channelHints": {
+        "in_app": "The alerts list and the counter in the menu.",
+        "email": "One email per alert, in your language."
+      }
+    },
+    "types": {
+      "maintenance": "Maintenance types",
+      "parts": "Part types",
+      "addMaintenance": "Add a maintenance type",
+      "addPart": "Add a part type",
+      "editTitle": "Edit the type",
+      "description": "Description",
+      "added": "Type added",
+      "updated": "Type updated",
+      "deleted": "Type deleted",
+      "builtIn_one": "{{count}} built-in type, plus yours:",
+      "builtIn_other": "{{count}} built-in types, plus yours:",
+      "builtInOnly_one": "{{count}} built-in type. Add your own for anything missing.",
+      "builtInOnly_other": "{{count}} built-in types. Add your own for anything missing."
+    },
+    "account": {
+      "deleteTitle": "Delete the account",
+      "deleteBody": "Deletes the account {{email}}, your vehicles and their whole history, files included. Vehicles shared with you stay with their owners.",
+      "delete": "Delete my account",
+      "confirmTitle": "Delete your account?",
+      "confirmBody": "Enter your password to confirm. This cannot be undone."
+    }
   }
 }
