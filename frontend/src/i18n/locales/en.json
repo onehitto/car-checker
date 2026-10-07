@@ -356,6 +356,15 @@
       "part": "Part",
       "problem": "Problem",
       "document": "Document"
+    },
+    "garageType": {
+      "garage": "Garage",
+      "mechanic": "Mechanic",
+      "dealership": "Dealership",
+      "tire_shop": "Tire shop",
+      "body_shop": "Body shop",
+      "inspection_center": "Inspection centre",
+      "other": "Other"
     }
   },
   "vehicles": {
@@ -949,5 +958,33 @@
     "revoked": "Access removed",
     "emptyTitle": "Only you can see this vehicle",
     "emptyBody": "Share it with whoever drives it or looks after it."
+  },
+  "garages": {
+    "title": "Garages",
+    "description": "The garages and mechanics you work with, to pick them when you record a service.",
+    "add": "Add a garage",
+    "addTitle": "Add a garage",
+    "editTitle": "Edit the garage",
+    "added": "Garage added",
+    "updated": "Garage updated",
+    "deleted": "Garage deleted",
+    "deleteBody": "Services and parts keep their history but no longer name this garage.",
+    "searchPlaceholder": "Search by name or city",
+    "allTypes": "All kinds",
+    "noMatch": "No garage matches these filters.",
+    "emptyTitle": "No garage yet",
+    "emptyBody": "Add the garage that services your car to see where each job was done and call it in one tap.",
+    "fields": {
+      "name": "Name",
+      "type": "Kind",
+      "contact": "Contact person",
+      "phone": "Phone",
+      "phoneInvalid": "Enter a phone number, e.g. +212 522 000 000.",
+      "address": "Address",
+      "city": "City",
+      "country": "Country",
+      "website": "Website",
+      "websiteInvalid": "Enter the full address, starting with https://"
+    }
   }
 }

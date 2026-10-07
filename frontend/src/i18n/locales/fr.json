@@ -365,6 +365,15 @@
       "part": "Pièce",
       "problem": "Problème",
       "document": "Document"
+    },
+    "garageType": {
+      "garage": "Garage",
+      "mechanic": "Mécanicien",
+      "dealership": "Concessionnaire",
+      "tire_shop": "Centre pneus",
+      "body_shop": "Carrosserie",
+      "inspection_center": "Centre de contrôle",
+      "other": "Autre"
     }
   },
   "vehicles": {
@@ -966,5 +975,33 @@
     "revoked": "Accès retiré",
     "emptyTitle": "Vous seul voyez ce véhicule",
     "emptyBody": "Partagez-le avec ceux qui le conduisent ou l'entretiennent."
+  },
+  "garages": {
+    "title": "Garages",
+    "description": "Les garages et mécaniciens avec qui vous travaillez, à choisir quand vous enregistrez un entretien.",
+    "add": "Ajouter un garage",
+    "addTitle": "Ajouter un garage",
+    "editTitle": "Modifier le garage",
+    "added": "Garage ajouté",
+    "updated": "Garage modifié",
+    "deleted": "Garage supprimé",
+    "deleteBody": "Les entretiens et pièces gardent leur historique mais ne citent plus ce garage.",
+    "searchPlaceholder": "Rechercher par nom ou ville",
+    "allTypes": "Tous les types",
+    "noMatch": "Aucun garage ne correspond à ces filtres.",
+    "emptyTitle": "Aucun garage",
+    "emptyBody": "Ajoutez le garage qui entretient votre voiture pour savoir où chaque travail a été fait et l'appeler en un geste.",
+    "fields": {
+      "name": "Nom",
+      "type": "Type",
+      "contact": "Interlocuteur",
+      "phone": "Téléphone",
+      "phoneInvalid": "Saisissez un numéro, par ex. +33 1 23 45 67 89.",
+      "address": "Adresse",
+      "city": "Ville",
+      "country": "Pays",
+      "website": "Site web",
+      "websiteInvalid": "Saisissez l'adresse complète, commençant par https://"
+    }
   }
 }
