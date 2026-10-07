@@ -18,6 +18,7 @@ from app.modules.maintenance.schedules_router import router as schedules_router
 from app.modules.maintenance.types_router import router as maintenance_types_router
 from app.modules.mileage.router import router as mileage_router
 from app.modules.notes.router import router as notes_router
+from app.modules.notifications.router import router as notifications_router
 from app.modules.parts.router import router as parts_router
 from app.modules.parts.types_router import router as part_types_router
 from app.modules.statistics.router import router as statistics_router
@@ -31,6 +32,7 @@ api_router = APIRouter()
 api_router.include_router(health.router)
 api_router.include_router(auth_router)
 api_router.include_router(users_router)
+api_router.include_router(notifications_router)
 api_router.include_router(vehicles_router)
 api_router.include_router(sharing_router)
 api_router.include_router(mileage_router)

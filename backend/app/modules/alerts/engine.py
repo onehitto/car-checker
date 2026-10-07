@@ -40,6 +40,7 @@ from app.modules.documents.models import VehicleDocument
 from app.modules.maintenance.models import MaintenanceSchedule
 from app.modules.maintenance.schedule_state import evaluate_schedule
 from app.modules.mileage.models import MileageEntry
+from app.modules.notifications.outbox import enqueue_deliveries
 from app.modules.parts.lifetime import evaluate_part
 from app.modules.parts.models import PartReplacement
 from app.modules.users.models import User
@@ -240,6 +241,7 @@ class AlertEngine:
                 .returning(Alert.id, Alert.user_id, Alert.priority, Alert.alert_type)
             )
             result.created = [CreatedAlert(*row) for row in inserted.all()]
+            await enqueue_deliveries(self.session, result.created)
         return result
 
 

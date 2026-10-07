@@ -17,6 +17,7 @@ from app.modules.maintenance.models import (
 )
 from app.modules.mileage.models import MileageEntry
 from app.modules.notes.models import Note
+from app.modules.notifications.models import NotificationDelivery, NotificationPreference
 from app.modules.parts.models import PartReplacement, PartType
 from app.modules.tires.models import Tire, TireEvent
 from app.modules.users.models import User
@@ -35,6 +36,8 @@ __all__ = [
     "MaintenanceType",
     "MileageEntry",
     "Note",
+    "NotificationDelivery",
+    "NotificationPreference",
     "OilChange",
     "PartReplacement",
     "PartType",

@@ -85,5 +85,7 @@
   "alert.reminder.due.title": "Rappel à traiter : {title}",
   "alert.reminder.due.message": "« {title} » pour {vehicle} est à traiter maintenant ({deadline}).",
   "alert.reminder.overdue.title": "Rappel en retard : {title}",
-  "alert.reminder.overdue.message": "« {title} » pour {vehicle} est en retard ({deadline})."
+  "alert.reminder.overdue.message": "« {title} » pour {vehicle} est en retard ({deadline}).",
+  "email.alert.subject": "[Car Checker] {title}",
+  "email.alert.body": "Bonjour {first_name},\n\n{message}\n\nOuvrez Car Checker pour plus de détails : {app_url}\n\nVous pouvez choisir les alertes reçues par e-mail dans les paramètres de notification.\n\nL'équipe Car Checker"
 }

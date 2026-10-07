@@ -85,5 +85,7 @@
   "alert.reminder.due.title": "تذكير مستحق: {title}",
   "alert.reminder.due.message": "\"{title}\" لـ {vehicle} مستحق الآن ({deadline}).",
   "alert.reminder.overdue.title": "تذكير متأخر: {title}",
-  "alert.reminder.overdue.message": "\"{title}\" لـ {vehicle} متأخر ({deadline})."
+  "alert.reminder.overdue.message": "\"{title}\" لـ {vehicle} متأخر ({deadline}).",
+  "email.alert.subject": "[Car Checker] {title}",
+  "email.alert.body": "مرحباً {first_name}،\n\n{message}\n\nافتح Car Checker لمزيد من التفاصيل: {app_url}\n\nيمكنك اختيار التنبيهات التي تصلك عبر البريد الإلكتروني من إعدادات الإشعارات.\n\nفريق Car Checker"
 }

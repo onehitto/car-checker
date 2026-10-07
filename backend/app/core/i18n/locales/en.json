@@ -85,5 +85,7 @@
   "alert.reminder.due.title": "Reminder due: {title}",
   "alert.reminder.due.message": "\"{title}\" for {vehicle} is due now ({deadline}).",
   "alert.reminder.overdue.title": "Overdue reminder: {title}",
-  "alert.reminder.overdue.message": "\"{title}\" for {vehicle} is overdue ({deadline})."
+  "alert.reminder.overdue.message": "\"{title}\" for {vehicle} is overdue ({deadline}).",
+  "email.alert.subject": "[Car Checker] {title}",
+  "email.alert.body": "Hello {first_name},\n\n{message}\n\nOpen Car Checker for the details: {app_url}\n\nYou can choose which alerts you receive by e-mail in the notification settings.\n\nThe Car Checker team"
 }

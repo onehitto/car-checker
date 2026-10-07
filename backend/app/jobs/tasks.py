@@ -11,6 +11,8 @@ from app.modules.attachments.service import ENTITY_MODELS, delete_stored_files
 from app.modules.attachments.storage import build_storage
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
 from app.modules.notes.models import Note, NoteEntity
+from app.modules.notifications.dispatcher import build_providers, dispatch_pending
+from app.modules.notifications.email import build_email_sender
 
 SESSION_RETENTION = timedelta(days=30)
 RESET_TOKEN_RETENTION = timedelta(days=1)
@@ -27,6 +29,19 @@ ORPHAN_FILE_GRACE = timedelta(hours=1)
 async def generate_alerts(ctx: JobContext) -> JobResult:
     result = await sync_all_vehicles(ctx.session_factory, ctx.clock)
     return {"created": len(result.created), "resolved": result.resolved}
+
+
+@job(
+    "dispatch_notifications",
+    description="Send pending e-mail/push/SMS notifications of new alerts.",
+    trigger="interval",
+    minutes=1,
+)
+async def dispatch_notifications(ctx: JobContext) -> JobResult:
+    sender = ctx.extras.get("email_sender") or build_email_sender(ctx.settings)
+    providers = build_providers(sender, ctx.settings)
+    result = await dispatch_pending(ctx.session_factory, providers, ctx.clock)
+    return result.counts
 
 
 @job(
