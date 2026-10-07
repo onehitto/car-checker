@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import health
-from app.api.openapi import API_DESCRIPTION
+from app.api.openapi import API_DESCRIPTION, OPENAPI_TAGS
 from app.api.router import api_router
 from app.core.config import Settings, get_settings
 from app.core.error_handlers import register_error_handlers
@@ -61,6 +61,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         docs_url="/docs" if docs else None,
         redoc_url="/redoc" if docs else None,
         openapi_url="/openapi.json" if docs else None,
+        openapi_tags=OPENAPI_TAGS,
+        swagger_ui_parameters={"persistAuthorization": True, "displayRequestDuration": True},
         lifespan=lifespan,
     )
     app.state.settings = settings

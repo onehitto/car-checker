@@ -45,3 +45,33 @@ def error_responses(*status_codes: int) -> dict[int | str, dict[str, Any]]:
 AUTHENTICATED_ERRORS = error_responses(401, 422, 429)
 # Vehicle-scoped routes may additionally fail authorization or lookup.
 VEHICLE_ERRORS = error_responses(401, 403, 404, 422, 429)
+
+
+# Tag order and descriptions shown in Swagger UI / ReDoc.
+OPENAPI_TAGS = [
+    {"name": "Auth", "description": "Registration, login, token rotation, passwords."},
+    {"name": "Users", "description": "Profile, preferences, sessions, account deletion."},
+    {"name": "Notifications", "description": "Which alerts reach me through which channel."},
+    {"name": "Vehicles", "description": "Vehicles I own or that are shared with me."},
+    {"name": "Vehicle sharing", "description": "Owner grants editor or viewer access."},
+    {"name": "Dashboard", "description": "Overview of one vehicle or of all my vehicles."},
+    {"name": "Mileage", "description": "Odometer readings and current mileage."},
+    {"name": "Maintenance", "description": "Services and repairs."},
+    {"name": "Oil changes", "description": "Oil changes with oil and filter details."},
+    {"name": "Maintenance schedules", "description": "Recurring maintenance and its status."},
+    {"name": "Maintenance types", "description": "System and custom maintenance catalog."},
+    {"name": "Parts", "description": "Installed and replaced parts with wear status."},
+    {"name": "Part types", "description": "System and custom part catalog."},
+    {"name": "Tires", "description": "Tires, positions, rotations and history."},
+    {"name": "Documents", "description": "Insurance, registration, inspection... and expiry."},
+    {"name": "Alerts", "description": "My alert inbox."},
+    {"name": "Reminders", "description": "Custom reminders by date and/or mileage."},
+    {"name": "Expenses", "description": "The money ledger of each vehicle."},
+    {"name": "Fuel", "description": "Fill-ups, consumption and fuel statistics."},
+    {"name": "Statistics", "description": "Costs and usage over time."},
+    {"name": "Timeline", "description": "Chronological history of a vehicle."},
+    {"name": "Attachments", "description": "Invoices, receipts, photos and certificates."},
+    {"name": "Notes", "description": "Free-text notes about a vehicle or its records."},
+    {"name": "Garages", "description": "Garages, mechanics and other service providers."},
+    {"name": "Health", "description": "Liveness and database connectivity."},
+]
