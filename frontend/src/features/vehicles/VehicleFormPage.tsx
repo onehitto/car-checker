@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import { useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router";
 import { z } from "zod";
@@ -100,6 +101,7 @@ function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
     notes: asInput(vehicle?.notes),
   } satisfies Input);
   const errors = form.formState.errors;
+  const currency = useWatch({ control: form.control, name: "currency" });
 
   const { onSubmit, pending, formError } = useFormSubmit(
     form,
@@ -309,7 +311,11 @@ function VehicleForm({ vehicle }: { vehicle?: Vehicle }) {
               </Field>
               <Field
                 label={t("auth.currency")}
-                hint={t("vehicles.fields.currencyHint")}
+                hint={
+                  vehicle && currency !== vehicle.currency
+                    ? t("vehicles.fields.currencyChangeHint")
+                    : t("vehicles.fields.currencyHint")
+                }
                 error={errors.currency?.message}
               >
                 {(props) => (

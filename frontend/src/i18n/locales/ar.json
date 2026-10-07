@@ -445,7 +445,8 @@
       "purchaseDate": "تاريخ الشراء",
       "purchasePrice": "سعر الشراء",
       "currencyHint": "تُستخدم لكل تكاليفها.",
-      "statusHint": "المركبات المباعة والمؤرشفة تخرج من مرآبك ولا ترسل تنبيهات."
+      "statusHint": "المركبات المباعة والمؤرشفة تخرج من مرآبك ولا ترسل تنبيهات.",
+      "currencyChangeHint": "لا تُحوَّل المبالغ المسجلة سابقًا: تتغير عملتها فقط."
     },
     "photo": {
       "title": "الصورة",
@@ -1072,8 +1073,15 @@
       "languageHint": "تُستخدم أيضًا في التنبيهات والرسائل.",
       "timezone": "المنطقة الزمنية",
       "timezoneHint": "تحدد بداية اليوم بالنسبة للمواعيد.",
-      "currencyHint": "الافتراضية للمركبات الجديدة.",
-      "consumption": "استهلاك الوقود"
+      "currencyHint": "تُستخدم للمركبات الجديدة؛ وتحتفظ كل مركبة بعملتها.",
+      "consumption": "استهلاك الوقود",
+      "otherCurrency_zero": "لا توجد مركبات بعملة غير {{currency}}.",
+      "otherCurrency_one": "مركبة واحدة من مركباتك بعملة غير {{currency}}.",
+      "otherCurrency_two": "مركبتان من مركباتك بعملة غير {{currency}}.",
+      "otherCurrency_few": "{{count}} مركبات من مركباتك بعملة غير {{currency}}.",
+      "otherCurrency_many": "{{count}} مركبة من مركباتك بعملة غير {{currency}}.",
+      "otherCurrency_other": "{{count}} مركبة من مركباتك بعملة غير {{currency}}.",
+      "useForVehicles": "استخدام {{currency}} لها"
     },
     "security": {
       "passwordTitle": "تغيير كلمة المرور",
@@ -1136,6 +1144,18 @@
       "delete": "حذف حسابي",
       "confirmTitle": "حذف حسابك؟",
       "confirmBody": "أدخل كلمة المرور للتأكيد. لا يمكن التراجع عن ذلك."
+    },
+    "currency": {
+      "title": "استخدام {{currency}} لمركباتك أيضًا؟",
+      "body": "لكل مركبة عملتها الخاصة المستخدمة في كل تكاليفها. لا تُحوَّل المبالغ المسجلة سابقًا: تتغير عملتها فقط.",
+      "keep": "الإبقاء على عملتها",
+      "apply": "استخدام {{currency}}",
+      "done_zero": "لا مركبات تستخدم {{currency}}",
+      "done_one": "أصبحت مركبة واحدة تستخدم {{currency}}",
+      "done_two": "أصبحت مركبتان تستخدمان {{currency}}",
+      "done_few": "أصبحت {{count}} مركبات تستخدم {{currency}}",
+      "done_many": "أصبحت {{count}} مركبة تستخدم {{currency}}",
+      "done_other": "أصبحت {{count}} مركبة تستخدم {{currency}}"
     }
   }
 }

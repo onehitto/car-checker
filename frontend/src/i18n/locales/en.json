@@ -409,7 +409,8 @@
       "purchaseDate": "Purchase date",
       "purchasePrice": "Purchase price",
       "currencyHint": "Used for all its costs.",
-      "statusHint": "Sold and archived vehicles leave your garage and stop sending alerts."
+      "statusHint": "Sold and archived vehicles leave your garage and stop sending alerts.",
+      "currencyChangeHint": "Amounts already recorded are not converted: only their currency changes."
     },
     "photo": {
       "title": "Photo",
@@ -1004,8 +1005,11 @@
       "languageHint": "Also used for alerts and emails.",
       "timezone": "Time zone",
       "timezoneHint": "Decides when a day starts for due dates.",
-      "currencyHint": "Default for new vehicles.",
-      "consumption": "Fuel consumption"
+      "currencyHint": "Used for new vehicles; each vehicle keeps its own.",
+      "consumption": "Fuel consumption",
+      "otherCurrency_one": "{{count}} of your vehicles is in another currency than {{currency}}.",
+      "otherCurrency_other": "{{count}} of your vehicles are in another currency than {{currency}}.",
+      "useForVehicles": "Use {{currency}} for them"
     },
     "security": {
       "passwordTitle": "Change the password",
@@ -1060,6 +1064,14 @@
       "delete": "Delete my account",
       "confirmTitle": "Delete your account?",
       "confirmBody": "Enter your password to confirm. This cannot be undone."
+    },
+    "currency": {
+      "title": "Use {{currency}} for your vehicles too?",
+      "body": "Each vehicle has its own currency, used for all its costs. Amounts already recorded are not converted: only their currency changes.",
+      "keep": "Keep their currency",
+      "apply": "Use {{currency}}",
+      "done_one": "{{count}} vehicle now uses {{currency}}",
+      "done_other": "{{count}} vehicles now use {{currency}}"
     }
   }
 }

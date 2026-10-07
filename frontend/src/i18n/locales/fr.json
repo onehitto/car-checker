@@ -418,7 +418,8 @@
       "purchaseDate": "Date d'achat",
       "purchasePrice": "Prix d'achat",
       "currencyHint": "Utilisée pour tous ses coûts.",
-      "statusHint": "Les véhicules vendus et archivés quittent votre garage et n'envoient plus d'alertes."
+      "statusHint": "Les véhicules vendus et archivés quittent votre garage et n'envoient plus d'alertes.",
+      "currencyChangeHint": "Les montants déjà saisis ne sont pas convertis : seule leur devise change."
     },
     "photo": {
       "title": "Photo",
@@ -1021,8 +1022,12 @@
       "languageHint": "Utilisée aussi pour les alertes et les e-mails.",
       "timezone": "Fuseau horaire",
       "timezoneHint": "Détermine quand commence un jour pour les échéances.",
-      "currencyHint": "Par défaut pour les nouveaux véhicules.",
-      "consumption": "Consommation"
+      "currencyHint": "Utilisée pour les nouveaux véhicules ; chaque véhicule garde la sienne.",
+      "consumption": "Consommation",
+      "otherCurrency_one": "{{count}} de vos véhicules est dans une autre devise que {{currency}}.",
+      "otherCurrency_other": "{{count}} de vos véhicules sont dans une autre devise que {{currency}}.",
+      "otherCurrency_many": "{{count}} de vos véhicules sont dans une autre devise que {{currency}}.",
+      "useForVehicles": "Utiliser {{currency}} pour eux"
     },
     "security": {
       "passwordTitle": "Changer le mot de passe",
@@ -1079,6 +1084,15 @@
       "delete": "Supprimer mon compte",
       "confirmTitle": "Supprimer votre compte ?",
       "confirmBody": "Saisissez votre mot de passe pour confirmer. Cette action est irréversible."
+    },
+    "currency": {
+      "title": "Utiliser aussi {{currency}} pour vos véhicules ?",
+      "body": "Chaque véhicule a sa propre devise, utilisée pour tous ses coûts. Les montants déjà saisis ne sont pas convertis : seule leur devise change.",
+      "keep": "Garder leur devise",
+      "apply": "Utiliser {{currency}}",
+      "done_one": "{{count}} véhicule utilise maintenant {{currency}}",
+      "done_other": "{{count}} véhicules utilisent maintenant {{currency}}",
+      "done_many": "{{count}} véhicules utilisent maintenant {{currency}}"
     }
   }
 }
