@@ -16,6 +16,7 @@ from app.modules.maintenance.models import (
     OilChange,
 )
 from app.modules.mileage.models import MileageEntry
+from app.modules.notes.models import Note
 from app.modules.parts.models import PartReplacement, PartType
 from app.modules.tires.models import Tire, TireEvent
 from app.modules.users.models import User
@@ -33,6 +34,7 @@ __all__ = [
     "MaintenanceSchedule",
     "MaintenanceType",
     "MileageEntry",
+    "Note",
     "OilChange",
     "PartReplacement",
     "PartType",

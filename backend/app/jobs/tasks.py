@@ -2,14 +2,15 @@
 
 from datetime import timedelta
 
-from sqlalchemy import delete, exists, or_, select
+from sqlalchemy import delete, exists, or_, select, update
 
 from app.jobs.registry import JobContext, JobResult, job
 from app.modules.alerts.engine import sync_all_vehicles
-from app.modules.attachments.models import Attachment
+from app.modules.attachments.models import Attachment, AttachmentEntity
 from app.modules.attachments.service import ENTITY_MODELS, delete_stored_files
 from app.modules.attachments.storage import build_storage
 from app.modules.auth.models import PasswordResetToken, RefreshToken, UserSession
+from app.modules.notes.models import Note, NoteEntity
 
 SESSION_RETENTION = timedelta(days=30)
 RESET_TOKEN_RETENTION = timedelta(days=1)
@@ -63,7 +64,10 @@ async def cleanup_expired_tokens(ctx: JobContext) -> JobResult:
 
 @job(
     "cleanup_orphan_files",
-    description="Delete attachments of deleted records and stored files without metadata.",
+    description=(
+        "Delete attachments of deleted records and stored files without metadata; "
+        "keep notes of deleted records as vehicle notes."
+    ),
     trigger="cron",
     hour=4,
     minute=0,
@@ -83,6 +87,19 @@ async def cleanup_orphan_files(ctx: JobContext) -> JobResult:
                 .returning(Attachment.storage_key)
             )
             orphan_keys.extend(result)
+        # Notes about a deleted record keep their content as vehicle-level notes.
+        detached = 0
+        for note_entity in NoteEntity:
+            model = ENTITY_MODELS[AttachmentEntity(note_entity.value)]
+            updated = await session.execute(
+                update(Note)
+                .where(
+                    Note.entity_type == note_entity,
+                    ~exists(select(model.id).where(model.id == Note.entity_id)),
+                )
+                .values(entity_type=None, entity_id=None)
+            )
+            detached += updated.rowcount  # type: ignore[attr-defined]
         await session.commit()
         known = set(await session.scalars(select(Attachment.storage_key)))
     await delete_stored_files(storage, orphan_keys)
@@ -94,4 +111,8 @@ async def cleanup_orphan_files(ctx: JobContext) -> JobResult:
         if key not in known
     ]
     await delete_stored_files(storage, stray)
-    return {"orphan_attachments": len(orphan_keys), "stray_files": len(stray)}
+    return {
+        "orphan_attachments": len(orphan_keys),
+        "stray_files": len(stray),
+        "detached_notes": detached,
+    }

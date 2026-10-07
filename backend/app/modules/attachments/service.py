@@ -39,6 +39,18 @@ ENTITY_MODELS: dict[AttachmentEntity, Any] = {
 }
 
 
+async def ensure_vehicle_record(
+    session: AsyncSession, vehicle_id: uuid.UUID, entity_type: str, entity_id: uuid.UUID
+) -> None:
+    """The referenced record must exist on this vehicle (client ids are never trusted)."""
+    model = ENTITY_MODELS[AttachmentEntity(entity_type)]
+    exists = await session.scalar(
+        select(model.id).where(model.id == entity_id, model.vehicle_id == vehicle_id)
+    )
+    if exists is None:
+        raise ValidationAppError(fields={"entity_id": f"Unknown {entity_type} for this vehicle."})
+
+
 @dataclass(frozen=True, slots=True)
 class UploadedFile:
     file_name: str | None
@@ -198,12 +210,5 @@ class AttachmentService:
             return ctx.vehicle_id
         if entity_id is None:
             raise ValidationAppError(fields={"entity_id": "Required for this entity type."})
-        model = ENTITY_MODELS[entity_type]
-        exists = await self.session.scalar(
-            select(model.id).where(model.id == entity_id, model.vehicle_id == ctx.vehicle_id)
-        )
-        if exists is None:
-            raise ValidationAppError(
-                fields={"entity_id": f"Unknown {entity_type.value} for this vehicle."}
-            )
+        await ensure_vehicle_record(self.session, ctx.vehicle_id, entity_type.value, entity_id)
         return entity_id

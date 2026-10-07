@@ -16,6 +16,7 @@ from app.modules.maintenance.router import router as maintenance_router
 from app.modules.maintenance.schedules_router import router as schedules_router
 from app.modules.maintenance.types_router import router as maintenance_types_router
 from app.modules.mileage.router import router as mileage_router
+from app.modules.notes.router import router as notes_router
 from app.modules.parts.router import router as parts_router
 from app.modules.parts.types_router import router as part_types_router
 from app.modules.statistics.router import router as statistics_router
@@ -46,3 +47,4 @@ api_router.include_router(timeline_router)
 api_router.include_router(statistics_router)
 api_router.include_router(dashboard_router)
 api_router.include_router(attachments_router)
+api_router.include_router(notes_router)

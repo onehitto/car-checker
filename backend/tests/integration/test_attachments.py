@@ -235,7 +235,7 @@ async def test_cleanup_job_removes_orphans(
         extras={"storage": app.state.storage},
     )
     result = await cleanup_orphan_files(ctx)
-    assert result == {"orphan_attachments": 1, "stray_files": 1}
+    assert result == {"orphan_attachments": 1, "stray_files": 1, "detached_notes": 0}
     remaining = data(await client.get(url(vehicle), headers=user.headers))
     assert [a["id"] for a in remaining] == [kept["id"]]
     assert len(list(storage_root(app).rglob("*.pdf"))) == 1
