@@ -53,13 +53,13 @@ export function MaintenanceTypeSelect({
   );
 }
 
-export function PartTypeSelect(props: SelectProps) {
+export function PartTypeSelect({ placeholder, ...props }: SelectProps & { placeholder?: string }) {
   const { t } = useTranslation();
   const types = usePartTypes();
   const groups = useMemo(() => groupByCategory(types.data ?? []), [types.data]);
   return (
     <Select key={types.isSuccess ? "ready" : "loading"} {...props}>
-      <option value="">{t("catalog.chooseType")}</option>
+      <option value="">{placeholder ?? t("catalog.chooseType")}</option>
       {groups.map(([category, items]) => (
         <optgroup
           key={category}

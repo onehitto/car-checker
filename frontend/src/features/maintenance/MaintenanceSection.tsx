@@ -14,6 +14,8 @@ export function MaintenanceSection() {
         { to: base, label: t("maintenance.sections.history"), end: true },
         { to: `${base}/schedules`, label: t("maintenance.sections.schedules") },
         { to: `${base}/oil-changes`, label: t("maintenance.sections.oil") },
+        { to: `${base}/parts`, label: t("maintenance.sections.parts") },
+        { to: `${base}/tires`, label: t("maintenance.sections.tires") },
       ]}
     />
   );

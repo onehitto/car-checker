@@ -325,6 +325,38 @@
       "vehicle_document": "Document",
       "fuel_record": "Plein",
       "tire": "Pneu"
+    },
+    "tireSeason": {
+      "summer": "Été",
+      "winter": "Hiver",
+      "all_season": "4 saisons"
+    },
+    "tirePosition": {
+      "front_left": "Avant gauche",
+      "front_right": "Avant droit",
+      "rear_left": "Arrière gauche",
+      "rear_right": "Arrière droit",
+      "spare": "Roue de secours"
+    },
+    "tireStatus": {
+      "mounted": "Monté",
+      "stored": "Stocké",
+      "discarded": "Mis au rebut"
+    },
+    "tireCondition": {
+      "new": "Neuf",
+      "good": "Bon",
+      "fair": "Correct",
+      "worn": "Usé",
+      "damaged": "Endommagé"
+    },
+    "tireEvent": {
+      "installed": "Monté",
+      "rotated": "Permuté",
+      "removed": "Démonté",
+      "inspected": "Contrôlé",
+      "repaired": "Réparé",
+      "discarded": "Mis au rebut"
     }
   },
   "vehicles": {
@@ -527,7 +559,9 @@
     "sections": {
       "history": "Historique",
       "schedules": "Programmes",
-      "oil": "Vidanges"
+      "oil": "Vidanges",
+      "parts": "Pièces",
+      "tires": "Pneus"
     },
     "record": "Enregistrer un entretien",
     "recordTitle": "Enregistrer un entretien",
@@ -728,5 +762,94 @@
     "allFiles": "Tous les fichiers",
     "emptyTitle": "Aucun fichier",
     "emptyBody": "Gardez ici les factures, le scan de la carte grise ou des photos de dégâts. Les fichiers joints aux entretiens, documents ou pleins sont aussi listés."
+  },
+  "parts": {
+    "add": "Ajouter une pièce",
+    "addTitle": "Ajouter une pièce",
+    "editTitle": "Modifier la pièce",
+    "formBody": "Avec une durée de vie prévue, vous êtes prévenu avant qu'il faille remplacer la pièce.",
+    "added": "Pièce ajoutée",
+    "updated": "Pièce modifiée",
+    "deleted": "Pièce supprimée",
+    "deleteBody": "Sa dépense liée est aussi supprimée. Pour garder l'historique, indiquez plutôt qu'elle a été déposée.",
+    "remove": "Indiquer comme déposée",
+    "removeTitle": "Dépose : {{name}}",
+    "removeBody": "La pièce reste dans l'historique ; ses alertes de durée de vie s'arrêtent.",
+    "removed": "Pièce déposée",
+    "removedBadge": "Déposée",
+    "removedOn": "Déposée le {{date}}",
+    "replace": "À remplacer {{due}}",
+    "fitted": "Montées ou déposées",
+    "filterFitted": "Montées actuellement",
+    "filterRemoved": "Déposées",
+    "filterAll": "Toutes les pièces",
+    "emptyTitle": "Aucune pièce ici",
+    "emptyBody": "Ajoutez la batterie, les plaquettes ou les balais d'essuie-glace montés, avec leur référence : la prochaine fois, vous saurez quoi acheter.",
+    "fields": {
+      "name": "Nom",
+      "nameHint": "Par défaut, le type.",
+      "brand": "Marque",
+      "reference": "Référence",
+      "serial": "Numéro de série",
+      "position": "Emplacement",
+      "positionHint": "par ex. avant, arrière gauche.",
+      "quantity": "Quantité",
+      "installedOn": "Montée le",
+      "installedAt": "Montée à ({{unit}})",
+      "warranty": "Garantie jusqu'au",
+      "price": "Prix ({{currency}})",
+      "lifetimeKm": "Dure ({{unit}})",
+      "lifetimeHint": "Laissez vide pour la durée habituelle du type.",
+      "lifetimeMonths": "Dure (mois)"
+    }
+  },
+  "tires": {
+    "add": "Ajouter un pneu",
+    "addTitle": "Ajouter un pneu",
+    "editTitle": "Modifier le pneu",
+    "added": "Pneu ajouté",
+    "updated": "Pneu modifié",
+    "deleted": "Pneu supprimé",
+    "deleteBody": "Son historique est aussi supprimé. Pour le garder, indiquez plutôt qu'il est mis au rebut.",
+    "layout": "Sur la voiture",
+    "all": "Tous les pneus",
+    "front": "Avant",
+    "empty": "Vide",
+    "inStorage": "Garder en stock",
+    "choosePosition": "Choisir une position",
+    "history": "Historique",
+    "historyTitle": "Historique de {{name}}",
+    "noHistory": "Rien d'enregistré pour l'instant.",
+    "log": "Noter un contrôle ou un changement",
+    "logTitle": "{{name}} : noter un contrôle ou un changement",
+    "eventSaved": "Enregistré dans l'historique du pneu",
+    "rotate": "Permuter les pneus",
+    "rotateTitle": "Permuter les pneus",
+    "rotateBody": "Choisissez où va chaque pneu monté. Chaque position accueille un seul pneu.",
+    "rotated": "Pneus permutés",
+    "now": "Actuellement : {{position}}",
+    "moveTo": "Déplacer vers",
+    "duplicatePositions": "Deux pneus ne peuvent pas partager une position.",
+    "nothingMoved": "Aucun pneu ne change de position.",
+    "moved": "{{from}} vers {{to}}",
+    "treadValue": "{{value}} mm de gomme",
+    "unchanged": "Inchangé",
+    "emptyTitle": "Aucun pneu enregistré",
+    "emptyBody": "Ajoutez les pneus montés et votre jeu hiver ou été : suivez la profondeur de gomme, les permutations et l'âge.",
+    "fields": {
+      "model": "Modèle",
+      "size": "Dimension",
+      "season": "Saison",
+      "condition": "État",
+      "dot": "Code DOT",
+      "dotHint": "Les 4 derniers chiffres donnent la semaine et l'année de fabrication.",
+      "tread": "Profondeur de gomme (mm)",
+      "mountAt": "Monter à",
+      "mountHint": "Ou gardez-le en stock.",
+      "mountedOn": "Monté le",
+      "pressure": "Pression",
+      "pressurePlaceholder": "par ex. 2,3 bar avant, 2,1 bar arrière",
+      "event": "Événement"
+    }
   }
 }

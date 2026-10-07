@@ -156,6 +156,20 @@ function vehicleTabs() {
             (m) => m.OilChangesTab,
           ),
         },
+        {
+          path: "parts",
+          lazy: page(
+            () => import("@/features/parts/PartsTab"),
+            (m) => m.PartsTab,
+          ),
+        },
+        {
+          path: "tires",
+          lazy: page(
+            () => import("@/features/tires/TiresTab"),
+            (m) => m.TiresTab,
+          ),
+        },
       ],
     },
     {

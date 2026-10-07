@@ -316,6 +316,38 @@
       "vehicle_document": "Document",
       "fuel_record": "Fill-up",
       "tire": "Tire"
+    },
+    "tireSeason": {
+      "summer": "Summer",
+      "winter": "Winter",
+      "all_season": "All season"
+    },
+    "tirePosition": {
+      "front_left": "Front left",
+      "front_right": "Front right",
+      "rear_left": "Rear left",
+      "rear_right": "Rear right",
+      "spare": "Spare"
+    },
+    "tireStatus": {
+      "mounted": "Mounted",
+      "stored": "In storage",
+      "discarded": "Discarded"
+    },
+    "tireCondition": {
+      "new": "New",
+      "good": "Good",
+      "fair": "Fair",
+      "worn": "Worn",
+      "damaged": "Damaged"
+    },
+    "tireEvent": {
+      "installed": "Mounted",
+      "rotated": "Rotated",
+      "removed": "Taken off",
+      "inspected": "Inspected",
+      "repaired": "Repaired",
+      "discarded": "Discarded"
     }
   },
   "vehicles": {
@@ -512,7 +544,9 @@
     "sections": {
       "history": "Service history",
       "schedules": "Schedules",
-      "oil": "Oil changes"
+      "oil": "Oil changes",
+      "parts": "Parts",
+      "tires": "Tires"
     },
     "record": "Record a service",
     "recordTitle": "Record a service",
@@ -711,5 +745,94 @@
     "allFiles": "All files",
     "emptyTitle": "No file yet",
     "emptyBody": "Keep invoices, the registration scan or photos of damage here. Files attached to services, documents or fill-ups are listed too."
+  },
+  "parts": {
+    "add": "Add a part",
+    "addTitle": "Add a part",
+    "editTitle": "Edit the part",
+    "formBody": "With an expected lifetime, you are warned before the part should be replaced.",
+    "added": "Part added",
+    "updated": "Part updated",
+    "deleted": "Part deleted",
+    "deleteBody": "Its linked expense is deleted too. To keep the history, mark it as taken off instead.",
+    "remove": "Mark as taken off",
+    "removeTitle": "Take off: {{name}}",
+    "removeBody": "The part stays in the history; its lifetime alerts stop.",
+    "removed": "Part taken off",
+    "removedBadge": "Taken off",
+    "removedOn": "Taken off on {{date}}",
+    "replace": "Replace {{due}}",
+    "fitted": "Fitted or taken off",
+    "filterFitted": "Fitted now",
+    "filterRemoved": "Taken off",
+    "filterAll": "All parts",
+    "emptyTitle": "No part here",
+    "emptyBody": "Add the battery, brake pads or wiper blades you fit, with their reference: next time you know what to buy.",
+    "fields": {
+      "name": "Name",
+      "nameHint": "Defaults to the type.",
+      "brand": "Brand",
+      "reference": "Reference",
+      "serial": "Serial number",
+      "position": "Position",
+      "positionHint": "e.g. front, rear left.",
+      "quantity": "Quantity",
+      "installedOn": "Fitted on",
+      "installedAt": "Fitted at ({{unit}})",
+      "warranty": "Warranty until",
+      "price": "Price ({{currency}})",
+      "lifetimeKm": "Lasts ({{unit}})",
+      "lifetimeHint": "Leave empty for the usual lifetime of the type.",
+      "lifetimeMonths": "Lasts (months)"
+    }
+  },
+  "tires": {
+    "add": "Add a tire",
+    "addTitle": "Add a tire",
+    "editTitle": "Edit the tire",
+    "added": "Tire added",
+    "updated": "Tire updated",
+    "deleted": "Tire deleted",
+    "deleteBody": "Its history is deleted too. To keep it, log it as discarded instead.",
+    "layout": "On the car",
+    "all": "All tires",
+    "front": "Front",
+    "empty": "Empty",
+    "inStorage": "Keep in storage",
+    "choosePosition": "Choose a position",
+    "history": "History",
+    "historyTitle": "History of {{name}}",
+    "noHistory": "Nothing logged yet.",
+    "log": "Log a check or change",
+    "logTitle": "{{name}}: log a check or change",
+    "eventSaved": "Saved in the tire history",
+    "rotate": "Rotate tires",
+    "rotateTitle": "Rotate the tires",
+    "rotateBody": "Choose where each mounted tire goes. Each position can hold one tire.",
+    "rotated": "Tires rotated",
+    "now": "Now: {{position}}",
+    "moveTo": "Move to",
+    "duplicatePositions": "Two tires cannot share a position.",
+    "nothingMoved": "No tire changes position.",
+    "moved": "{{from}} to {{to}}",
+    "treadValue": "{{value}} mm tread",
+    "unchanged": "Unchanged",
+    "emptyTitle": "No tire recorded",
+    "emptyBody": "Add the mounted tires and your winter or summer set: track tread depth, rotations and age.",
+    "fields": {
+      "model": "Model",
+      "size": "Size",
+      "season": "Season",
+      "condition": "Condition",
+      "dot": "DOT code",
+      "dotHint": "The last 4 digits give the week and year it was made.",
+      "tread": "Tread depth (mm)",
+      "mountAt": "Mount at",
+      "mountHint": "Or keep it in storage.",
+      "mountedOn": "Mounted on",
+      "pressure": "Pressure",
+      "pressurePlaceholder": "e.g. 2.3 bar front, 2.1 bar rear",
+      "event": "What happened"
+    }
   }
 }
