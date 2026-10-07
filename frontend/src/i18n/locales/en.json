@@ -895,5 +895,39 @@
       "bodyPlaceholder": "e.g. Squeak from the front left wheel when braking cold.",
       "pinned": "Pin to the top of the list"
     }
+  },
+  "timeline": {
+    "filter": "Show",
+    "loadMore": "Show older entries",
+    "emptyTitle": "Nothing recorded yet",
+    "emptyBody": "Services, fill-ups, expenses, documents and readings all appear here, newest first.",
+    "types": {
+      "maintenance": "Services",
+      "repair": "Repairs",
+      "part": "Parts",
+      "fuel": "Fill-ups",
+      "expense": "Expenses",
+      "document": "Documents",
+      "tire": "Tires",
+      "mileage": "Readings"
+    }
+  },
+  "sharing": {
+    "people": "People with access",
+    "invite": "Share this vehicle",
+    "share": "Share",
+    "role": "Access",
+    "emailHint": "The person needs a Car Checker account with this email.",
+    "noAccount": "No Car Checker account uses this email. Ask them to create one first.",
+    "editorExplained": "Editor: adds and changes records, like a family member.",
+    "viewerExplained": "Viewer: reads the logbook only, like a mechanic or a buyer.",
+    "shared": "Shared with {{name}}",
+    "roleChanged": "Access changed",
+    "revoke": "Remove",
+    "revokeTitle": "Remove this person's access?",
+    "revokeBody": "They will no longer see this vehicle. Their past entries stay.",
+    "revoked": "Access removed",
+    "emptyTitle": "Only you can see this vehicle",
+    "emptyBody": "Share it with whoever drives it or looks after it."
   }
 }

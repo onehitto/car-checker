@@ -35,7 +35,7 @@ export function VehicleLayout() {
 function VehiclePage({ context }: { context: ReturnType<typeof vehicleContextFor> }) {
   const { t } = useTranslation();
   const format = useFormat();
-  const { vehicle, canEdit } = context;
+  const { vehicle, canEdit, isOwner } = context;
   const [updatingMileage, setUpdatingMileage] = useState(false);
   const photo = useAttachmentUrl(vehicle.id, vehicle.image_attachment_id);
   const base = `/vehicles/${vehicle.id}`;
@@ -43,11 +43,13 @@ function VehiclePage({ context }: { context: ReturnType<typeof vehicleContextFor
 
   const tabs: TabItem[] = [
     { to: base, label: t("vehicle.tabs.overview"), end: true },
+    { to: `${base}/timeline`, label: t("vehicle.tabs.timeline") },
     { to: `${base}/maintenance`, label: t("vehicle.tabs.maintenance") },
     { to: `${base}/mileage`, label: t("vehicle.tabs.mileage") },
     { to: `${base}/expenses`, label: t("vehicle.tabs.costs") },
     { to: `${base}/documents`, label: t("vehicle.tabs.documents") },
     { to: `${base}/reminders`, label: t("vehicle.tabs.reminders") },
+    ...(isOwner ? [{ to: `${base}/sharing`, label: t("vehicle.tabs.sharing") }] : []),
   ];
 
   return (

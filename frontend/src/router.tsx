@@ -129,6 +129,13 @@ function vehicleTabs() {
       ),
     },
     {
+      path: "timeline",
+      lazy: page(
+        () => import("@/features/timeline/TimelineTab"),
+        (m) => m.TimelineTab,
+      ),
+    },
+    {
       path: "maintenance",
       lazy: page(
         () => import("@/features/maintenance/MaintenanceSection"),
@@ -263,6 +270,13 @@ function vehicleTabs() {
           ),
         },
       ],
+    },
+    {
+      path: "sharing",
+      lazy: page(
+        () => import("@/features/sharing/SharingTab"),
+        (m) => m.SharingTab,
+      ),
     },
   ];
 }

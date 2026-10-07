@@ -912,5 +912,39 @@
       "bodyPlaceholder": "par ex. Grincement de la roue avant gauche au freinage à froid.",
       "pinned": "Épingler en haut de la liste"
     }
+  },
+  "timeline": {
+    "filter": "Afficher",
+    "loadMore": "Afficher les entrées plus anciennes",
+    "emptyTitle": "Rien d'enregistré pour l'instant",
+    "emptyBody": "Entretiens, pleins, dépenses, documents et relevés apparaissent tous ici, du plus récent au plus ancien.",
+    "types": {
+      "maintenance": "Entretiens",
+      "repair": "Réparations",
+      "part": "Pièces",
+      "fuel": "Pleins",
+      "expense": "Dépenses",
+      "document": "Documents",
+      "tire": "Pneus",
+      "mileage": "Relevés"
+    }
+  },
+  "sharing": {
+    "people": "Personnes ayant accès",
+    "invite": "Partager ce véhicule",
+    "share": "Partager",
+    "role": "Accès",
+    "emailHint": "La personne doit avoir un compte Car Checker avec cet e-mail.",
+    "noAccount": "Aucun compte Car Checker n'utilise cet e-mail. Demandez-lui d'en créer un d'abord.",
+    "editorExplained": "Éditeur : ajoute et modifie les enregistrements, comme un proche.",
+    "viewerExplained": "Lecteur : consulte seulement le carnet, comme un garagiste ou un acheteur.",
+    "shared": "Partagé avec {{name}}",
+    "roleChanged": "Accès modifié",
+    "revoke": "Retirer",
+    "revokeTitle": "Retirer l'accès de cette personne ?",
+    "revokeBody": "Elle ne verra plus ce véhicule. Ses saisies passées restent.",
+    "revoked": "Accès retiré",
+    "emptyTitle": "Vous seul voyez ce véhicule",
+    "emptyBody": "Partagez-le avec ceux qui le conduisent ou l'entretiennent."
   }
 }
