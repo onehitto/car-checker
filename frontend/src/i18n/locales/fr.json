@@ -1,0 +1,48 @@
+{
+  "app": {
+    "name": "Car Checker",
+    "tagline": "Le carnet d'entretien de vos véhicules"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "saveChanges": "Enregistrer les modifications",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "close": "Fermer",
+    "back": "Retour",
+    "retry": "Réessayer",
+    "loading": "Chargement…",
+    "search": "Rechercher",
+    "all": "Tous",
+    "none": "Aucun",
+    "yes": "Oui",
+    "no": "Non",
+    "optional": "facultatif",
+    "notes": "Notes",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "pageOf": "Page {{page}} sur {{total}}",
+    "results_one": "{{count}} résultat",
+    "results_other": "{{count}} résultats",
+    "confirmDeleteTitle": "Supprimer cet élément ?",
+    "confirmDeleteBody": "Cette action est définitive.",
+    "language": "Langue",
+    "openMenu": "Ouvrir le menu",
+    "noValue": "—"
+  },
+  "errors": {
+    "generic": "Une erreur est survenue. Réessayez dans un instant.",
+    "network": "Le serveur est injoignable. Vérifiez votre connexion et réessayez.",
+    "notFound": "Cette page n'existe pas ou vous n'y avez plus accès.",
+    "forbidden": "Votre rôle sur ce véhicule ne permet pas cette action.",
+    "requestId": "Référence : {{id}}",
+    "required": "Obligatoire"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "ar": "العربية"
+  }
+}

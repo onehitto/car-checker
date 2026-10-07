@@ -1,0 +1,48 @@
+{
+  "app": {
+    "name": "Car Checker",
+    "tagline": "The maintenance logbook of your vehicles"
+  },
+  "common": {
+    "save": "Save",
+    "saveChanges": "Save changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "close": "Close",
+    "back": "Back",
+    "retry": "Try again",
+    "loading": "Loading…",
+    "search": "Search",
+    "all": "All",
+    "none": "None",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "optional",
+    "notes": "Notes",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{total}}",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "confirmDeleteTitle": "Delete this item?",
+    "confirmDeleteBody": "This cannot be undone.",
+    "language": "Language",
+    "openMenu": "Open menu",
+    "noValue": "—"
+  },
+  "errors": {
+    "generic": "Something went wrong. Try again in a moment.",
+    "network": "The server cannot be reached. Check your connection and try again.",
+    "notFound": "This page does not exist or you no longer have access to it.",
+    "forbidden": "Your role on this vehicle does not allow this action.",
+    "requestId": "Reference: {{id}}",
+    "required": "Required"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "ar": "العربية"
+  }
+}

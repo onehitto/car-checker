@@ -1,0 +1,48 @@
+{
+  "app": {
+    "name": "Car Checker",
+    "tagline": "دفتر صيانة مركباتك"
+  },
+  "common": {
+    "save": "حفظ",
+    "saveChanges": "حفظ التغييرات",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "close": "إغلاق",
+    "back": "رجوع",
+    "retry": "إعادة المحاولة",
+    "loading": "جارٍ التحميل…",
+    "search": "بحث",
+    "all": "الكل",
+    "none": "لا شيء",
+    "yes": "نعم",
+    "no": "لا",
+    "optional": "اختياري",
+    "notes": "ملاحظات",
+    "previous": "السابق",
+    "next": "التالي",
+    "pageOf": "الصفحة {{page}} من {{total}}",
+    "results_one": "نتيجة واحدة",
+    "results_other": "{{count}} نتائج",
+    "confirmDeleteTitle": "حذف هذا العنصر؟",
+    "confirmDeleteBody": "لا يمكن التراجع عن هذا الإجراء.",
+    "language": "اللغة",
+    "openMenu": "فتح القائمة",
+    "noValue": "—"
+  },
+  "errors": {
+    "generic": "حدث خطأ. حاول مرة أخرى بعد قليل.",
+    "network": "تعذر الوصول إلى الخادم. تحقق من اتصالك وحاول مرة أخرى.",
+    "notFound": "هذه الصفحة غير موجودة أو لم يعد لديك حق الوصول إليها.",
+    "forbidden": "دورك في هذه المركبة لا يسمح بهذا الإجراء.",
+    "requestId": "المرجع: {{id}}",
+    "required": "مطلوب"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "Français",
+    "ar": "العربية"
+  }
+}
