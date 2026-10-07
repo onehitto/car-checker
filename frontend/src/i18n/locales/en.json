@@ -24,13 +24,15 @@
     "previous": "Previous",
     "next": "Next",
     "pageOf": "Page {{page}} of {{total}}",
-    "results_one": "{{count}} result",
-    "results_other": "{{count}} results",
     "confirmDeleteTitle": "Delete this item?",
     "confirmDeleteBody": "This cannot be undone.",
     "language": "Language",
     "openMenu": "Open menu",
-    "noValue": "—"
+    "noValue": "—",
+    "moreActions": "More actions",
+    "deleted": "Deleted",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results"
   },
   "errors": {
     "generic": "Something went wrong. Try again in a moment.",
@@ -128,5 +130,19 @@
   },
   "dashboard": {
     "greeting": "Hello {{name}}"
+  },
+  "validation": {
+    "required": "Required",
+    "number": "Enter a number.",
+    "wholeNumber": "Enter a whole number.",
+    "positive": "Enter a number greater than 0.",
+    "min": "Enter {{min}} or more.",
+    "max": "Enter {{max}} or less.",
+    "email": "Enter a valid email address.",
+    "invalid": "This value is not valid.",
+    "maxLength_one": "{{count}} character at most.",
+    "maxLength_other": "{{count}} characters at most.",
+    "decimal_one": "Enter a number with at most {{count}} decimal, e.g. 12.5.",
+    "decimal_other": "Enter a number with at most {{count}} decimals, e.g. 120.50."
   }
 }

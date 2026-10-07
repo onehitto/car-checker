@@ -24,13 +24,16 @@
     "previous": "Précédent",
     "next": "Suivant",
     "pageOf": "Page {{page}} sur {{total}}",
-    "results_one": "{{count}} résultat",
-    "results_other": "{{count}} résultats",
     "confirmDeleteTitle": "Supprimer cet élément ?",
     "confirmDeleteBody": "Cette action est définitive.",
     "language": "Langue",
     "openMenu": "Ouvrir le menu",
-    "noValue": "—"
+    "noValue": "—",
+    "moreActions": "Plus d'actions",
+    "deleted": "Supprimé",
+    "results_one": "{{count}} résultat",
+    "results_other": "{{count}} résultats",
+    "results_many": "{{count}} résultats"
   },
   "errors": {
     "generic": "Une erreur est survenue. Réessayez dans un instant.",
@@ -128,5 +131,21 @@
   },
   "dashboard": {
     "greeting": "Bonjour {{name}}"
+  },
+  "validation": {
+    "required": "Obligatoire",
+    "number": "Saisissez un nombre.",
+    "wholeNumber": "Saisissez un nombre entier.",
+    "positive": "Saisissez un nombre supérieur à 0.",
+    "min": "Saisissez {{min}} ou plus.",
+    "max": "Saisissez {{max}} ou moins.",
+    "email": "Saisissez une adresse e-mail valide.",
+    "invalid": "Cette valeur n'est pas valide.",
+    "maxLength_one": "{{count}} caractère au maximum.",
+    "maxLength_other": "{{count}} caractères au maximum.",
+    "maxLength_many": "{{count}} caractères au maximum.",
+    "decimal_one": "Saisissez un nombre avec {{count}} décimale au plus, par ex. 12,5.",
+    "decimal_other": "Saisissez un nombre avec {{count}} décimales au plus, par ex. 120,50.",
+    "decimal_many": "Saisissez un nombre avec {{count}} décimales au plus, par ex. 120,50."
   }
 }

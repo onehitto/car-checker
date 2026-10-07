@@ -12,6 +12,7 @@ function keys(value: unknown, prefix = ""): string[] {
 }
 
 /** Arabic has more plural forms than English: compare keys without plural suffixes. */
+const ARABIC_FORMS = ["zero", "one", "two", "few", "many", "other"];
 const base = (key: string) => key.replace(/_(zero|one|two|few|many|other)$/, "");
 
 describe("translations", () => {
@@ -23,5 +24,17 @@ describe("translations", () => {
     const actual = new Set(keys(catalog).map(base));
     expect([...expected].filter((key) => !actual.has(key))).toEqual([]);
     expect([...actual].filter((key) => !expected.has(key))).toEqual([]);
+  });
+
+  it("gives Arabic plurals all six forms", () => {
+    const plurals = new Set(
+      keys(ar)
+        .filter((key) => base(key) !== key)
+        .map(base),
+    );
+    const missing = [...plurals].flatMap((key) =>
+      ARABIC_FORMS.map((form) => `${key}_${form}`).filter((key) => !keys(ar).includes(key)),
+    );
+    expect(missing).toEqual([]);
   });
 });

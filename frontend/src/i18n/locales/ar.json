@@ -24,13 +24,19 @@
     "previous": "السابق",
     "next": "التالي",
     "pageOf": "الصفحة {{page}} من {{total}}",
-    "results_one": "نتيجة واحدة",
-    "results_other": "{{count}} نتائج",
     "confirmDeleteTitle": "حذف هذا العنصر؟",
     "confirmDeleteBody": "لا يمكن التراجع عن هذا الإجراء.",
     "language": "اللغة",
     "openMenu": "فتح القائمة",
-    "noValue": "—"
+    "noValue": "—",
+    "moreActions": "إجراءات أخرى",
+    "deleted": "تم الحذف",
+    "results_zero": "لا نتائج",
+    "results_one": "نتيجة واحدة",
+    "results_two": "نتيجتان",
+    "results_few": "{{count}} نتائج",
+    "results_many": "{{count}} نتيجة",
+    "results_other": "{{count}} نتيجة"
   },
   "errors": {
     "generic": "حدث خطأ. حاول مرة أخرى بعد قليل.",
@@ -128,5 +134,27 @@
   },
   "dashboard": {
     "greeting": "مرحباً {{name}}"
+  },
+  "validation": {
+    "required": "مطلوب",
+    "number": "أدخل رقمًا.",
+    "wholeNumber": "أدخل عددًا صحيحًا.",
+    "positive": "أدخل رقمًا أكبر من 0.",
+    "min": "أدخل {{min}} أو أكثر.",
+    "max": "أدخل {{max}} أو أقل.",
+    "email": "أدخل بريدًا إلكترونيًا صحيحًا.",
+    "invalid": "هذه القيمة غير صالحة.",
+    "maxLength_zero": "{{count}} حرف على الأكثر.",
+    "maxLength_one": "حرف واحد على الأكثر.",
+    "maxLength_two": "حرفان على الأكثر.",
+    "maxLength_few": "{{count}} أحرف على الأكثر.",
+    "maxLength_many": "{{count}} حرفًا على الأكثر.",
+    "maxLength_other": "{{count}} حرف على الأكثر.",
+    "decimal_zero": "أدخل عددًا صحيحًا.",
+    "decimal_one": "أدخل رقمًا بمنزلة عشرية واحدة على الأكثر، مثل 12.5.",
+    "decimal_two": "أدخل رقمًا بمنزلتين عشريتين على الأكثر، مثل 120.50.",
+    "decimal_few": "أدخل رقمًا بـ {{count}} منازل عشرية على الأكثر، مثل 1.125.",
+    "decimal_many": "أدخل رقمًا بـ {{count}} منزلة عشرية على الأكثر.",
+    "decimal_other": "أدخل رقمًا بـ {{count}} منزلة عشرية على الأكثر."
   }
 }
