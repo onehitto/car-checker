@@ -32,64 +32,75 @@ and `NULLS NOT DISTINCT`-style constraints.
 ```
 car-checker/
 ├── docker-compose.yml          # api + worker + postgres + redis
+├── Makefile                    # make up / test / lint / typecheck / migrate ...
+├── docker/postgres/init/       # creates the test database
 ├── docs/                       # this documentation
 └── backend/
     ├── Dockerfile              # multi-stage build, non-root runtime
-    ├── docker/entrypoint.sh    # migrations + seed + exec
+    ├── docker/entrypoint.sh    # wait for DB, migrations + seed, exec api/worker
     ├── .env.example
-    ├── pyproject.toml          # dependencies, ruff, mypy, pytest config
+    ├── pyproject.toml          # dependencies, ruff, mypy, pytest, coverage config
     ├── alembic.ini
-    ├── migrations/             # Alembic environment + versioned revisions
+    ├── migrations/             # Alembic environment + one revision per feature
     ├── app/
     │   ├── main.py             # create_app(): middleware, error handlers, routers
     │   ├── worker.py           # background scheduler process
-    │   ├── cli.py              # seed, run-job, ... management commands
+    │   ├── cli.py              # wait-db, seed [--demo], list-jobs, run-job
     │   ├── core/               # cross-cutting, framework-level code
     │   │   ├── config.py       # Settings (environment variables)
     │   │   ├── logging.py      # structlog configuration + redaction
     │   │   ├── exceptions.py   # AppError hierarchy (domain → HTTP mapping)
     │   │   ├── error_handlers.py
-    │   │   ├── responses.py    # success/error envelopes
-    │   │   ├── pagination.py   # page/limit params + metadata
-    │   │   ├── security.py     # Argon2 hashing, JWT encode/decode
-    │   │   ├── rate_limit.py
-    │   │   ├── middleware.py   # request id, access log, security headers
+    │   │   ├── responses.py    # success/list/error envelopes
+    │   │   ├── schemas.py      # RequestModel/ResponseModel, constrained field types
+    │   │   ├── pagination.py   # page/limit params, whitelisted sorting, LIKE escaping
+    │   │   ├── updates.py      # PATCH semantics helper
+    │   │   ├── security.py     # Argon2 hashing, password policy, JWT, opaque tokens
+    │   │   ├── rate_limit.py   # memory/Redis fixed-window limiter
+    │   │   ├── middleware.py   # request id, access log, security headers, body size
+    │   │   ├── clock.py        # injectable clock ("today" in a time zone)
     │   │   ├── ids.py          # time-ordered UUIDv7 generator
-    │   │   ├── dates.py        # month arithmetic, "today" in a time zone
+    │   │   ├── dates.py        # month arithmetic
     │   │   ├── units.py        # km/mi, L/100km, km/L, MPG conversions
-    │   │   └── i18n/           # translation catalogs (en, fr, ar)
+    │   │   └── i18n/           # translation catalogs (en, fr, ar) + request language
     │   ├── db/
-    │   │   ├── base.py         # declarative Base, naming convention, mixins
+    │   │   ├── base.py         # Base, naming convention, mixins, StrEnumType
+    │   │   ├── catalog.py      # shared shape of type catalogs
     │   │   ├── session.py      # async engine + session factory
+    │   │   ├── seeds.py        # system maintenance and part types
+    │   │   ├── demo.py         # development demo dataset
     │   │   └── all_models.py   # imports every model (Alembic autogenerate)
     │   ├── api/
-    │   │   ├── deps.py         # DB session, current user, vehicle access guards
+    │   │   ├── deps.py         # DB session, current user, settings, storage...
     │   │   ├── router.py       # mounts module routers under /api/v1
+    │   │   ├── catalog.py      # router factory for type catalogs
+    │   │   ├── openapi.py      # descriptions, tags, shared error responses
     │   │   └── health.py
     │   ├── modules/            # one package per business capability
-    │   │   ├── auth/           # register, login, tokens, password reset
+    │   │   ├── auth/           # register, login, token rotation, passwords
     │   │   ├── users/          # profile, sessions, account deletion
     │   │   ├── audit/          # security audit trail
-    │   │   ├── vehicles/       # vehicles + sharing (vehicle_access)
-    │   │   ├── mileage/
+    │   │   ├── vehicles/       # vehicles, role guards (access.py), sharing
+    │   │   ├── mileage/        # odometer history
     │   │   ├── garages/
     │   │   ├── maintenance/    # types, records, schedules, oil changes, calculator
-    │   │   ├── parts/
-    │   │   ├── tires/
-    │   │   ├── documents/
-    │   │   ├── alerts/         # alerts, reminders, alert engine
-    │   │   ├── notifications/  # preferences, deliveries, channels
-    │   │   ├── expenses/
-    │   │   ├── fuel/
-    │   │   ├── attachments/    # upload validation + storage backends
+    │   │   ├── parts/          # part types, replacements, lifetime
+    │   │   ├── tires/          # tires, events, rotations
+    │   │   ├── documents/      # documents + expiration logic
+    │   │   ├── alerts/         # alerts, rules, engine, custom reminders
+    │   │   ├── notifications/  # preferences, outbox, dispatcher, e-mail senders
+    │   │   ├── expenses/       # ledger + linked expenses
+    │   │   ├── fuel/           # fill-ups + consumption calculator
+    │   │   ├── attachments/    # validation, storage backends, vehicle picture
     │   │   ├── notes/
     │   │   ├── timeline/
-    │   │   ├── dashboard/
-    │   │   └── statistics/
-    │   └── jobs/               # job registry, scheduler, advisory locks
+    │   │   ├── statistics/
+    │   │   └── dashboard/      # vehicle/user dashboards + health score
+    │   └── jobs/               # registry, runner (advisory locks), scheduler, tasks
     └── tests/
-        ├── conftest.py         # test DB, transactional fixtures, HTTP client
-        ├── unit/               # pure functions (calculators, validators)
+        ├── conftest.py         # test DB, transactional fixtures, app factory
+        ├── helpers.py          # HTTP helpers (register, create vehicle, ...)
+        ├── unit/               # pure functions, security, OpenAPI contract
         └── integration/        # HTTP-level tests per module
 ```
 
@@ -101,7 +112,7 @@ Each module follows the same internal layout:
 | `schemas.py`  | Pydantic request/response DTOs (the public API contract)               |
 | `service.py`  | Use cases: authorization-aware business logic, transactions            |
 | `router.py`   | HTTP layer only: parse input, call the service, wrap the response      |
-| `*.py`        | Pure domain logic (e.g. `calculator.py`) with no I/O, unit-tested      |
+| `*.py`        | Pure domain logic with no I/O, unit-tested (`calculator.py`, `expiration.py`, `rules.py`, `lifetime.py`, `health.py`) |
 
 ## 3. System architecture
 

@@ -106,7 +106,7 @@ engine computes the *desired* alert (or none):
 | Maintenance schedule    | status ≥ UPCOMING                            | `maintenance_due` (`inspection_due` for the inspection type) | upcoming → low, due_soon → medium, due → high, overdue → critical |
 | Vehicle document        | a reminder offset reached or expired         | `insurance_expiration`, `inspection_due` (technical inspection) or `document_expiration` | > 30 d → low, ≤ 30 d → medium, ≤ 7 d → high, expired → critical |
 | Part replacement        | lifetime status ≥ DUE_SOON                   | `part_lifetime`        | as maintenance   |
-| Reminder                | status ≥ DUE_SOON and not completed          | `custom_reminder`      | as maintenance   |
+| Custom reminder         | status ≥ DUE_SOON and not completed (warnings 7 days / 500 km by default) | `custom_reminder` | as maintenance |
 | Vehicle mileage         | last reading older than 30 days (active vehicles) | `mileage_reminder` | info             |
 
 Each desired alert has a **dedup key** describing the source, the deadline and
@@ -214,6 +214,7 @@ MPG (UK)  = 282.480936 / (L/100km)
 miles     = km × 0.621371
 ```
 
-Statistics endpoints accept `distance_unit` and `consumption_unit` query
-parameters (defaulting to the user's preferences) and return converted values;
-records are always stored and returned in km and litres.
+`GET /vehicles/{id}/fuel/statistics` accepts `distance_unit` and
+`consumption_unit` query parameters (defaulting to the user's preferences) and
+returns converted values; records are always stored and returned in km and
+litres.

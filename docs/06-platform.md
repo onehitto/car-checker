@@ -44,7 +44,7 @@ client ──multipart──▶ router ──▶ AttachmentService ──▶ val
 app/jobs/
 ├── registry.py   # @job("name") decorator → JOB_REGISTRY
 ├── tasks.py      # job functions: async def fn(ctx: JobContext) -> None
-├── locks.py      # pg_try_advisory_lock helpers
+├── runner.py     # run_job(): advisory lock, timing, logging, failure isolation
 └── scheduler.py  # APScheduler wiring (interval/cron triggers)
 app/worker.py     # process entrypoint
 app/cli.py        # python -m app.cli run-job <name>
@@ -55,7 +55,7 @@ app/cli.py        # python -m app.cli run-job <name>
 | `generate_alerts`           | hourly        | Maintenance, documents, parts, reminders, stale mileage → alerts |
 | `dispatch_notifications`    | every minute  | Send pending email/push/SMS deliveries                          |
 | `cleanup_expired_tokens`    | daily 03:00   | Delete expired refresh/reset tokens and old revoked sessions     |
-| `cleanup_orphan_files`      | daily 04:00   | Remove stored files without metadata rows                       |
+| `cleanup_orphan_files`      | daily 04:00   | Remove attachments of deleted records and files without metadata rows; keep notes of deleted records as vehicle notes |
 
 Design rules:
 
@@ -108,7 +108,9 @@ docker-compose.yml
 | `PASSWORD_RESET_EXPIRES_IN`    | `1800`                                          | Seconds                                            |
 | `CORS_ORIGINS`                 | `http://localhost:3000,http://localhost:5173`   | Comma-separated list                               |
 | `UPLOAD_DIRECTORY`             | `./var/uploads`                                 | Local storage root                                 |
-| `MAX_UPLOAD_SIZE`              | `10485760`                                      | Bytes (10 MiB)                                     |
+| `MAX_UPLOAD_SIZE`              | `10485760`                                      | Bytes (10 MiB); request bodies are capped at this + 1 MiB |
+| `RATE_LIMIT_AUTH` / `RATE_LIMIT_UPLOAD` | `10/minute` / `30/minute`              | Stricter limits for credential, sharing and upload endpoints |
+| `PASSWORD_HASH_TIME_COST` / `PASSWORD_HASH_MEMORY_COST` / `PASSWORD_HASH_PARALLELISM` | `3` / `65536` / `4` | Argon2id cost (production refuses less than 19 MiB / t=2) |
 | `STORAGE_BACKEND`              | `local`                                         | `local` (S3 later)                                 |
 | `REDIS_URL`                    | empty                                           | Enables the Redis rate-limit backend               |
 | `RATE_LIMIT_ENABLED`           | `true`                                          |                                                    |
@@ -119,7 +121,9 @@ docker-compose.yml
 | `EMAIL_FROM`                   | `Car Checker <no-reply@carchecker.local>`       |                                                    |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USERNAME` / `SMTP_PASSWORD` / `SMTP_STARTTLS` | — | SMTP provider                   |
 | `FRONTEND_URL`                 | `http://localhost:3000`                         | Used to build password-reset links                 |
-| `RUN_MIGRATIONS`               | `true` (compose)                                | Entrypoint migrates + seeds                        |
+| `RUN_MIGRATIONS`               | `true` (compose `api`)                          | Entrypoint migrates + seeds                        |
+| `DB_WAIT_TIMEOUT`              | `60`                                            | Seconds the entrypoint waits for the database      |
+| `WEB_CONCURRENCY`              | `1`                                             | Uvicorn worker processes                           |
 | `FORWARDED_ALLOW_IPS`          | `127.0.0.1`                                     | Trusted reverse proxies for client IPs             |
 
 `backend/.env.example` lists them all. `.env` files are git-ignored. In
@@ -158,5 +162,7 @@ equal to the development placeholders.
   Tests are independent and fast.
 * **Determinism**: "today" is injected (`Clock` dependency), so date-based tests
   do not depend on the calendar.
-* Run: `docker compose up -d db && cd backend && pytest` (or `make test`).
-* Coverage report: `pytest --cov=app --cov-report=term-missing`.
+* Contract tests check the OpenAPI document: every private operation requires
+  the bearer scheme and every error response uses the error envelope.
+* Run: `make infra && make test` (or `cd backend && pytest`).
+* Coverage report: `make cov` (greenlet-aware, ~98 %).

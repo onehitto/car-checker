@@ -3,6 +3,10 @@
 Each step is one or more small commits, keeps the application runnable and is
 covered by tests before moving on.
 
+**Status:** phases 1 to 4 are implemented (see `git log`): 119 API operations,
+26 tables, ~390 automated tests, ~98 % line coverage, strict mypy, Docker stack.
+The "Later" list is the roadmap.
+
 ## Phase 1 — Foundation
 1. Repository, documentation, Python project (`pyproject.toml`, Ruff, mypy, pytest).
 2. Settings from environment variables with production safety checks.

@@ -113,13 +113,14 @@ Implementation:
 | Authorization         | Per-vehicle role checks, 404 for foreign resources, ownership validation of every referenced id |
 | Input validation      | Pydantic strict schemas, `extra="forbid"` on request bodies, bounded string lengths and numeric ranges |
 | SQL injection         | SQLAlchemy bound parameters everywhere; `LIKE` patterns escaped; sort fields whitelisted |
-| Rate limiting         | Global per-IP limit + strict limits on login, register, refresh, password reset, uploads |
+| Rate limiting         | Global per-IP limit + strict limits on login, register, refresh, password reset/change, sharing, uploads |
+| Request size          | Bodies over `MAX_UPLOAD_SIZE` + 1 MiB are rejected with 413 before being read |
 | CORS                  | Explicit origin list from `CORS_ORIGINS`; no wildcard with credentials                  |
 | HTTP headers          | `X-Content-Type-Options`, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy`, CSP `default-src 'none'` for API responses, HSTS in production |
 | File uploads          | Size limit (streamed), MIME detection from magic bytes, extension allow-list, sanitized names, random storage keys outside the web root, `Content-Disposition: attachment` and `nosniff` on download |
 | Secrets               | Only from environment variables; `.env` git-ignored; startup refuses default secrets in production |
 | Logging               | Structured logs with a redaction processor for passwords, tokens, secrets and authorization headers |
-| Audit                 | `audit_logs` for login success/failure, logout, password change/reset, account deletion, sharing changes, vehicle deletion |
+| Audit                 | `audit_logs` for registration, login success/failure, logout, refresh-token reuse, session revocation, password change/reset, account deletion, sharing changes, forced mileage corrections, vehicle deletion |
 | Errors                | No stack traces or SQL in responses; 500 returns a generic message + request id         |
 | Docs exposure         | Swagger UI / OpenAPI only when `ENABLE_DOCS=true` (default in development only)         |
 | Health endpoints      | Report status only, no versions, hostnames or connection strings                         |

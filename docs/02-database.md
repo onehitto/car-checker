@@ -364,7 +364,7 @@ U (user_id, channel, alert_type).
 | total_price     | NUMERIC(12,2) | CHECK ≥ 0 (derived from liters × price when omitted)    |
 | full_tank       | BOOLEAN       | NN, default true                                        |
 | missed_previous | BOOLEAN       | NN, default false (breaks the consumption chain)        |
-| fuel_type       | VARCHAR(20)   | CHECK enum                                              |
+| fuel_type       | VARCHAR(20)   | CHECK (`petrol`,`diesel`,`e85`,`lpg`,`cng`,`hydrogen`,`other`) |
 | gas_station     | VARCHAR(120)  |                                                         |
 | notes, created_by_id |          |                                                         |
 
@@ -384,8 +384,9 @@ U (user_id, channel, alert_type).
 | part_replacement_id   | UUID          | U, FK → part_replacements CASCADE                        |
 | notes, created_by_id  |               | CHECK `num_nonnulls(maintenance_record_id, fuel_record_id, part_replacement_id) <= 1` |
 
-Maintenance records, fuel fill-ups and standalone part purchases with a cost
-create and maintain a **linked expense** in the same transaction. Statistics
+Maintenance records (including oil changes), fuel fill-ups and standalone part
+purchases with a cost create and maintain a **linked expense** in the same
+transaction (parts installed during a maintenance are costed by it). Statistics
 therefore read one table and nothing is counted twice. Linked expenses are
 read-only through the expense endpoints (edit the source record instead).
 
@@ -397,7 +398,7 @@ read-only through the expense endpoints (edit the source record instead).
 | id              | UUID         | PK                                                          |
 | user_id         | UUID         | FK → users SET NULL (uploader)                              |
 | vehicle_id      | UUID         | NN, FK → vehicles CASCADE, IX                               |
-| entity_type     | VARCHAR(30)  | NN, CHECK (`vehicle`,`maintenance_record`,`part_replacement`,`expense`,`vehicle_document`,`fuel_record`,`tire`,`note`) |
+| entity_type     | VARCHAR(30)  | NN, CHECK (`vehicle`,`maintenance_record`,`part_replacement`,`expense`,`vehicle_document`,`fuel_record`,`tire`) |
 | entity_id       | UUID         | NN; IX (entity_type, entity_id)                             |
 | file_name       | VARCHAR(255) | NN (sanitized original name)                                |
 | content_type    | VARCHAR(100) | NN (detected from magic bytes)                              |
@@ -409,7 +410,7 @@ read-only through the expense endpoints (edit the source record instead).
 
 #### `notes`
 `id` PK · `vehicle_id` NN FK CASCADE · `user_id` FK SET NULL (author) ·
-`entity_type`, `entity_id` (optional parent, same values as attachments) ·
+`entity_type`, `entity_id` (optional parent record of the vehicle, CHECK both or none) ·
 `category` NN CHECK (`general`,`maintenance`,`repair`,`part`,`problem`,`document`) ·
 `title` · `body` TEXT NN · `is_pinned` BOOLEAN NN. IX (vehicle_id, created_at), IX (entity_type, entity_id).
 
@@ -531,6 +532,8 @@ with default lifetimes where meaningful.
 Intervals are generic defaults only; users override them per vehicle in
 maintenance schedules.
 
-`python -m app.cli seed --demo` additionally creates a demo user
-(`demo@carchecker.local`) with a vehicle, records and documents — **development
-only** (refused when `APP_ENV=production`).
+`python -m app.cli seed --demo` additionally creates a demo account
+(`demo@example.com` / `Car-checker-2026`) with two vehicles and a realistic
+history (oil changes, a repair, schedules, parts, documents, fill-ups, expenses,
+tires, a reminder, a note), built through the application services —
+**development only** (refused when `APP_ENV=production`).
