@@ -1,5 +1,16 @@
 # Static single-page app + same-origin proxy to the API (no CORS needed).
-# ${API_UPSTREAM} is substituted at container start; nginx variables stay untouched.
+# Environment variables are substituted at container start; nginx variables stay untouched.
+# Trust only the subnet of the reverse proxy that terminates HTTPS.
+geo $realip_remote_addr $trusted_proxy {
+    default 0;
+    ${TRUSTED_PROXY_CIDR} 1;
+}
+
+map "$trusted_proxy:$http_x_forwarded_proto" $forwarded_proto {
+    default $scheme;
+    "1:http" http;
+    "1:https" https;
+}
 
 server {
     listen 8080;
@@ -7,6 +18,16 @@ server {
     root /usr/share/nginx/html;
     server_tokens off;
     client_max_body_size 12m;
+
+    set_real_ip_from ${TRUSTED_PROXY_CIDR};
+    real_ip_header X-Forwarded-For;
+    real_ip_recursive on;
+
+    proxy_set_header Host $host;
+    # Discard incoming address chains after resolving the last untrusted client.
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header X-Forwarded-Proto $forwarded_proto;
+    proxy_set_header X-Request-ID $request_id;
 
     gzip on;
     gzip_types text/css application/javascript application/json image/svg+xml;
@@ -19,10 +40,6 @@ server {
 
     location /api/ {
         proxy_pass ${API_UPSTREAM};
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Request-ID $request_id;
     }
 
     location = /health {

@@ -1,0 +1,105 @@
+# Production application for Coolify. PostgreSQL is a separate Coolify resource.
+# See docs/09-deployment-coolify.md for domains, networking, secrets and backups.
+# Deploy this file on its own; do not merge it with the development Compose file.
+
+x-backend: &backend
+  build:
+    context: ./backend
+    target: runtime
+  restart: unless-stopped
+  environment: &backend-env
+    APP_ENV: production
+    API_PORT: "8000"
+    WEB_CONCURRENCY: "1"
+    DATABASE_URL: ${DATABASE_URL:?}
+    JWT_SECRET: ${JWT_SECRET:?}
+    JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?}
+    FRONTEND_URL: ${FRONTEND_URL:?}
+    CORS_ORIGINS: ${CORS_ORIGINS:-${FRONTEND_URL:?}}
+    REDIS_URL: redis://redis:6379/0
+    STORAGE_BACKEND: local
+    UPLOAD_DIRECTORY: /data/uploads
+    LOG_FORMAT: json
+    LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    EMAIL_BACKEND: smtp
+    EMAIL_FROM: ${EMAIL_FROM:?}
+    SMTP_HOST: ${SMTP_HOST:?}
+    SMTP_PORT: ${SMTP_PORT:-587}
+    SMTP_USERNAME: ${SMTP_USERNAME:-}
+    SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+    SMTP_STARTTLS: ${SMTP_STARTTLS:-true}
+  volumes:
+    - uploads:/data/uploads
+
+services:
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  api:
+    <<: *backend
+    command: ["api"]
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "true"
+      # nginx forwards a sanitized client address. Trust its private Docker IP;
+      # override with the web network's CIDR for a narrower trust boundary.
+      # Keep this service private: no host port mapping or public Coolify domain.
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-10.0.0.0/8,172.16.0.0/12,192.168.0.0/16}
+    expose:
+      - "8000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"
+      interval: 10s
+      timeout: 5s
+      start_period: 60s
+      retries: 6
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker:
+    <<: *backend
+    command: ["worker"]
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "false"
+    healthcheck:
+      disable: true
+    depends_on:
+      api:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./frontend
+      target: runtime
+    restart: unless-stopped
+    environment:
+      API_UPSTREAM: http://api:8000
+      # Trust only the actual Coolify ingress proxy IP/subnet for forwarded headers.
+      TRUSTED_PROXY_CIDR: ${TRUSTED_PROXY_CIDR:?}
+    expose:
+      - "8080"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 5s
+      start_period: 10s
+      retries: 6
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  uploads:

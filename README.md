@@ -50,6 +50,13 @@ make fe-build       # production image: static files served by nginx
 docker compose --profile production up web   # production image on http://localhost:8080
 ```
 
+## Deploy to Coolify
+
+Use [`docker-compose.coolify.yml`](docker-compose.coolify.yml) for the production
+web app, API, worker and Redis, with PostgreSQL as a separate Coolify database.
+The [deployment guide](docs/09-deployment-coolify.md) covers GitHub access,
+configuration, HTTPS, persistent uploads, verification and backups.
+
 ## What is inside
 
 | Area            | Highlights                                                                 |

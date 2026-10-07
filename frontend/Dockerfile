@@ -19,7 +19,8 @@ COPY . .
 RUN npm run build
 
 FROM nginxinc/nginx-unprivileged:1.29-alpine AS runtime
-ENV API_UPSTREAM=http://api:8000
+ENV API_UPSTREAM=http://api:8000 \
+    TRUSTED_PROXY_CIDR=127.0.0.1/32
 COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 8080

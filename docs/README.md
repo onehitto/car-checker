@@ -36,3 +36,6 @@ backend sections follow the order requested in the specification.
 
 Web app (stack, Docker workflow, screens, data refresh, authentication, design
 plan, tests): [08-frontend.md](08-frontend.md).
+
+Production deployment with Coolify (GitHub, Compose, PostgreSQL, configuration,
+HTTPS, uploads, backups): [09-deployment-coolify.md](09-deployment-coolify.md).
