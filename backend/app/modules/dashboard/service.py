@@ -54,6 +54,7 @@ from app.modules.vehicles.service import VehicleService
 from app.modules.vehicles.service import to_response as vehicle_response
 
 RECENT_ITEMS = 5
+CENT = Decimal("0.01")
 UPCOMING_LIMIT = 10
 COST_CATEGORIES = (ExpenseCategory.MAINTENANCE, ExpenseCategory.REPAIRS, ExpenseCategory.PARTS)
 UPCOMING_STATUSES = (DueStatus.DUE, DueStatus.DUE_SOON, DueStatus.UPCOMING)
@@ -217,7 +218,8 @@ class DashboardService:
         month = extract("month", Expense.expense_date)
 
         async def total(*conditions: Any) -> Decimal:
-            return Decimal(await self.session.scalar(select(amount).where(scope, *conditions)) or 0)
+            value = await self.session.scalar(select(amount).where(scope, *conditions))
+            return Decimal(value or 0).quantize(CENT)
 
         first_month = add_months(today.replace(day=1), -11)
         label = func.to_char(Expense.expense_date, "YYYY-MM")
@@ -238,7 +240,8 @@ class DashboardService:
             this_year=await total(year == today.year),
             total_maintenance_cost=await total(Expense.category.in_(COST_CATEGORIES)),
             monthly=[
-                MonthTotal(month=key, total=Decimal(monthly_rows.get(key, 0))) for key in months
+                MonthTotal(month=key, total=Decimal(monthly_rows.get(key, 0)).quantize(CENT))
+                for key in months
             ],
         )
 
@@ -351,7 +354,11 @@ class DashboardService:
             .order_by(Vehicle.currency)
         )
         return [
-            CurrencyCosts(currency=currency, this_month=month_total, this_year=year_total)
+            CurrencyCosts(
+                currency=currency,
+                this_month=Decimal(month_total).quantize(CENT),
+                this_year=Decimal(year_total).quantize(CENT),
+            )
             for currency, month_total, year_total in rows
         ]
 
