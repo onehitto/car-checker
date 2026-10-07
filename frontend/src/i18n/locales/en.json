@@ -298,6 +298,24 @@
       "cng": "CNG",
       "hydrogen": "Hydrogen",
       "other": "Other"
+    },
+    "documentType": {
+      "insurance": "Insurance",
+      "registration": "Registration",
+      "technical_inspection": "Technical inspection",
+      "road_tax": "Road tax",
+      "warranty": "Warranty",
+      "leasing": "Leasing",
+      "other": "Other"
+    },
+    "attachmentEntity": {
+      "vehicle": "Vehicle",
+      "maintenance_record": "Service",
+      "part_replacement": "Part",
+      "expense": "Expense",
+      "vehicle_document": "Document",
+      "fuel_record": "Fill-up",
+      "tire": "Tire"
     }
   },
   "vehicles": {
@@ -449,7 +467,40 @@
   },
   "documents": {
     "expiredOn": "Expired on {{date}}",
-    "expiresOn": "Expires on {{date}}"
+    "expiresOn": "Expires on {{date}}",
+    "sections": {
+      "documents": "Papers",
+      "files": "Files"
+    },
+    "add": "Add a document",
+    "addTitle": "Add a document",
+    "editTitle": "Edit the document",
+    "formBody": "With an expiry date, you are reminded before it runs out. Attach the scan from the list afterwards.",
+    "added": "Document added",
+    "updated": "Document updated",
+    "deleted": "Document deleted",
+    "deleteBody": "Its files and reminders are deleted too.",
+    "allTypes": "All documents",
+    "allStatuses": "Any status",
+    "noMatch": "No document matches these filters.",
+    "emptyTitle": "No document yet",
+    "emptyBody": "Add the insurance, the technical inspection and the road tax with their expiry dates: you will be reminded before each one runs out.",
+    "noExpiry": "No expiry date",
+    "expiresToday": "Expires today",
+    "expiresIn": "Expires on {{date}}, in {{days}}",
+    "fields": {
+      "type": "Type",
+      "title": "Name",
+      "titlePlaceholder": "e.g. Car insurance 2026",
+      "number": "Number",
+      "provider": "Issued by",
+      "issued": "Issued on",
+      "expires": "Expires on",
+      "expiresHint": "Leave empty if it never expires.",
+      "reminders": "Remind me (days before)",
+      "remindersHint": "Separated by commas, e.g. 30, 7, 1, 0 (0 is the day itself).",
+      "remindersInvalid": "Use up to 10 whole numbers between 0 and 365, separated by commas."
+    }
   },
   "alerts": {
     "unread": "Unread"
@@ -642,5 +693,23 @@
     "vehicle": "Vehicle",
     "allVehicles": "All vehicles",
     "currencyTotal": "Spent in {{currency}}"
+  },
+  "files": {
+    "title": "Files",
+    "of": "Files of {{name}}",
+    "ofFillUp": "Files of the fill-up of {{date}}",
+    "add": "Add files",
+    "uploaded_one": "File added",
+    "uploaded_other": "{{count}} files added",
+    "deleted": "File deleted",
+    "deleteBody": "The file is removed for everyone who can see this vehicle.",
+    "download": "Download",
+    "dialogBody": "Invoices, photos and scans. Click a file to download it.",
+    "noneForRecord": "No file yet.",
+    "hint": "PDF, JPEG, PNG, WebP or HEIC, 10 MB maximum each.",
+    "belongsTo": "Attached to",
+    "allFiles": "All files",
+    "emptyTitle": "No file yet",
+    "emptyBody": "Keep invoices, the registration scan or photos of damage here. Files attached to services, documents or fill-ups are listed too."
   }
 }

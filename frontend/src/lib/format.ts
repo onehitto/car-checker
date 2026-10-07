@@ -77,6 +77,22 @@ export function formatMonth(locale: string, month: string, long = false): string
   }).format(new Date(Date.UTC(year ?? 1970, (index ?? 1) - 1, 1)));
 }
 
+/** File sizes: "820 kB", "2.4 MB". */
+export function formatBytes(locale: string, bytes: number): string {
+  if (bytes < 1000 * 1000) {
+    return new Intl.NumberFormat(locale, {
+      style: "unit",
+      unit: "kilobyte",
+      maximumFractionDigits: 0,
+    }).format(Math.max(1, bytes / 1000));
+  }
+  return new Intl.NumberFormat(locale, {
+    style: "unit",
+    unit: "megabyte",
+    maximumFractionDigits: 1,
+  }).format(bytes / (1000 * 1000));
+}
+
 /** Today's date as YYYY-MM-DD in the browser's time zone (default for date inputs). */
 export function todayIso(): string {
   const now = new Date();

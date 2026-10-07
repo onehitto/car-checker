@@ -16,6 +16,7 @@ import {
   RowMenu,
   Toolbar,
 } from "@/components/ui";
+import { AttachmentsDialog } from "@/features/attachments/AttachmentsDialog";
 import { useVehicleContext } from "@/features/vehicles/vehicleContext";
 import { useConfirmDelete } from "@/lib/useConfirmDelete";
 import { useFormat } from "@/lib/useFormat";
@@ -31,6 +32,7 @@ export function OilChangesTab() {
   const { page, setPage } = useSearchFilters({});
   const oilChanges = useOilChanges(vehicle.id, page);
   const [editing, setEditing] = useState<OilChange | "new" | null>(null);
+  const [files, setFiles] = useState<OilChange | null>(null);
   const remove = useConfirmDelete(
     (oilChange: OilChange) =>
       expectNoContent(
@@ -89,19 +91,18 @@ export function OilChangesTab() {
                   oilChange.cost === null ? "" : format.money(oilChange.cost, vehicle.currency)
                 }
                 actions={
-                  canEdit && (
-                    <RowMenu
-                      label={t("common.moreActions")}
-                      actions={[
-                        { label: t("common.edit"), onSelect: () => setEditing(oilChange) },
-                        {
-                          label: t("common.delete"),
-                          danger: true,
-                          onSelect: () => remove.ask(oilChange),
-                        },
-                      ]}
-                    />
-                  )
+                  <RowMenu
+                    label={t("common.moreActions")}
+                    actions={[
+                      { label: t("files.title"), onSelect: () => setFiles(oilChange) },
+                      canEdit && { label: t("common.edit"), onSelect: () => setEditing(oilChange) },
+                      canEdit && {
+                        label: t("common.delete"),
+                        danger: true,
+                        onSelect: () => remove.ask(oilChange),
+                      },
+                    ]}
+                  />
                 }
               />
             ))}
@@ -121,6 +122,16 @@ export function OilChangesTab() {
           vehicle={vehicle}
           oilChange={editing === "new" ? undefined : editing}
           onClose={() => setEditing(null)}
+        />
+      )}
+      {files && (
+        <AttachmentsDialog
+          vehicleId={vehicle.id}
+          entityType="maintenance_record"
+          entityId={files.id}
+          title={t("files.of", { name: files.title })}
+          canEdit={canEdit}
+          onClose={() => setFiles(null)}
         />
       )}
       {remove.dialog}

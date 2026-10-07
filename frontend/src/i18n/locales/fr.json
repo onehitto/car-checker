@@ -307,6 +307,24 @@
       "cng": "GNV",
       "hydrogen": "Hydrogène",
       "other": "Autre"
+    },
+    "documentType": {
+      "insurance": "Assurance",
+      "registration": "Carte grise",
+      "technical_inspection": "Contrôle technique",
+      "road_tax": "Vignette",
+      "warranty": "Garantie",
+      "leasing": "Leasing",
+      "other": "Autre"
+    },
+    "attachmentEntity": {
+      "vehicle": "Véhicule",
+      "maintenance_record": "Entretien",
+      "part_replacement": "Pièce",
+      "expense": "Dépense",
+      "vehicle_document": "Document",
+      "fuel_record": "Plein",
+      "tire": "Pneu"
     }
   },
   "vehicles": {
@@ -464,7 +482,40 @@
   },
   "documents": {
     "expiredOn": "Expiré le {{date}}",
-    "expiresOn": "Expire le {{date}}"
+    "expiresOn": "Expire le {{date}}",
+    "sections": {
+      "documents": "Papiers",
+      "files": "Fichiers"
+    },
+    "add": "Ajouter un document",
+    "addTitle": "Ajouter un document",
+    "editTitle": "Modifier le document",
+    "formBody": "Avec une date d'expiration, vous êtes prévenu avant l'échéance. Joignez le scan depuis la liste ensuite.",
+    "added": "Document ajouté",
+    "updated": "Document modifié",
+    "deleted": "Document supprimé",
+    "deleteBody": "Ses fichiers et rappels sont aussi supprimés.",
+    "allTypes": "Tous les documents",
+    "allStatuses": "Tous les statuts",
+    "noMatch": "Aucun document ne correspond à ces filtres.",
+    "emptyTitle": "Aucun document",
+    "emptyBody": "Ajoutez l'assurance, le contrôle technique et la vignette avec leur date d'expiration : vous serez prévenu avant chaque échéance.",
+    "noExpiry": "Sans date d'expiration",
+    "expiresToday": "Expire aujourd'hui",
+    "expiresIn": "Expire le {{date}}, dans {{days}}",
+    "fields": {
+      "type": "Type",
+      "title": "Nom",
+      "titlePlaceholder": "par ex. Assurance auto 2026",
+      "number": "Numéro",
+      "provider": "Émis par",
+      "issued": "Émis le",
+      "expires": "Expire le",
+      "expiresHint": "Laissez vide s'il n'expire pas.",
+      "reminders": "Me prévenir (jours avant)",
+      "remindersHint": "Séparés par des virgules, par ex. 30, 7, 1, 0 (0 est le jour même).",
+      "remindersInvalid": "Utilisez jusqu'à 10 nombres entiers entre 0 et 365, séparés par des virgules."
+    }
   },
   "alerts": {
     "unread": "Non lue"
@@ -658,5 +709,24 @@
     "vehicle": "Véhicule",
     "allVehicles": "Tous les véhicules",
     "currencyTotal": "Dépensé en {{currency}}"
+  },
+  "files": {
+    "title": "Fichiers",
+    "of": "Fichiers de {{name}}",
+    "ofFillUp": "Fichiers du plein du {{date}}",
+    "add": "Ajouter des fichiers",
+    "uploaded_one": "Fichier ajouté",
+    "uploaded_other": "{{count}} fichiers ajoutés",
+    "uploaded_many": "{{count}} fichiers ajoutés",
+    "deleted": "Fichier supprimé",
+    "deleteBody": "Le fichier est retiré pour tous ceux qui voient ce véhicule.",
+    "download": "Télécharger",
+    "dialogBody": "Factures, photos et scans. Cliquez sur un fichier pour le télécharger.",
+    "noneForRecord": "Aucun fichier pour l'instant.",
+    "hint": "PDF, JPEG, PNG, WebP ou HEIC, 10 Mo maximum chacun.",
+    "belongsTo": "Rattaché à",
+    "allFiles": "Tous les fichiers",
+    "emptyTitle": "Aucun fichier",
+    "emptyBody": "Gardez ici les factures, le scan de la carte grise ou des photos de dégâts. Les fichiers joints aux entretiens, documents ou pleins sont aussi listés."
   }
 }

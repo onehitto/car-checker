@@ -334,6 +334,24 @@
       "cng": "الغاز الطبيعي المضغوط",
       "hydrogen": "هيدروجين",
       "other": "أخرى"
+    },
+    "documentType": {
+      "insurance": "التأمين",
+      "registration": "البطاقة الرمادية",
+      "technical_inspection": "الفحص التقني",
+      "road_tax": "الضريبة على السيارات",
+      "warranty": "الضمان",
+      "leasing": "الإيجار التمويلي",
+      "other": "أخرى"
+    },
+    "attachmentEntity": {
+      "vehicle": "المركبة",
+      "maintenance_record": "صيانة",
+      "part_replacement": "قطعة",
+      "expense": "مصروف",
+      "vehicle_document": "وثيقة",
+      "fuel_record": "تعبئة",
+      "tire": "إطار"
     }
   },
   "vehicles": {
@@ -509,7 +527,40 @@
   },
   "documents": {
     "expiredOn": "انتهى في {{date}}",
-    "expiresOn": "ينتهي في {{date}}"
+    "expiresOn": "ينتهي في {{date}}",
+    "sections": {
+      "documents": "الأوراق",
+      "files": "الملفات"
+    },
+    "add": "إضافة وثيقة",
+    "addTitle": "إضافة وثيقة",
+    "editTitle": "تعديل الوثيقة",
+    "formBody": "مع تاريخ انتهاء، تتلقى تذكيرًا قبل انقضائه. أرفق النسخة الممسوحة من القائمة بعد ذلك.",
+    "added": "تمت إضافة الوثيقة",
+    "updated": "تم تعديل الوثيقة",
+    "deleted": "تم حذف الوثيقة",
+    "deleteBody": "تُحذف ملفاتها وتذكيراتها أيضًا.",
+    "allTypes": "كل الوثائق",
+    "allStatuses": "كل الحالات",
+    "noMatch": "لا توجد وثيقة مطابقة لهذه الفلاتر.",
+    "emptyTitle": "لا توجد وثائق بعد",
+    "emptyBody": "أضف التأمين والفحص التقني والضريبة مع تواريخ انتهائها: ستتلقى تذكيرًا قبل كل موعد.",
+    "noExpiry": "بدون تاريخ انتهاء",
+    "expiresToday": "تنتهي اليوم",
+    "expiresIn": "تنتهي في {{date}}، خلال {{days}}",
+    "fields": {
+      "type": "النوع",
+      "title": "الاسم",
+      "titlePlaceholder": "مثل: تأمين السيارة 2026",
+      "number": "الرقم",
+      "provider": "صادر عن",
+      "issued": "تاريخ الإصدار",
+      "expires": "تاريخ الانتهاء",
+      "expiresHint": "اتركه فارغًا إن كانت لا تنتهي.",
+      "reminders": "ذكّرني (أيام قبل)",
+      "remindersHint": "مفصولة بفواصل، مثل 30, 7, 1, 0 (0 هو اليوم نفسه).",
+      "remindersInvalid": "استخدم حتى 10 أعداد صحيحة بين 0 و365، مفصولة بفواصل."
+    }
   },
   "alerts": {
     "unread": "غير مقروء"
@@ -706,5 +757,27 @@
     "vehicle": "المركبة",
     "allVehicles": "كل المركبات",
     "currencyTotal": "المنفق بـ {{currency}}"
+  },
+  "files": {
+    "title": "الملفات",
+    "of": "ملفات {{name}}",
+    "ofFillUp": "ملفات تعبئة {{date}}",
+    "add": "إضافة ملفات",
+    "uploaded_zero": "لم يُضف أي ملف",
+    "uploaded_one": "تمت إضافة الملف",
+    "uploaded_two": "تمت إضافة ملفين",
+    "uploaded_few": "تمت إضافة {{count}} ملفات",
+    "uploaded_many": "تمت إضافة {{count}} ملفًا",
+    "uploaded_other": "تمت إضافة {{count}} ملف",
+    "deleted": "تم حذف الملف",
+    "deleteBody": "يُزال الملف لكل من يرى هذه المركبة.",
+    "download": "تنزيل",
+    "dialogBody": "الفواتير والصور والنسخ الممسوحة. انقر على ملف لتنزيله.",
+    "noneForRecord": "لا توجد ملفات بعد.",
+    "hint": "PDF أو JPEG أو PNG أو WebP أو HEIC، بحد أقصى 10 ميغابايت لكل ملف.",
+    "belongsTo": "مرفق بـ",
+    "allFiles": "كل الملفات",
+    "emptyTitle": "لا توجد ملفات بعد",
+    "emptyBody": "احتفظ هنا بالفواتير ونسخة البطاقة الرمادية أو صور الأضرار. تظهر هنا أيضًا الملفات المرفقة بالصيانات والوثائق والتعبئات."
   }
 }

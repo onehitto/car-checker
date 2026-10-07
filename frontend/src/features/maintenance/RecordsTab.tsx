@@ -19,6 +19,7 @@ import {
   RowMenu,
   Toolbar,
 } from "@/components/ui";
+import { AttachmentsDialog } from "@/features/attachments/AttachmentsDialog";
 import { MaintenanceTypeSelect } from "@/features/catalog/selects";
 import { useVehicleContext } from "@/features/vehicles/vehicleContext";
 import { useConfirmDelete } from "@/lib/useConfirmDelete";
@@ -42,6 +43,7 @@ export function RecordsTab() {
   });
   const [editing, setEditing] = useState<MaintenanceRecord | "new" | null>(null);
   const [viewing, setViewing] = useState<MaintenanceRecord | null>(null);
+  const [files, setFiles] = useState<MaintenanceRecord | null>(null);
   const remove = useConfirmDelete(
     (record: MaintenanceRecord) =>
       expectNoContent(
@@ -138,6 +140,7 @@ export function RecordsTab() {
                     label={t("common.moreActions")}
                     actions={[
                       { label: t("common.details"), onSelect: () => setViewing(record) },
+                      { label: t("files.title"), onSelect: () => setFiles(record) },
                       canEdit && { label: t("common.edit"), onSelect: () => setEditing(record) },
                       canEdit && {
                         label: t("common.delete"),
@@ -170,6 +173,16 @@ export function RecordsTab() {
       )}
       {viewing && (
         <RecordDetailsDialog vehicle={vehicle} record={viewing} onClose={() => setViewing(null)} />
+      )}
+      {files && (
+        <AttachmentsDialog
+          vehicleId={vehicle.id}
+          entityType="maintenance_record"
+          entityId={files.id}
+          title={t("files.of", { name: files.title })}
+          canEdit={canEdit}
+          onClose={() => setFiles(null)}
+        />
       )}
       {remove.dialog}
     </>

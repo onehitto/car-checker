@@ -20,6 +20,7 @@ import {
   RowMenu,
   Toolbar,
 } from "@/components/ui";
+import { AttachmentsDialog } from "@/features/attachments/AttachmentsDialog";
 import { useVehicleContext } from "@/features/vehicles/vehicleContext";
 import { useConfirmDelete } from "@/lib/useConfirmDelete";
 import { useFormat } from "@/lib/useFormat";
@@ -43,6 +44,7 @@ export function ExpensesTab() {
     q: search || undefined,
   });
   const [editing, setEditing] = useState<Expense | "new" | null>(null);
+  const [files, setFiles] = useState<Expense | null>(null);
   const remove = useConfirmDelete(
     (expense: Expense) =>
       expectNoContent(
@@ -124,13 +126,16 @@ export function ExpensesTab() {
                   }
                   amount={format.money(expense.amount, expense.currency)}
                   actions={
-                    canEdit &&
                     manual && (
                       <RowMenu
                         label={t("common.moreActions")}
                         actions={[
-                          { label: t("common.edit"), onSelect: () => setEditing(expense) },
-                          {
+                          { label: t("files.title"), onSelect: () => setFiles(expense) },
+                          canEdit && {
+                            label: t("common.edit"),
+                            onSelect: () => setEditing(expense),
+                          },
+                          canEdit && {
                             label: t("common.delete"),
                             danger: true,
                             onSelect: () => remove.ask(expense),
@@ -158,6 +163,16 @@ export function ExpensesTab() {
           vehicle={vehicle}
           expense={editing === "new" ? undefined : editing}
           onClose={() => setEditing(null)}
+        />
+      )}
+      {files && (
+        <AttachmentsDialog
+          vehicleId={vehicle.id}
+          entityType="expense"
+          entityId={files.id}
+          title={t("files.of", { name: files.title })}
+          canEdit={canEdit}
+          onClose={() => setFiles(null)}
         />
       )}
       {remove.dialog}

@@ -204,5 +204,28 @@ function vehicleTabs() {
         },
       ],
     },
+    {
+      path: "documents",
+      lazy: page(
+        () => import("@/features/documents/DocumentsSection"),
+        (m) => m.DocumentsSection,
+      ),
+      children: [
+        {
+          index: true,
+          lazy: page(
+            () => import("@/features/documents/DocumentsTab"),
+            (m) => m.DocumentsTab,
+          ),
+        },
+        {
+          path: "files",
+          lazy: page(
+            () => import("@/features/attachments/FilesTab"),
+            (m) => m.FilesTab,
+          ),
+        },
+      ],
+    },
   ];
 }

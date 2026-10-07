@@ -19,6 +19,7 @@ import {
   RowMenu,
   Toolbar,
 } from "@/components/ui";
+import { AttachmentsDialog } from "@/features/attachments/AttachmentsDialog";
 import { useCurrentUser } from "@/features/auth/authContext";
 import { useVehicleContext } from "@/features/vehicles/vehicleContext";
 import { useConfirmDelete } from "@/lib/useConfirmDelete";
@@ -39,6 +40,7 @@ export function FuelTab() {
   const records = useFuelRecords(vehicle.id, page);
   const statistics = useFuelStatistics(vehicle.id, user);
   const [editing, setEditing] = useState<FuelRecord | "new" | null>(null);
+  const [files, setFiles] = useState<FuelRecord | null>(null);
   const remove = useConfirmDelete(
     (record: FuelRecord) =>
       expectNoContent(
@@ -113,19 +115,18 @@ export function FuelTab() {
                     record.total_price === null ? "" : format.money(record.total_price, currency)
                   }
                   actions={
-                    canEdit && (
-                      <RowMenu
-                        label={t("common.moreActions")}
-                        actions={[
-                          { label: t("common.edit"), onSelect: () => setEditing(record) },
-                          {
-                            label: t("common.delete"),
-                            danger: true,
-                            onSelect: () => remove.ask(record),
-                          },
-                        ]}
-                      />
-                    )
+                    <RowMenu
+                      label={t("common.moreActions")}
+                      actions={[
+                        { label: t("files.title"), onSelect: () => setFiles(record) },
+                        canEdit && { label: t("common.edit"), onSelect: () => setEditing(record) },
+                        canEdit && {
+                          label: t("common.delete"),
+                          danger: true,
+                          onSelect: () => remove.ask(record),
+                        },
+                      ]}
+                    />
                   }
                 />
               ))}
@@ -146,6 +147,16 @@ export function FuelTab() {
           vehicle={vehicle}
           record={editing === "new" ? undefined : editing}
           onClose={() => setEditing(null)}
+        />
+      )}
+      {files && (
+        <AttachmentsDialog
+          vehicleId={vehicle.id}
+          entityType="fuel_record"
+          entityId={files.id}
+          title={t("files.ofFillUp", { date: format.date(files.fill_date) })}
+          canEdit={canEdit}
+          onClose={() => setFiles(null)}
         />
       )}
       {remove.dialog}

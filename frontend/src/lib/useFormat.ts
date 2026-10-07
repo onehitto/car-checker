@@ -8,6 +8,7 @@ import {
   type ConsumptionUnit,
   convertConsumption,
   type DistanceUnit,
+  formatBytes,
   formatDate,
   formatDateTime,
   formatDistance,
@@ -33,6 +34,7 @@ export function useFormat() {
       date: (iso: string | null | undefined) => (iso ? formatDate(locale, iso) : "—"),
       dateTime: (iso: string | null | undefined) => (iso ? formatDateTime(locale, iso) : "—"),
       number: (value: number, digits = 0) => formatNumber(locale, value, digits),
+      bytes: (value: number) => formatBytes(locale, value),
       money: (amount: string | number | null | undefined, currency: string) =>
         amount === null || amount === undefined ? "—" : formatMoney(locale, amount, currency),
       distance: (km: number | null | undefined) =>
