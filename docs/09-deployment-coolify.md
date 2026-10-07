@@ -112,10 +112,15 @@ docker network inspect NETWORK_NAME --format '{{json .IPAM.Config}}'
 ```
 
 Replace the uppercase names with the proxy container and network found in the
-output. Choose the network through which the proxy connects to `web`. A verified
-destination-network subnet can be used before the first deployment; if Coolify
-routes through a generated application network instead, inspect the deployed
-`web` container's networks and update the CIDR before the final smoke checks.
+output. The Compose file pins Traefik's connection to the predefined network
+`coolify`. If your destination uses a different name, set
+`web.labels.traefik.docker.network` in the Compose file to that actual Docker
+network name. Both the proxy and `web` must join it, and `TRUSTED_PROXY_CIDR`
+must match the proxy's address or subnet on that network. Pinning the network
+prevents Traefik from choosing
+another shared network whose source address nginx would not trust.
+[Traefik Docker network selection](https://doc.traefik.io/traefik/reference/routing-configuration/other-providers/docker/#traefikdockernetwork)
+
 Trusting a subnet also trusts its other containers, so use a dedicated trusted
 network. Do not use `0.0.0.0/0`, `::/0`, or an unverified example address.
 

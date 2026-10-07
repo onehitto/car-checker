@@ -86,6 +86,9 @@ services:
       context: ./frontend
       target: runtime
     restart: unless-stopped
+    labels:
+      # Keep ingress on the network covered by TRUSTED_PROXY_CIDR.
+      traefik.docker.network: coolify
     environment:
       API_UPSTREAM: http://api:8000
       # Trust only the actual Coolify ingress proxy IP/subnet for forwarded headers.
