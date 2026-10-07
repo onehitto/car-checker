@@ -279,6 +279,25 @@
       "mineral": "Mineral",
       "high_mileage": "High mileage",
       "other": "Other"
+    },
+    "mileageSource": {
+      "initial": "Initial",
+      "manual": "Reading",
+      "maintenance": "Service",
+      "fuel": "Fill-up",
+      "part": "Part",
+      "tire": "Tire",
+      "obd": "OBD",
+      "import": "Import"
+    },
+    "pumpFuel": {
+      "petrol": "Petrol",
+      "diesel": "Diesel",
+      "e85": "E85",
+      "lpg": "LPG",
+      "cng": "CNG",
+      "hydrogen": "Hydrogen",
+      "other": "Other"
     }
   },
   "vehicles": {
@@ -364,7 +383,19 @@
     "reading": "Odometer reading ({{unit}})",
     "save": "Save the reading",
     "saved": "Mileage updated",
-    "force": "The odometer was replaced or reset: record this lower reading anyway"
+    "force": "The odometer was replaced or reset: record this lower reading anyway",
+    "sections": {
+      "readings": "Odometer",
+      "fuel": "Fuel"
+    },
+    "intro": "Readings also come from services, fill-ups, parts and tires. Due dates use the latest one.",
+    "chartTitle": "Mileage over time",
+    "chartLabel": "Chart of the odometer readings by date",
+    "readings": "Readings",
+    "emptyTitle": "No reading yet",
+    "emptyBody": "Update the mileage from time to time so due dates stay accurate.",
+    "deleted": "Reading deleted",
+    "deleteBody": "The current mileage goes back to the latest remaining reading."
   },
   "overview": {
     "attention": "Needs attention",
@@ -514,6 +545,42 @@
       "filterChanged": "Oil filter replaced",
       "filterBrand": "Filter brand",
       "filterReference": "Filter reference"
+    }
+  },
+  "fuel": {
+    "record": "Add a fill-up",
+    "recordTitle": "Add a fill-up",
+    "editTitle": "Edit the fill-up",
+    "formBody": "Consumption is calculated between two full tanks.",
+    "recorded": "Fill-up added",
+    "updated": "Fill-up updated",
+    "deleted": "Fill-up deleted",
+    "deleteBody": "Its expense is deleted too and consumption is recalculated.",
+    "fillUps": "Fill-ups",
+    "emptyTitle": "No fill-up yet",
+    "emptyBody": "Fill the tank completely and note the litres and the mileage: from the second full tank you get the real consumption.",
+    "perLiter": "{{price}}/L",
+    "consumptionOver": "{{consumption}} over {{distance}}",
+    "fullTank": "Full tank",
+    "partial": "Partial fill-up",
+    "summary": "Consumption",
+    "lastConsumption": "Last full tank",
+    "costPerDistance": "Fuel cost per {{unit}}",
+    "averagePrice": "Average price per litre",
+    "totalLiters": "Fuel bought",
+    "totalCost": "Spent on fuel",
+    "fillUpCount": "Fill-ups",
+    "distanceTracked": "Distance tracked",
+    "monthlyCost": "Fuel spending per month",
+    "fields": {
+      "liters": "Litres",
+      "pricePerLiter": "Price per litre ({{currency}})",
+      "priceHint": "Enter the price per litre or the total: the other is calculated.",
+      "fullTank": "Full tank",
+      "missedPrevious": "I forgot to record the previous fill-up",
+      "consumptionHint": "A forgotten fill-up is excluded from the consumption so it is not distorted.",
+      "fuel": "Fuel",
+      "station": "Station"
     }
   }
 }

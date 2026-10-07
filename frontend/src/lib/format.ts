@@ -67,6 +67,16 @@ export function formatDateTime(locale: string, iso: string): string {
   );
 }
 
+/** "2026-09" -> "Sep" (or "September 2026" when long). */
+export function formatMonth(locale: string, month: string, long = false): string {
+  const [year, index] = month.split("-").map(Number);
+  return new Intl.DateTimeFormat(locale, {
+    month: long ? "long" : "short",
+    year: long ? "numeric" : undefined,
+    timeZone: "UTC",
+  }).format(new Date(Date.UTC(year ?? 1970, (index ?? 1) - 1, 1)));
+}
+
 /** Today's date as YYYY-MM-DD in the browser's time zone (default for date inputs). */
 export function todayIso(): string {
   const now = new Date();

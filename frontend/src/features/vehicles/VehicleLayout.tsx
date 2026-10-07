@@ -44,6 +44,7 @@ function VehiclePage({ context }: { context: ReturnType<typeof vehicleContextFor
   const tabs: TabItem[] = [
     { to: base, label: t("vehicle.tabs.overview"), end: true },
     { to: `${base}/maintenance`, label: t("vehicle.tabs.maintenance") },
+    { to: `${base}/mileage`, label: t("vehicle.tabs.mileage") },
   ];
 
   return (

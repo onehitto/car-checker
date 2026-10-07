@@ -151,5 +151,28 @@ function vehicleTabs() {
         },
       ],
     },
+    {
+      path: "mileage",
+      lazy: page(
+        () => import("@/features/mileage/MileageSection"),
+        (m) => m.MileageSection,
+      ),
+      children: [
+        {
+          index: true,
+          lazy: page(
+            () => import("@/features/mileage/MileageTab"),
+            (m) => m.MileageTab,
+          ),
+        },
+        {
+          path: "fuel",
+          lazy: page(
+            () => import("@/features/fuel/FuelTab"),
+            (m) => m.FuelTab,
+          ),
+        },
+      ],
+    },
   ];
 }

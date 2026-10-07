@@ -288,6 +288,25 @@
       "mineral": "Minérale",
       "high_mileage": "Haut kilométrage",
       "other": "Autre"
+    },
+    "mileageSource": {
+      "initial": "Initial",
+      "manual": "Relevé",
+      "maintenance": "Entretien",
+      "fuel": "Plein",
+      "part": "Pièce",
+      "tire": "Pneu",
+      "obd": "OBD",
+      "import": "Import"
+    },
+    "pumpFuel": {
+      "petrol": "Essence",
+      "diesel": "Gazole",
+      "e85": "E85",
+      "lpg": "GPL",
+      "cng": "GNV",
+      "hydrogen": "Hydrogène",
+      "other": "Autre"
     }
   },
   "vehicles": {
@@ -373,7 +392,19 @@
     "reading": "Relevé du compteur ({{unit}})",
     "save": "Enregistrer le relevé",
     "saved": "Kilométrage mis à jour",
-    "force": "Le compteur a été remplacé ou remis à zéro : enregistrer quand même ce relevé plus bas"
+    "force": "Le compteur a été remplacé ou remis à zéro : enregistrer quand même ce relevé plus bas",
+    "sections": {
+      "readings": "Compteur",
+      "fuel": "Carburant"
+    },
+    "intro": "Les relevés viennent aussi des entretiens, pleins, pièces et pneus. Les échéances utilisent le plus récent.",
+    "chartTitle": "Kilométrage dans le temps",
+    "chartLabel": "Graphique des relevés du compteur par date",
+    "readings": "Relevés",
+    "emptyTitle": "Aucun relevé",
+    "emptyBody": "Mettez à jour le kilométrage de temps en temps pour garder des échéances exactes.",
+    "deleted": "Relevé supprimé",
+    "deleteBody": "Le kilométrage actuel revient au dernier relevé restant."
   },
   "overview": {
     "attention": "À surveiller",
@@ -530,6 +561,42 @@
       "filterChanged": "Filtre à huile remplacé",
       "filterBrand": "Marque du filtre",
       "filterReference": "Référence du filtre"
+    }
+  },
+  "fuel": {
+    "record": "Ajouter un plein",
+    "recordTitle": "Ajouter un plein",
+    "editTitle": "Modifier le plein",
+    "formBody": "La consommation est calculée entre deux pleins complets.",
+    "recorded": "Plein ajouté",
+    "updated": "Plein modifié",
+    "deleted": "Plein supprimé",
+    "deleteBody": "Sa dépense est aussi supprimée et la consommation recalculée.",
+    "fillUps": "Pleins",
+    "emptyTitle": "Aucun plein",
+    "emptyBody": "Faites le plein complet et notez les litres et le kilométrage : dès le deuxième plein complet, vous obtenez la consommation réelle.",
+    "perLiter": "{{price}}/L",
+    "consumptionOver": "{{consumption}} sur {{distance}}",
+    "fullTank": "Plein complet",
+    "partial": "Plein partiel",
+    "summary": "Consommation",
+    "lastConsumption": "Dernier plein complet",
+    "costPerDistance": "Coût du carburant par {{unit}}",
+    "averagePrice": "Prix moyen au litre",
+    "totalLiters": "Carburant acheté",
+    "totalCost": "Dépensé en carburant",
+    "fillUpCount": "Pleins",
+    "distanceTracked": "Distance suivie",
+    "monthlyCost": "Dépenses de carburant par mois",
+    "fields": {
+      "liters": "Litres",
+      "pricePerLiter": "Prix au litre ({{currency}})",
+      "priceHint": "Saisissez le prix au litre ou le total : l'autre est calculé.",
+      "fullTank": "Plein complet",
+      "missedPrevious": "J'ai oublié de noter le plein précédent",
+      "consumptionHint": "Un plein oublié est exclu de la consommation pour ne pas la fausser.",
+      "fuel": "Carburant",
+      "station": "Station"
     }
   }
 }

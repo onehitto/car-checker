@@ -5,6 +5,7 @@ import {
   formatDate,
   formatDistance,
   formatMoney,
+  formatMonth,
   toKilometres,
 } from "./format";
 
@@ -40,5 +41,10 @@ describe("format", () => {
     expect(convertConsumption(5, "km_l")).toBe(20);
     expect(convertConsumption(5, "mpg_us")).toBeCloseTo(47.04, 2);
     expect(convertConsumption(5, "mpg_uk")).toBeCloseTo(56.5, 1);
+  });
+
+  it("names months of statistics", () => {
+    expect(formatMonth("en-GB", "2026-09")).toBe("Sept");
+    expect(formatMonth("fr-FR", "2026-09", true)).toBe("septembre 2026");
   });
 });
