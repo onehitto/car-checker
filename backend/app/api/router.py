@@ -24,12 +24,14 @@ from app.modules.timeline.router import router as timeline_router
 from app.modules.tires.router import router as tires_router
 from app.modules.users.router import router as users_router
 from app.modules.vehicles.router import router as vehicles_router
+from app.modules.vehicles.sharing_router import router as sharing_router
 
 api_router = APIRouter()
 api_router.include_router(health.router)
 api_router.include_router(auth_router)
 api_router.include_router(users_router)
 api_router.include_router(vehicles_router)
+api_router.include_router(sharing_router)
 api_router.include_router(mileage_router)
 api_router.include_router(garages_router)
 api_router.include_router(maintenance_types_router)

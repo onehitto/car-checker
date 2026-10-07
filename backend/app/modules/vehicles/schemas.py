@@ -6,10 +6,16 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Annotated, Self
 
-from pydantic import AfterValidator, Field, StringConstraints, model_validator
+from pydantic import AfterValidator, EmailStr, Field, StringConstraints, model_validator
 
 from app.core.schemas import CurrencyCode, LongText, Mileage, Money, RequestModel, ResponseModel
-from app.modules.vehicles.models import FuelType, TransmissionType, VehicleRole, VehicleStatus
+from app.modules.vehicles.models import (
+    FuelType,
+    SharedRole,
+    TransmissionType,
+    VehicleRole,
+    VehicleStatus,
+)
 
 MIN_VEHICLE_YEAR = 1886
 _VIN_PATTERN = re.compile(r"^[A-Z0-9]{5,32}$")
@@ -133,3 +139,32 @@ class VehicleSummary(ResponseModel):
     current_mileage: int
     currency: str
     status: VehicleStatus
+
+
+# --- Sharing --------------------------------------------------------------------------------
+
+
+class ShareCreate(RequestModel):
+    email: EmailStr = Field(description="E-mail of a registered Car Checker user.")
+    role: SharedRole = Field(description="`editor` can add and edit records, `viewer` reads.")
+
+
+class ShareUpdate(RequestModel):
+    role: SharedRole
+
+
+class SharedUser(ResponseModel):
+    id: uuid.UUID
+    email: str
+    first_name: str
+    last_name: str
+
+
+class ShareResponse(ResponseModel):
+    id: uuid.UUID
+    vehicle_id: uuid.UUID
+    user: SharedUser
+    role: SharedRole
+    granted_by_id: uuid.UUID | None
+    created_at: datetime
+    updated_at: datetime
