@@ -33,7 +33,9 @@
     "deleted": "Supprimé",
     "results_one": "{{count}} résultat",
     "results_other": "{{count}} résultats",
-    "results_many": "{{count}} résultats"
+    "results_many": "{{count}} résultats",
+    "notSet": "Non renseigné",
+    "date": "Date"
   },
   "errors": {
     "generic": "Une erreur est survenue. Réessayez dans un instant.",
@@ -51,7 +53,18 @@
       "FORBIDDEN": "Votre rôle sur ce véhicule ne permet pas cette action.",
       "MILEAGE_DECREASE": "Ce relevé est inférieur à un précédent. Vérifiez-le, ou confirmez que le compteur a été remplacé.",
       "PAYLOAD_TOO_LARGE": "Le fichier est trop volumineux (10 Mo maximum).",
-      "UNSUPPORTED_MEDIA_TYPE": "Utilisez un fichier PDF, JPEG, PNG, WebP ou HEIC."
+      "UNSUPPORTED_MEDIA_TYPE": "Utilisez un fichier PDF, JPEG, PNG, WebP ou HEIC.",
+      "NOT_FOUND": "Cet élément n'existe pas ou vous n'y avez plus accès.",
+      "VALIDATION_ERROR": "Certaines valeurs ne sont pas valides. Vérifiez-les et réessayez.",
+      "AUTHENTICATION_REQUIRED": "Votre session a pris fin. Reconnectez-vous.",
+      "TOKEN_EXPIRED": "Votre session a pris fin. Reconnectez-vous.",
+      "SERVICE_UNAVAILABLE": "Le service est momentanément indisponible. Réessayez dans un instant.",
+      "VIN_ALREADY_REGISTERED": "Vous avez déjà un véhicule avec ce numéro VIN.",
+      "ALREADY_SHARED": "Ce véhicule est déjà partagé avec cette personne.",
+      "EXPENSE_LINKED_TO_SOURCE": "Cette dépense provient d'un entretien, d'une pièce ou d'un plein. Modifiez plutôt cet enregistrement.",
+      "SCHEDULE_EXISTS": "Ce véhicule a déjà un programme pour ce type d'entretien.",
+      "TIRE_POSITION_TAKEN": "Un autre pneu est déjà monté à cette position.",
+      "TYPE_IN_USE": "Des enregistrements utilisent ce type : il ne peut pas être supprimé."
     },
     "notFoundTitle": "Page introuvable"
   },
@@ -113,7 +126,13 @@
   },
   "units": {
     "km": "Kilomètres",
-    "mi": "Miles"
+    "mi": "Miles",
+    "consumption": {
+      "l_100km": "L/100 km",
+      "km_l": "km/L",
+      "mpg_us": "mpg (US)",
+      "mpg_uk": "mpg (UK)"
+    }
   },
   "nav": {
     "main": "Navigation principale",
@@ -147,5 +166,205 @@
     "decimal_one": "Saisissez un nombre avec {{count}} décimale au plus, par ex. 12,5.",
     "decimal_other": "Saisissez un nombre avec {{count}} décimales au plus, par ex. 120,50.",
     "decimal_many": "Saisissez un nombre avec {{count}} décimales au plus, par ex. 120,50."
+  },
+  "enums": {
+    "fuelType": {
+      "petrol": "Essence",
+      "diesel": "Diesel",
+      "hybrid": "Hybride",
+      "plug_in_hybrid": "Hybride rechargeable",
+      "electric": "Électrique",
+      "lpg": "GPL",
+      "cng": "GNV",
+      "hydrogen": "Hydrogène",
+      "other": "Autre"
+    },
+    "transmission": {
+      "manual": "Manuelle",
+      "automatic": "Automatique",
+      "semi_automatic": "Semi-automatique",
+      "cvt": "CVT",
+      "dual_clutch": "Double embrayage",
+      "other": "Autre"
+    },
+    "vehicleStatus": {
+      "active": "En service",
+      "sold": "Vendu",
+      "archived": "Archivé"
+    },
+    "role": {
+      "owner": "Propriétaire",
+      "editor": "Éditeur",
+      "viewer": "Lecteur"
+    },
+    "expenseCategory": {
+      "maintenance": "Entretien",
+      "repairs": "Réparations",
+      "parts": "Pièces",
+      "fuel": "Carburant",
+      "insurance": "Assurance",
+      "taxes": "Taxes",
+      "inspection": "Contrôle technique",
+      "registration": "Immatriculation",
+      "parking": "Stationnement",
+      "tolls": "Péages",
+      "fines": "Amendes",
+      "washing": "Lavage",
+      "other": "Autre"
+    },
+    "alertStatus": {
+      "active": "Nouvelle",
+      "read": "Lue",
+      "dismissed": "Ignorée",
+      "resolved": "Résolue"
+    }
+  },
+  "vehicles": {
+    "title": "Véhicules",
+    "status": "Statut",
+    "searchPlaceholder": "Rechercher par nom, marque, plaque ou VIN",
+    "noMatch": "Aucun véhicule ne correspond",
+    "noMatchBody": "Modifiez la recherche ou le filtre de statut.",
+    "emptyTitle": "Ajoutez votre premier véhicule",
+    "emptyBody": "Commencez par la voiture que vous conduisez le plus. Vous pourrez ensuite saisir ses entretiens passés.",
+    "addTitle": "Ajouter un véhicule",
+    "addBody": "Marque, modèle, année et carburant suffisent pour commencer. Le reste peut attendre.",
+    "editTitle": "Modifier le véhicule",
+    "added": "Véhicule ajouté",
+    "saved": "Modifications enregistrées",
+    "deleted": "{{name}} supprimé",
+    "sections": {
+      "identity": "Véhicule",
+      "engine": "Motorisation",
+      "odometer": "Compteur",
+      "purchase": "Achat et notes"
+    },
+    "fields": {
+      "brand": "Marque",
+      "model": "Modèle",
+      "year": "Année",
+      "trim": "Version",
+      "nickname": "Surnom",
+      "nicknameHint": "Affiché à la place de la marque et du modèle, par ex. « Voiture familiale ».",
+      "licensePlate": "Plaque",
+      "vin": "Numéro VIN",
+      "color": "Couleur",
+      "fuelType": "Carburant",
+      "transmission": "Boîte de vitesses",
+      "engine": "Moteur",
+      "displacement": "Cylindrée (cm³)",
+      "horsepower": "Puissance (ch)",
+      "initialMileage": "Kilométrage à l'achat ({{unit}})",
+      "initialMileageHint": "Ou quand vous avez commencé à le suivre.",
+      "currentMileage": "Kilométrage actuel ({{unit}})",
+      "currentMileageHint": "Ce qu'indique le compteur aujourd'hui.",
+      "purchaseDate": "Date d'achat",
+      "purchasePrice": "Prix d'achat",
+      "currencyHint": "Utilisée pour tous ses coûts.",
+      "statusHint": "Les véhicules vendus et archivés quittent votre garage et n'envoient plus d'alertes."
+    },
+    "photo": {
+      "title": "Photo",
+      "add": "Ajouter une photo",
+      "change": "Changer la photo",
+      "remove": "Retirer",
+      "saved": "Photo enregistrée",
+      "removed": "Photo retirée",
+      "hint": "JPEG, PNG, WebP ou HEIC, 10 Mo maximum."
+    },
+    "delete": {
+      "title": "Supprimer le véhicule",
+      "body": "Supprime le véhicule et tout son historique : entretiens, documents, dépenses et fichiers. Pour garder l'historique, indiquez-le plutôt comme vendu.",
+      "action": "Supprimer le véhicule",
+      "confirmTitle": "Supprimer {{name}} ?",
+      "confirmBody": "Tout son historique sera supprimé. Cette action est irréversible."
+    }
+  },
+  "vehicle": {
+    "odometer": "Compteur : {{distance}}",
+    "edit": "Modifier",
+    "tabsLabel": "Rubriques du véhicule",
+    "tabs": {
+      "overview": "Vue d'ensemble",
+      "timeline": "Historique",
+      "maintenance": "Entretien",
+      "mileage": "Kilométrage et carburant",
+      "costs": "Coûts",
+      "documents": "Documents",
+      "reminders": "Rappels et notes",
+      "sharing": "Partage"
+    }
+  },
+  "mileage": {
+    "update": "Mettre à jour le kilométrage",
+    "updateTitle": "Mettre à jour le kilométrage",
+    "current": "Le compteur indique {{distance}} jusqu'ici.",
+    "reading": "Relevé du compteur ({{unit}})",
+    "save": "Enregistrer le relevé",
+    "saved": "Kilométrage mis à jour",
+    "force": "Le compteur a été remplacé ou remis à zéro : enregistrer quand même ce relevé plus bas"
+  },
+  "overview": {
+    "attention": "À surveiller",
+    "schedules": "Programmes",
+    "nothingDue": "Rien à prévoir. Les prochains entretiens apparaissent ici à l'approche de leur échéance.",
+    "serviceHistory": "Historique d'entretien",
+    "seeAll": "Tout voir",
+    "noService": "Aucun entretien enregistré",
+    "noServiceBody": "Saisissez les derniers entretiens depuis vos factures : les prochains sont calculés à partir d'eux.",
+    "recentExpenses": "Dépenses récentes",
+    "noExpenses": "Aucune dépense pour l'instant.",
+    "documents": "Documents",
+    "documentsOk": "Aucun document n'expire bientôt.",
+    "costs": "Coûts",
+    "thisMonth": "Ce mois-ci",
+    "thisYear": "Cette année",
+    "totalSpent": "Depuis l'ajout",
+    "maintenanceSpent": "En entretien",
+    "averageConsumption": "Consommation moyenne",
+    "fuelCost": "Coût du carburant",
+    "alerts": "Alertes"
+  },
+  "health": {
+    "title": "État",
+    "level": {
+      "good": "Bon",
+      "attention": "À surveiller",
+      "critical": "À traiter"
+    },
+    "allClear": "Aucune alerte : entretien et documents sont à jour.",
+    "overdueMaintenance_one": "{{count}} entretien en retard",
+    "overdueMaintenance_other": "{{count}} entretiens en retard",
+    "overdueMaintenance_many": "{{count}} entretiens en retard",
+    "dueMaintenance_one": "{{count}} entretien à faire",
+    "dueMaintenance_other": "{{count}} entretiens à faire",
+    "dueMaintenance_many": "{{count}} entretiens à faire",
+    "expiredDocuments_one": "{{count}} document expiré",
+    "expiredDocuments_other": "{{count}} documents expirés",
+    "expiredDocuments_many": "{{count}} documents expirés",
+    "expiringDocuments_one": "{{count}} document expire bientôt",
+    "expiringDocuments_other": "{{count}} documents expirent bientôt",
+    "expiringDocuments_many": "{{count}} documents expirent bientôt",
+    "wornParts_one": "{{count}} pièce à remplacer",
+    "wornParts_other": "{{count}} pièces à remplacer",
+    "wornParts_many": "{{count}} pièces à remplacer"
+  },
+  "due": {
+    "days_one": "{{count}} jour",
+    "days_other": "{{count}} jours",
+    "days_many": "{{count}} jours",
+    "in": "dans {{amount}}",
+    "overdueBy": "{{amount}} de retard",
+    "or": " ou ",
+    "and": " et ",
+    "now": "À faire maintenant",
+    "unknown": "Pas encore de référence : saisissez le dernier entretien"
+  },
+  "documents": {
+    "expiredOn": "Expiré le {{date}}",
+    "expiresOn": "Expire le {{date}}"
+  },
+  "alerts": {
+    "unread": "Non lue"
   }
 }

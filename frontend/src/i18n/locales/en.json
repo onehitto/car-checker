@@ -32,7 +32,9 @@
     "moreActions": "More actions",
     "deleted": "Deleted",
     "results_one": "{{count}} result",
-    "results_other": "{{count}} results"
+    "results_other": "{{count}} results",
+    "notSet": "Not set",
+    "date": "Date"
   },
   "errors": {
     "generic": "Something went wrong. Try again in a moment.",
@@ -50,7 +52,18 @@
       "FORBIDDEN": "Your role on this vehicle does not allow this action.",
       "MILEAGE_DECREASE": "This reading is lower than a previous one. Check it, or confirm the odometer was replaced.",
       "PAYLOAD_TOO_LARGE": "The file is too large (10 MB maximum).",
-      "UNSUPPORTED_MEDIA_TYPE": "Use a PDF, JPEG, PNG, WebP or HEIC file."
+      "UNSUPPORTED_MEDIA_TYPE": "Use a PDF, JPEG, PNG, WebP or HEIC file.",
+      "NOT_FOUND": "This item does not exist or you no longer have access to it.",
+      "VALIDATION_ERROR": "Some values are not valid. Check them and try again.",
+      "AUTHENTICATION_REQUIRED": "Your session has ended. Sign in again.",
+      "TOKEN_EXPIRED": "Your session has ended. Sign in again.",
+      "SERVICE_UNAVAILABLE": "The service is temporarily unavailable. Try again in a moment.",
+      "VIN_ALREADY_REGISTERED": "You already have a vehicle with this VIN.",
+      "ALREADY_SHARED": "This vehicle is already shared with this person.",
+      "EXPENSE_LINKED_TO_SOURCE": "This expense comes from a service, part or fill-up. Edit that record instead.",
+      "SCHEDULE_EXISTS": "This vehicle already has a schedule for this type of maintenance.",
+      "TIRE_POSITION_TAKEN": "Another tire is already mounted at this position.",
+      "TYPE_IN_USE": "Records use this type, so it cannot be deleted."
     },
     "notFoundTitle": "Page not found"
   },
@@ -112,7 +125,13 @@
   },
   "units": {
     "km": "Kilometres",
-    "mi": "Miles"
+    "mi": "Miles",
+    "consumption": {
+      "l_100km": "L/100 km",
+      "km_l": "km/L",
+      "mpg_us": "mpg (US)",
+      "mpg_uk": "mpg (UK)"
+    }
   },
   "nav": {
     "main": "Main navigation",
@@ -144,5 +163,199 @@
     "maxLength_other": "{{count}} characters at most.",
     "decimal_one": "Enter a number with at most {{count}} decimal, e.g. 12.5.",
     "decimal_other": "Enter a number with at most {{count}} decimals, e.g. 120.50."
+  },
+  "enums": {
+    "fuelType": {
+      "petrol": "Petrol",
+      "diesel": "Diesel",
+      "hybrid": "Hybrid",
+      "plug_in_hybrid": "Plug-in hybrid",
+      "electric": "Electric",
+      "lpg": "LPG",
+      "cng": "CNG",
+      "hydrogen": "Hydrogen",
+      "other": "Other"
+    },
+    "transmission": {
+      "manual": "Manual",
+      "automatic": "Automatic",
+      "semi_automatic": "Semi-automatic",
+      "cvt": "CVT",
+      "dual_clutch": "Dual clutch",
+      "other": "Other"
+    },
+    "vehicleStatus": {
+      "active": "In use",
+      "sold": "Sold",
+      "archived": "Archived"
+    },
+    "role": {
+      "owner": "Owner",
+      "editor": "Editor",
+      "viewer": "Viewer"
+    },
+    "expenseCategory": {
+      "maintenance": "Maintenance",
+      "repairs": "Repairs",
+      "parts": "Parts",
+      "fuel": "Fuel",
+      "insurance": "Insurance",
+      "taxes": "Taxes",
+      "inspection": "Inspection",
+      "registration": "Registration",
+      "parking": "Parking",
+      "tolls": "Tolls",
+      "fines": "Fines",
+      "washing": "Washing",
+      "other": "Other"
+    },
+    "alertStatus": {
+      "active": "New",
+      "read": "Read",
+      "dismissed": "Dismissed",
+      "resolved": "Resolved"
+    }
+  },
+  "vehicles": {
+    "title": "Vehicles",
+    "status": "Status",
+    "searchPlaceholder": "Search by name, brand, plate or VIN",
+    "noMatch": "No vehicle matches",
+    "noMatchBody": "Change the search or the status filter.",
+    "emptyTitle": "Add your first vehicle",
+    "emptyBody": "Start with the car you drive most. You can record its past services afterwards.",
+    "addTitle": "Add a vehicle",
+    "addBody": "Brand, model, year and fuel are enough to start. Everything else can wait.",
+    "editTitle": "Edit the vehicle",
+    "added": "Vehicle added",
+    "saved": "Changes saved",
+    "deleted": "{{name}} deleted",
+    "sections": {
+      "identity": "Vehicle",
+      "engine": "Engine",
+      "odometer": "Odometer",
+      "purchase": "Purchase and notes"
+    },
+    "fields": {
+      "brand": "Brand",
+      "model": "Model",
+      "year": "Year",
+      "trim": "Version",
+      "nickname": "Nickname",
+      "nicknameHint": "Shown instead of brand and model, e.g. \"Family car\".",
+      "licensePlate": "License plate",
+      "vin": "VIN",
+      "color": "Color",
+      "fuelType": "Fuel",
+      "transmission": "Gearbox",
+      "engine": "Engine",
+      "displacement": "Displacement (cc)",
+      "horsepower": "Power (hp)",
+      "initialMileage": "Mileage at purchase ({{unit}})",
+      "initialMileageHint": "Or when you started following it.",
+      "currentMileage": "Current mileage ({{unit}})",
+      "currentMileageHint": "What the odometer shows today.",
+      "purchaseDate": "Purchase date",
+      "purchasePrice": "Purchase price",
+      "currencyHint": "Used for all its costs.",
+      "statusHint": "Sold and archived vehicles leave your garage and stop sending alerts."
+    },
+    "photo": {
+      "title": "Photo",
+      "add": "Add a photo",
+      "change": "Change the photo",
+      "remove": "Remove",
+      "saved": "Photo saved",
+      "removed": "Photo removed",
+      "hint": "JPEG, PNG, WebP or HEIC, 10 MB maximum."
+    },
+    "delete": {
+      "title": "Delete the vehicle",
+      "body": "Removes the vehicle and its whole history: services, documents, expenses and files. To keep the history, mark it as sold instead.",
+      "action": "Delete the vehicle",
+      "confirmTitle": "Delete {{name}}?",
+      "confirmBody": "Its whole history will be deleted. This cannot be undone."
+    }
+  },
+  "vehicle": {
+    "odometer": "Odometer: {{distance}}",
+    "edit": "Edit",
+    "tabsLabel": "Vehicle sections",
+    "tabs": {
+      "overview": "Overview",
+      "timeline": "Timeline",
+      "maintenance": "Maintenance",
+      "mileage": "Mileage and fuel",
+      "costs": "Costs",
+      "documents": "Documents",
+      "reminders": "Reminders and notes",
+      "sharing": "Sharing"
+    }
+  },
+  "mileage": {
+    "update": "Update mileage",
+    "updateTitle": "Update the mileage",
+    "current": "The odometer shows {{distance}} so far.",
+    "reading": "Odometer reading ({{unit}})",
+    "save": "Save the reading",
+    "saved": "Mileage updated",
+    "force": "The odometer was replaced or reset: record this lower reading anyway"
+  },
+  "overview": {
+    "attention": "Needs attention",
+    "schedules": "Schedules",
+    "nothingDue": "Nothing is due. Upcoming services appear here as they get close.",
+    "serviceHistory": "Service history",
+    "seeAll": "See all",
+    "noService": "No service recorded yet",
+    "noServiceBody": "Record the last services from the invoices you have: the next ones are calculated from them.",
+    "recentExpenses": "Recent expenses",
+    "noExpenses": "No expense yet.",
+    "documents": "Documents",
+    "documentsOk": "No document expires soon.",
+    "costs": "Costs",
+    "thisMonth": "This month",
+    "thisYear": "This year",
+    "totalSpent": "Since added",
+    "maintenanceSpent": "On maintenance",
+    "averageConsumption": "Average consumption",
+    "fuelCost": "Fuel cost",
+    "alerts": "Alerts"
+  },
+  "health": {
+    "title": "Condition",
+    "level": {
+      "good": "Good",
+      "attention": "Needs attention",
+      "critical": "Act now"
+    },
+    "allClear": "No warning: maintenance and documents are up to date.",
+    "overdueMaintenance_one": "{{count}} overdue service",
+    "overdueMaintenance_other": "{{count}} overdue services",
+    "dueMaintenance_one": "{{count}} service due",
+    "dueMaintenance_other": "{{count}} services due",
+    "expiredDocuments_one": "{{count}} expired document",
+    "expiredDocuments_other": "{{count}} expired documents",
+    "expiringDocuments_one": "{{count}} document expiring soon",
+    "expiringDocuments_other": "{{count}} documents expiring soon",
+    "wornParts_one": "{{count}} part to replace",
+    "wornParts_other": "{{count}} parts to replace"
+  },
+  "due": {
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "in": "in {{amount}}",
+    "overdueBy": "{{amount}} overdue",
+    "or": " or ",
+    "and": " and ",
+    "now": "Due now",
+    "unknown": "No reference yet: record the last service"
+  },
+  "documents": {
+    "expiredOn": "Expired on {{date}}",
+    "expiresOn": "Expires on {{date}}"
+  },
+  "alerts": {
+    "unread": "Unread"
   }
 }

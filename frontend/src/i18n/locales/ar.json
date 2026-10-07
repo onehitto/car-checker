@@ -36,7 +36,9 @@
     "results_two": "نتيجتان",
     "results_few": "{{count}} نتائج",
     "results_many": "{{count}} نتيجة",
-    "results_other": "{{count}} نتيجة"
+    "results_other": "{{count}} نتيجة",
+    "notSet": "غير محدد",
+    "date": "التاريخ"
   },
   "errors": {
     "generic": "حدث خطأ. حاول مرة أخرى بعد قليل.",
@@ -54,7 +56,18 @@
       "FORBIDDEN": "دورك في هذه المركبة لا يسمح بهذا الإجراء.",
       "MILEAGE_DECREASE": "هذه القراءة أقل من قراءة سابقة. تحقق منها، أو أكّد أن العداد تم استبداله.",
       "PAYLOAD_TOO_LARGE": "الملف كبير جداً (10 ميغابايت كحد أقصى).",
-      "UNSUPPORTED_MEDIA_TYPE": "استخدم ملف PDF أو JPEG أو PNG أو WebP أو HEIC."
+      "UNSUPPORTED_MEDIA_TYPE": "استخدم ملف PDF أو JPEG أو PNG أو WebP أو HEIC.",
+      "NOT_FOUND": "هذا العنصر غير موجود أو لم تعد لديك صلاحية الوصول إليه.",
+      "VALIDATION_ERROR": "بعض القيم غير صالحة. تحقق منها وحاول مرة أخرى.",
+      "AUTHENTICATION_REQUIRED": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+      "TOKEN_EXPIRED": "انتهت جلستك. سجّل الدخول مرة أخرى.",
+      "SERVICE_UNAVAILABLE": "الخدمة غير متاحة مؤقتًا. حاول مرة أخرى بعد قليل.",
+      "VIN_ALREADY_REGISTERED": "لديك بالفعل مركبة بهذا الرقم التسلسلي (VIN).",
+      "ALREADY_SHARED": "هذه المركبة مشتركة بالفعل مع هذا الشخص.",
+      "EXPENSE_LINKED_TO_SOURCE": "هذه المصاريف مصدرها صيانة أو قطعة أو تعبئة وقود. عدّل ذلك السجل بدلًا منها.",
+      "SCHEDULE_EXISTS": "لهذه المركبة جدول لهذا النوع من الصيانة بالفعل.",
+      "TIRE_POSITION_TAKEN": "يوجد إطار آخر مركب في هذا الموضع بالفعل.",
+      "TYPE_IN_USE": "توجد سجلات تستخدم هذا النوع، لذا لا يمكن حذفه."
     },
     "notFoundTitle": "الصفحة غير موجودة"
   },
@@ -116,7 +129,13 @@
   },
   "units": {
     "km": "كيلومترات",
-    "mi": "أميال"
+    "mi": "أميال",
+    "consumption": {
+      "l_100km": "ل/100 كم",
+      "km_l": "كم/ل",
+      "mpg_us": "ميل/غالون (أمريكي)",
+      "mpg_uk": "ميل/غالون (بريطاني)"
+    }
   },
   "nav": {
     "main": "التنقل الرئيسي",
@@ -156,5 +175,223 @@
     "decimal_few": "أدخل رقمًا بـ {{count}} منازل عشرية على الأكثر، مثل 1.125.",
     "decimal_many": "أدخل رقمًا بـ {{count}} منزلة عشرية على الأكثر.",
     "decimal_other": "أدخل رقمًا بـ {{count}} منزلة عشرية على الأكثر."
+  },
+  "enums": {
+    "fuelType": {
+      "petrol": "بنزين",
+      "diesel": "ديزل",
+      "hybrid": "هجين",
+      "plug_in_hybrid": "هجين قابل للشحن",
+      "electric": "كهربائي",
+      "lpg": "غاز البترول المسال",
+      "cng": "الغاز الطبيعي المضغوط",
+      "hydrogen": "هيدروجين",
+      "other": "أخرى"
+    },
+    "transmission": {
+      "manual": "يدوي",
+      "automatic": "أوتوماتيكي",
+      "semi_automatic": "نصف أوتوماتيكي",
+      "cvt": "CVT",
+      "dual_clutch": "قابض مزدوج",
+      "other": "أخرى"
+    },
+    "vehicleStatus": {
+      "active": "قيد الاستخدام",
+      "sold": "مباعة",
+      "archived": "مؤرشفة"
+    },
+    "role": {
+      "owner": "المالك",
+      "editor": "محرر",
+      "viewer": "مشاهد"
+    },
+    "expenseCategory": {
+      "maintenance": "صيانة",
+      "repairs": "إصلاحات",
+      "parts": "قطع الغيار",
+      "fuel": "وقود",
+      "insurance": "تأمين",
+      "taxes": "ضرائب",
+      "inspection": "فحص تقني",
+      "registration": "تسجيل",
+      "parking": "موقف",
+      "tolls": "رسوم الطريق",
+      "fines": "مخالفات",
+      "washing": "غسيل",
+      "other": "أخرى"
+    },
+    "alertStatus": {
+      "active": "جديد",
+      "read": "مقروء",
+      "dismissed": "متجاهل",
+      "resolved": "تمت معالجته"
+    }
+  },
+  "vehicles": {
+    "title": "المركبات",
+    "status": "الحالة",
+    "searchPlaceholder": "ابحث بالاسم أو العلامة أو اللوحة أو VIN",
+    "noMatch": "لا توجد مركبة مطابقة",
+    "noMatchBody": "غيّر البحث أو فلتر الحالة.",
+    "emptyTitle": "أضف مركبتك الأولى",
+    "emptyBody": "ابدأ بالسيارة التي تقودها أكثر. يمكنك تسجيل صياناتها السابقة بعد ذلك.",
+    "addTitle": "إضافة مركبة",
+    "addBody": "تكفي العلامة والطراز والسنة ونوع الوقود للبدء. الباقي يمكن أن ينتظر.",
+    "editTitle": "تعديل المركبة",
+    "added": "تمت إضافة المركبة",
+    "saved": "تم حفظ التغييرات",
+    "deleted": "تم حذف {{name}}",
+    "sections": {
+      "identity": "المركبة",
+      "engine": "المحرك",
+      "odometer": "العداد",
+      "purchase": "الشراء والملاحظات"
+    },
+    "fields": {
+      "brand": "العلامة",
+      "model": "الطراز",
+      "year": "السنة",
+      "trim": "الفئة",
+      "nickname": "اسم مستعار",
+      "nicknameHint": "يظهر بدل العلامة والطراز، مثل «سيارة العائلة».",
+      "licensePlate": "رقم اللوحة",
+      "vin": "رقم الهيكل (VIN)",
+      "color": "اللون",
+      "fuelType": "الوقود",
+      "transmission": "ناقل الحركة",
+      "engine": "المحرك",
+      "displacement": "سعة المحرك (سم³)",
+      "horsepower": "القوة (حصان)",
+      "initialMileage": "العداد عند الشراء ({{unit}})",
+      "initialMileageHint": "أو عند بدء متابعتها.",
+      "currentMileage": "العداد الحالي ({{unit}})",
+      "currentMileageHint": "ما يُظهره العداد اليوم.",
+      "purchaseDate": "تاريخ الشراء",
+      "purchasePrice": "سعر الشراء",
+      "currencyHint": "تُستخدم لكل تكاليفها.",
+      "statusHint": "المركبات المباعة والمؤرشفة تخرج من مرآبك ولا ترسل تنبيهات."
+    },
+    "photo": {
+      "title": "الصورة",
+      "add": "إضافة صورة",
+      "change": "تغيير الصورة",
+      "remove": "إزالة",
+      "saved": "تم حفظ الصورة",
+      "removed": "تمت إزالة الصورة",
+      "hint": "JPEG أو PNG أو WebP أو HEIC، بحد أقصى 10 ميغابايت."
+    },
+    "delete": {
+      "title": "حذف المركبة",
+      "body": "يحذف المركبة وكل سجلها: الصيانة والوثائق والمصاريف والملفات. للاحتفاظ بالسجل، اجعلها «مباعة» بدلًا من ذلك.",
+      "action": "حذف المركبة",
+      "confirmTitle": "حذف {{name}}؟",
+      "confirmBody": "سيُحذف كل سجلها. لا يمكن التراجع عن ذلك."
+    }
+  },
+  "vehicle": {
+    "odometer": "العداد: {{distance}}",
+    "edit": "تعديل",
+    "tabsLabel": "أقسام المركبة",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "timeline": "السجل الزمني",
+      "maintenance": "الصيانة",
+      "mileage": "العداد والوقود",
+      "costs": "التكاليف",
+      "documents": "الوثائق",
+      "reminders": "التذكيرات والملاحظات",
+      "sharing": "المشاركة"
+    }
+  },
+  "mileage": {
+    "update": "تحديث العداد",
+    "updateTitle": "تحديث العداد",
+    "current": "يُظهر العداد {{distance}} حتى الآن.",
+    "reading": "قراءة العداد ({{unit}})",
+    "save": "حفظ القراءة",
+    "saved": "تم تحديث العداد",
+    "force": "تم استبدال العداد أو تصفيره: سجّل هذه القراءة الأقل رغم ذلك"
+  },
+  "overview": {
+    "attention": "يحتاج إلى انتباه",
+    "schedules": "الجداول",
+    "nothingDue": "لا شيء مستحق. تظهر الصيانات القادمة هنا عند اقترابها.",
+    "serviceHistory": "سجل الصيانة",
+    "seeAll": "عرض الكل",
+    "noService": "لم تُسجّل أي صيانة بعد",
+    "noServiceBody": "سجّل آخر الصيانات من فواتيرك: تُحسب الصيانات القادمة انطلاقًا منها.",
+    "recentExpenses": "آخر المصاريف",
+    "noExpenses": "لا مصاريف بعد.",
+    "documents": "الوثائق",
+    "documentsOk": "لا توجد وثيقة تنتهي صلاحيتها قريبًا.",
+    "costs": "التكاليف",
+    "thisMonth": "هذا الشهر",
+    "thisYear": "هذه السنة",
+    "totalSpent": "منذ الإضافة",
+    "maintenanceSpent": "على الصيانة",
+    "averageConsumption": "متوسط الاستهلاك",
+    "fuelCost": "تكلفة الوقود",
+    "alerts": "التنبيهات"
+  },
+  "health": {
+    "title": "الحالة العامة",
+    "level": {
+      "good": "جيدة",
+      "attention": "تحتاج إلى انتباه",
+      "critical": "تتطلب تدخلًا"
+    },
+    "allClear": "لا تحذيرات: الصيانة والوثائق محدّثة.",
+    "overdueMaintenance_zero": "لا صيانة متأخرة",
+    "overdueMaintenance_one": "صيانة واحدة متأخرة",
+    "overdueMaintenance_two": "صيانتان متأخرتان",
+    "overdueMaintenance_few": "{{count}} صيانات متأخرة",
+    "overdueMaintenance_many": "{{count}} صيانة متأخرة",
+    "overdueMaintenance_other": "{{count}} صيانة متأخرة",
+    "dueMaintenance_zero": "لا صيانة مستحقة",
+    "dueMaintenance_one": "صيانة واحدة مستحقة",
+    "dueMaintenance_two": "صيانتان مستحقتان",
+    "dueMaintenance_few": "{{count}} صيانات مستحقة",
+    "dueMaintenance_many": "{{count}} صيانة مستحقة",
+    "dueMaintenance_other": "{{count}} صيانة مستحقة",
+    "expiredDocuments_zero": "لا وثائق منتهية",
+    "expiredDocuments_one": "وثيقة واحدة منتهية",
+    "expiredDocuments_two": "وثيقتان منتهيتان",
+    "expiredDocuments_few": "{{count}} وثائق منتهية",
+    "expiredDocuments_many": "{{count}} وثيقة منتهية",
+    "expiredDocuments_other": "{{count}} وثيقة منتهية",
+    "expiringDocuments_zero": "لا وثائق تنتهي قريبًا",
+    "expiringDocuments_one": "وثيقة واحدة تنتهي قريبًا",
+    "expiringDocuments_two": "وثيقتان تنتهيان قريبًا",
+    "expiringDocuments_few": "{{count}} وثائق تنتهي قريبًا",
+    "expiringDocuments_many": "{{count}} وثيقة تنتهي قريبًا",
+    "expiringDocuments_other": "{{count}} وثيقة تنتهي قريبًا",
+    "wornParts_zero": "لا قطع للاستبدال",
+    "wornParts_one": "قطعة واحدة للاستبدال",
+    "wornParts_two": "قطعتان للاستبدال",
+    "wornParts_few": "{{count}} قطع للاستبدال",
+    "wornParts_many": "{{count}} قطعة للاستبدال",
+    "wornParts_other": "{{count}} قطعة للاستبدال"
+  },
+  "due": {
+    "days_zero": "{{count}} يوم",
+    "days_one": "يوم واحد",
+    "days_two": "يومان",
+    "days_few": "{{count}} أيام",
+    "days_many": "{{count}} يومًا",
+    "days_other": "{{count}} يوم",
+    "in": "خلال {{amount}}",
+    "overdueBy": "متأخر بـ {{amount}}",
+    "or": " أو ",
+    "and": " و",
+    "now": "مستحق الآن",
+    "unknown": "لا يوجد مرجع بعد: سجّل آخر صيانة"
+  },
+  "documents": {
+    "expiredOn": "انتهى في {{date}}",
+    "expiresOn": "ينتهي في {{date}}"
+  },
+  "alerts": {
+    "unread": "غير مقروء"
   }
 }

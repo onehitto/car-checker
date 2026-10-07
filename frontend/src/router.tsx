@@ -1,3 +1,4 @@
+import type { ComponentType } from "react";
 import { createBrowserRouter } from "react-router";
 
 import { AuthLayout } from "@/features/auth/AuthLayout";
@@ -7,6 +8,10 @@ import { NotFoundPage } from "@/features/layout/NotFoundPage";
 import { RouteError } from "@/features/layout/RouteError";
 
 /** Each screen is a lazily loaded chunk. */
+function page<M>(load: () => Promise<M>, pick: (module: M) => ComponentType) {
+  return async () => ({ Component: pick(await load()) });
+}
+
 export const router = createBrowserRouter([
   {
     errorElement: <RouteError />,
@@ -19,22 +24,24 @@ export const router = createBrowserRouter([
             children: [
               {
                 path: "/login",
-                lazy: async () => ({
-                  Component: (await import("@/features/auth/LoginPage")).LoginPage,
-                }),
+                lazy: page(
+                  () => import("@/features/auth/LoginPage"),
+                  (m) => m.LoginPage,
+                ),
               },
               {
                 path: "/register",
-                lazy: async () => ({
-                  Component: (await import("@/features/auth/RegisterPage")).RegisterPage,
-                }),
+                lazy: page(
+                  () => import("@/features/auth/RegisterPage"),
+                  (m) => m.RegisterPage,
+                ),
               },
               {
                 path: "/forgot-password",
-                lazy: async () => ({
-                  Component: (await import("@/features/auth/ForgotPasswordPage"))
-                    .ForgotPasswordPage,
-                }),
+                lazy: page(
+                  () => import("@/features/auth/ForgotPasswordPage"),
+                  (m) => m.ForgotPasswordPage,
+                ),
               },
             ],
           },
@@ -45,9 +52,10 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/reset-password",
-            lazy: async () => ({
-              Component: (await import("@/features/auth/ResetPasswordPage")).ResetPasswordPage,
-            }),
+            lazy: page(
+              () => import("@/features/auth/ResetPasswordPage"),
+              (m) => m.ResetPasswordPage,
+            ),
           },
         ],
       },
@@ -60,9 +68,39 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                lazy: async () => ({
-                  Component: (await import("@/features/dashboard/DashboardPage")).DashboardPage,
-                }),
+                lazy: page(
+                  () => import("@/features/dashboard/DashboardPage"),
+                  (m) => m.DashboardPage,
+                ),
+              },
+              {
+                path: "vehicles",
+                lazy: page(
+                  () => import("@/features/vehicles/VehiclesPage"),
+                  (m) => m.VehiclesPage,
+                ),
+              },
+              {
+                path: "vehicles/new",
+                lazy: page(
+                  () => import("@/features/vehicles/VehicleFormPage"),
+                  (m) => m.VehicleFormPage,
+                ),
+              },
+              {
+                path: "vehicles/:vehicleId/edit",
+                lazy: page(
+                  () => import("@/features/vehicles/VehicleFormPage"),
+                  (m) => m.VehicleFormPage,
+                ),
+              },
+              {
+                path: "vehicles/:vehicleId",
+                lazy: page(
+                  () => import("@/features/vehicles/VehicleLayout"),
+                  (m) => m.VehicleLayout,
+                ),
+                children: vehicleTabs(),
               },
               { path: "*", element: <NotFoundPage /> },
             ],
@@ -72,3 +110,16 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+/** Tabs of a vehicle page; each tab may hold sections (secondary tabs). */
+function vehicleTabs() {
+  return [
+    {
+      index: true,
+      lazy: page(
+        () => import("@/features/vehicles/OverviewTab"),
+        (m) => m.OverviewTab,
+      ),
+    },
+  ];
+}

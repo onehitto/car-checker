@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Link } from "react-router";
 
 import { cn } from "@/lib/cn";
 
@@ -42,5 +43,14 @@ export function PageHeader({
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
     </div>
+  );
+}
+
+/** Small link in a panel header ("See all"). */
+export function PanelLink({ to, children }: { to: string; children: ReactNode }) {
+  return (
+    <Link to={to} className="text-sm font-medium text-petrol hover:underline">
+      {children}
+    </Link>
   );
 }

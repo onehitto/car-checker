@@ -12,6 +12,23 @@ export function toKilometres(value: number, unit: DistanceUnit): number {
   return Math.round(unit === "mi" ? value * KM_PER_MILE : value);
 }
 
+export type ConsumptionUnit = "l_100km" | "km_l" | "mpg_us" | "mpg_uk";
+
+/** Litres per 100 km (as stored) to the user's consumption unit. */
+export function convertConsumption(litresPer100Km: number, unit: ConsumptionUnit): number {
+  if (litresPer100Km <= 0) return 0;
+  switch (unit) {
+    case "l_100km":
+      return litresPer100Km;
+    case "km_l":
+      return 100 / litresPer100Km;
+    case "mpg_us":
+      return 235.215 / litresPer100Km;
+    case "mpg_uk":
+      return 282.481 / litresPer100Km;
+  }
+}
+
 export function formatNumber(locale: string, value: number, digits = 0): string {
   return new Intl.NumberFormat(locale, {
     maximumFractionDigits: digits,

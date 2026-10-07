@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { formatDate, formatDistance, formatMoney, toKilometres } from "./format";
+import {
+  convertConsumption,
+  formatDate,
+  formatDistance,
+  formatMoney,
+  toKilometres,
+} from "./format";
 
 const clean = (value: string) => value.replace(/\s/g, " ");
 
@@ -27,5 +33,12 @@ describe("format", () => {
 
   it("formats calendar dates without time-zone shifts", () => {
     expect(formatDate("en-GB", "2026-01-01")).toBe("1 Jan 2026");
+  });
+
+  it("converts consumption to the preferred unit", () => {
+    expect(convertConsumption(5, "l_100km")).toBe(5);
+    expect(convertConsumption(5, "km_l")).toBe(20);
+    expect(convertConsumption(5, "mpg_us")).toBeCloseTo(47.04, 2);
+    expect(convertConsumption(5, "mpg_uk")).toBeCloseTo(56.5, 1);
   });
 });

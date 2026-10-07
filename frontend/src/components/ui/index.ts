@@ -9,7 +9,7 @@ export { FieldRow, FormDialog } from "./FormDialog";
 export { ItemRow, LogList, LogRow } from "./LogList";
 export { Odometer } from "./Odometer";
 export { Pagination } from "./Pagination";
-export { PageHeader, Panel } from "./Panel";
+export { PageHeader, Panel, PanelLink } from "./Panel";
 export { Plate } from "./Plate";
 export { errorMessage } from "./errorMessage";
 export { type RowAction, RowMenu } from "./RowMenu";
