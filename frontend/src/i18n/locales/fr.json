@@ -149,7 +149,35 @@
     "skipToContent": "Aller au contenu"
   },
   "dashboard": {
-    "greeting": "Bonjour {{name}}"
+    "greeting": "Bonjour {{name}}",
+    "emptyBody": "Votre tableau de bord montre ce qui arrive à échéance sur vos véhicules. Commencez par la voiture que vous conduisez le plus.",
+    "vehicles": "Vos véhicules",
+    "next": "Prochain : {{name}}, {{due}}",
+    "nothingPlanned": "Aucun entretien programmé pour l'instant.",
+    "openAlerts_one": "{{count}} alerte ouverte",
+    "openAlerts_other": "{{count}} alertes ouvertes",
+    "openAlerts_many": "{{count}} alertes ouvertes",
+    "comingUp": "À venir",
+    "documents": "Documents à renouveler",
+    "spending": "Dépenses",
+    "lampsLabel": "Voyants",
+    "lamps": {
+      "overdue_one": "Entretien en retard",
+      "overdue_other": "Entretiens en retard",
+      "overdue_many": "Entretiens en retard",
+      "due_one": "Entretien à faire",
+      "due_other": "Entretiens à faire",
+      "due_many": "Entretiens à faire",
+      "expired_one": "Document expiré",
+      "expired_other": "Documents expirés",
+      "expired_many": "Documents expirés",
+      "expiring_one": "Document bientôt expiré",
+      "expiring_other": "Documents bientôt expirés",
+      "expiring_many": "Documents bientôt expirés",
+      "alerts_one": "Alerte ouverte",
+      "alerts_other": "Alertes ouvertes",
+      "alerts_many": "Alertes ouvertes"
+    }
   },
   "validation": {
     "required": "Obligatoire",

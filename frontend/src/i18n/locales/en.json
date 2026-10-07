@@ -148,7 +148,29 @@
     "skipToContent": "Skip to content"
   },
   "dashboard": {
-    "greeting": "Hello {{name}}"
+    "greeting": "Hello {{name}}",
+    "emptyBody": "Your dashboard shows what is due across your vehicles. Start with the car you drive most.",
+    "vehicles": "Your vehicles",
+    "next": "Next: {{name}}, {{due}}",
+    "nothingPlanned": "No maintenance planned yet.",
+    "openAlerts_one": "{{count}} open alert",
+    "openAlerts_other": "{{count}} open alerts",
+    "comingUp": "Coming up",
+    "documents": "Documents to renew",
+    "spending": "Spending",
+    "lampsLabel": "Warning lamps",
+    "lamps": {
+      "overdue_one": "Overdue service",
+      "overdue_other": "Overdue services",
+      "due_one": "Service due",
+      "due_other": "Services due",
+      "expired_one": "Expired document",
+      "expired_other": "Expired documents",
+      "expiring_one": "Document expiring soon",
+      "expiring_other": "Documents expiring soon",
+      "alerts_one": "Open alert",
+      "alerts_other": "Open alerts"
+    }
   },
   "validation": {
     "required": "Required",
