@@ -45,6 +45,7 @@ function VehiclePage({ context }: { context: ReturnType<typeof vehicleContextFor
     { to: base, label: t("vehicle.tabs.overview"), end: true },
     { to: `${base}/maintenance`, label: t("vehicle.tabs.maintenance") },
     { to: `${base}/mileage`, label: t("vehicle.tabs.mileage") },
+    { to: `${base}/expenses`, label: t("vehicle.tabs.costs") },
   ];
 
   return (

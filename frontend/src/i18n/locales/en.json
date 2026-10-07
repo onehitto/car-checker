@@ -582,5 +582,65 @@
       "fuel": "Fuel",
       "station": "Station"
     }
+  },
+  "expenses": {
+    "sections": {
+      "expenses": "Expenses",
+      "statistics": "Statistics"
+    },
+    "add": "Add an expense",
+    "addTitle": "Add an expense",
+    "editTitle": "Edit the expense",
+    "formBody": "For parking, tolls, insurance, washing... Services, parts and fill-ups add their own expense.",
+    "added": "Expense added",
+    "updated": "Expense updated",
+    "deleted": "Expense deleted",
+    "searchPlaceholder": "Search title or vendor",
+    "allCategories": "All categories",
+    "noMatch": "No expense matches these filters.",
+    "emptyTitle": "No expense yet",
+    "emptyBody": "Services, parts and fill-ups appear here automatically. Add the rest yourself: insurance, parking, tolls...",
+    "source": {
+      "maintenance": "From a service",
+      "part": "From a part",
+      "fuel": "From a fill-up",
+      "manual": "Typed"
+    },
+    "fields": {
+      "category": "Category",
+      "amount": "Amount ({{currency}})",
+      "title": "What for",
+      "titlePlaceholder": "e.g. Airport parking",
+      "vendor": "Paid to"
+    }
+  },
+  "statistics": {
+    "period": "Period",
+    "allTime": "All time",
+    "periodTitle": "From {{from}} to {{to}}",
+    "noData": "No expense in this period.",
+    "emptyTitle": "Nothing to count yet",
+    "emptyBody": "Statistics appear once services, fill-ups or expenses are recorded for this period.",
+    "total": "Total spent",
+    "averageMonthly": "Per month on average",
+    "costPerDistance": "Cost per {{unit}}",
+    "distanceDriven": "Distance driven",
+    "services": "Services",
+    "repairs": "Repairs",
+    "byMonth": "Spending per month",
+    "byCategory": "Spending by category",
+    "byYear": "Spending per year",
+    "byVehicle": "Spending by vehicle",
+    "frequency": "How often each service is done",
+    "times": "Times",
+    "spent": "Spent",
+    "averageGap": "Every (average)",
+    "lastDone": "Last done",
+    "expensiveRepairs": "Most expensive repairs",
+    "title": "Statistics",
+    "description": "Spending across your vehicles, per currency.",
+    "vehicle": "Vehicle",
+    "allVehicles": "All vehicles",
+    "currencyTotal": "Spent in {{currency}}"
   }
 }

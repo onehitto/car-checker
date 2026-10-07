@@ -102,6 +102,13 @@ export const router = createBrowserRouter([
                 ),
                 children: vehicleTabs(),
               },
+              {
+                path: "statistics",
+                lazy: page(
+                  () => import("@/features/statistics/StatisticsPage"),
+                  (m) => m.StatisticsPage,
+                ),
+              },
               { path: "*", element: <NotFoundPage /> },
             ],
           },
@@ -170,6 +177,29 @@ function vehicleTabs() {
           lazy: page(
             () => import("@/features/fuel/FuelTab"),
             (m) => m.FuelTab,
+          ),
+        },
+      ],
+    },
+    {
+      path: "expenses",
+      lazy: page(
+        () => import("@/features/expenses/CostsSection"),
+        (m) => m.CostsSection,
+      ),
+      children: [
+        {
+          index: true,
+          lazy: page(
+            () => import("@/features/expenses/ExpensesTab"),
+            (m) => m.ExpensesTab,
+          ),
+        },
+        {
+          path: "statistics",
+          lazy: page(
+            () => import("@/features/statistics/VehicleStatisticsTab"),
+            (m) => m.VehicleStatisticsTab,
           ),
         },
       ],

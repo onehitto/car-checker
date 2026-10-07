@@ -598,5 +598,65 @@
       "fuel": "Carburant",
       "station": "Station"
     }
+  },
+  "expenses": {
+    "sections": {
+      "expenses": "Dépenses",
+      "statistics": "Statistiques"
+    },
+    "add": "Ajouter une dépense",
+    "addTitle": "Ajouter une dépense",
+    "editTitle": "Modifier la dépense",
+    "formBody": "Pour le stationnement, les péages, l'assurance, le lavage... Les entretiens, pièces et pleins ajoutent leur propre dépense.",
+    "added": "Dépense ajoutée",
+    "updated": "Dépense modifiée",
+    "deleted": "Dépense supprimée",
+    "searchPlaceholder": "Rechercher un intitulé ou un fournisseur",
+    "allCategories": "Toutes les catégories",
+    "noMatch": "Aucune dépense ne correspond à ces filtres.",
+    "emptyTitle": "Aucune dépense",
+    "emptyBody": "Les entretiens, pièces et pleins apparaissent ici automatiquement. Ajoutez le reste vous-même : assurance, stationnement, péages...",
+    "source": {
+      "maintenance": "D'un entretien",
+      "part": "D'une pièce",
+      "fuel": "D'un plein",
+      "manual": "Saisie"
+    },
+    "fields": {
+      "category": "Catégorie",
+      "amount": "Montant ({{currency}})",
+      "title": "Objet",
+      "titlePlaceholder": "par ex. Parking de l'aéroport",
+      "vendor": "Payé à"
+    }
+  },
+  "statistics": {
+    "period": "Période",
+    "allTime": "Depuis le début",
+    "periodTitle": "Du {{from}} au {{to}}",
+    "noData": "Aucune dépense sur cette période.",
+    "emptyTitle": "Rien à compter pour l'instant",
+    "emptyBody": "Les statistiques apparaissent dès que des entretiens, pleins ou dépenses sont enregistrés sur cette période.",
+    "total": "Total dépensé",
+    "averageMonthly": "Par mois en moyenne",
+    "costPerDistance": "Coût par {{unit}}",
+    "distanceDriven": "Distance parcourue",
+    "services": "Entretiens",
+    "repairs": "Réparations",
+    "byMonth": "Dépenses par mois",
+    "byCategory": "Dépenses par catégorie",
+    "byYear": "Dépenses par an",
+    "byVehicle": "Dépenses par véhicule",
+    "frequency": "Fréquence de chaque entretien",
+    "times": "Fois",
+    "spent": "Dépensé",
+    "averageGap": "Tous les (en moyenne)",
+    "lastDone": "Dernière fois",
+    "expensiveRepairs": "Réparations les plus chères",
+    "title": "Statistiques",
+    "description": "Les dépenses de tous vos véhicules, par devise.",
+    "vehicle": "Véhicule",
+    "allVehicles": "Tous les véhicules",
+    "currencyTotal": "Dépensé en {{currency}}"
   }
 }
