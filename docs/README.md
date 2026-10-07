@@ -33,3 +33,5 @@ follow the order requested in the specification.
 | 26 | Security recommendations                        | [03-security.md](03-security.md#26-security-recommendations-implemented-unless-stated-otherwise) |
 | 27 | Example API requests and responses              | [04-api.md](04-api.md#27-example-requests-and-responses)   |
 | 28 | Step-by-step implementation plan                | [07-implementation-plan.md](07-implementation-plan.md)     |
+
+Web frontend (stack, Docker workflow, authentication, design plan): [08-frontend.md](08-frontend.md).
