@@ -27,7 +27,8 @@ export function useDueText() {
         const amount = parts.filter(Boolean).join(t("due.and"));
         return amount ? t("due.overdueBy", { amount }) : t("status.overdue");
       }
-      if (item.status === "due") return t("due.now");
+      const ahead = (item.remaining_km ?? 0) > 0 || (item.remaining_days ?? 0) > 0;
+      if (item.status === "due" && !ahead) return t("due.now");
       const parts = [
         item.remaining_km != null ? format.distance(Math.max(0, item.remaining_km)) : null,
         item.remaining_days != null ? days(Math.max(0, item.remaining_days)) : null,

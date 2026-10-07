@@ -357,6 +357,14 @@
       "inspected": "Contrôlé",
       "repaired": "Réparé",
       "discarded": "Mis au rebut"
+    },
+    "noteCategory": {
+      "general": "Général",
+      "maintenance": "Entretien",
+      "repair": "Réparation",
+      "part": "Pièce",
+      "problem": "Problème",
+      "document": "Document"
     }
   },
   "vehicles": {
@@ -850,6 +858,59 @@
       "pressure": "Pression",
       "pressurePlaceholder": "par ex. 2,3 bar avant, 2,1 bar arrière",
       "event": "Événement"
+    }
+  },
+  "reminders": {
+    "sections": {
+      "reminders": "Rappels",
+      "notes": "Notes"
+    },
+    "add": "Ajouter un rappel",
+    "addTitle": "Ajouter un rappel",
+    "editTitle": "Modifier le rappel",
+    "formBody": "Indiquez une date, un kilométrage ou les deux : vous êtes alerté au premier atteint.",
+    "added": "Rappel ajouté",
+    "updated": "Rappel modifié",
+    "deleted": "Rappel supprimé",
+    "done": "Rappel terminé",
+    "reopened": "Rappel rouvert",
+    "markDone": "Marquer comme fait",
+    "reopen": "Rouvrir",
+    "show": "Afficher",
+    "open": "À faire",
+    "completed": "Faits",
+    "dueOn": "Échéance : {{when}}",
+    "doneOn": "Fait le {{date}}",
+    "noneDone": "Aucun rappel terminé.",
+    "emptyTitle": "Rien à retenir",
+    "emptyBody": "Ajoutez ce que le carnet ne couvre pas : renouveler un badge de parking, vérifier la roue de secours, changer les balais d'essuie-glace...",
+    "fields": {
+      "title": "À faire",
+      "titlePlaceholder": "par ex. Renouveler le badge de parking",
+      "dueDate": "Le",
+      "dueMileage": "À ({{unit}})",
+      "whenRequired": "Indiquez une date, un kilométrage ou les deux."
+    }
+  },
+  "notes": {
+    "add": "Ajouter une note",
+    "addTitle": "Ajouter une note",
+    "editTitle": "Modifier la note",
+    "added": "Note ajoutée",
+    "updated": "Note modifiée",
+    "deleted": "Note supprimée",
+    "pin": "Épingler en haut",
+    "unpin": "Désépingler",
+    "pinned": "Épinglée",
+    "searchPlaceholder": "Rechercher dans les notes",
+    "noMatch": "Aucune note ne correspond à ces filtres.",
+    "emptyTitle": "Aucune note",
+    "emptyBody": "Notez un bruit à surveiller, le conseil du garagiste ou le code de l'autoradio.",
+    "fields": {
+      "title": "Titre",
+      "body": "Note",
+      "bodyPlaceholder": "par ex. Grincement de la roue avant gauche au freinage à froid.",
+      "pinned": "Épingler en haut de la liste"
     }
   }
 }

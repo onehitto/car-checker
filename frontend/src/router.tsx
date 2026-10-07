@@ -241,5 +241,28 @@ function vehicleTabs() {
         },
       ],
     },
+    {
+      path: "reminders",
+      lazy: page(
+        () => import("@/features/reminders/RemindersSection"),
+        (m) => m.RemindersSection,
+      ),
+      children: [
+        {
+          index: true,
+          lazy: page(
+            () => import("@/features/reminders/RemindersTab"),
+            (m) => m.RemindersTab,
+          ),
+        },
+        {
+          path: "notes",
+          lazy: page(
+            () => import("@/features/notes/NotesTab"),
+            (m) => m.NotesTab,
+          ),
+        },
+      ],
+    },
   ];
 }

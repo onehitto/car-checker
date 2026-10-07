@@ -348,6 +348,14 @@
       "inspected": "Inspected",
       "repaired": "Repaired",
       "discarded": "Discarded"
+    },
+    "noteCategory": {
+      "general": "General",
+      "maintenance": "Maintenance",
+      "repair": "Repair",
+      "part": "Part",
+      "problem": "Problem",
+      "document": "Document"
     }
   },
   "vehicles": {
@@ -833,6 +841,59 @@
       "pressure": "Pressure",
       "pressurePlaceholder": "e.g. 2.3 bar front, 2.1 bar rear",
       "event": "What happened"
+    }
+  },
+  "reminders": {
+    "sections": {
+      "reminders": "Reminders",
+      "notes": "Notes"
+    },
+    "add": "Add a reminder",
+    "addTitle": "Add a reminder",
+    "editTitle": "Edit the reminder",
+    "formBody": "Set a date, a mileage or both: you are alerted at whichever comes first.",
+    "added": "Reminder added",
+    "updated": "Reminder updated",
+    "deleted": "Reminder deleted",
+    "done": "Reminder done",
+    "reopened": "Reminder reopened",
+    "markDone": "Mark as done",
+    "reopen": "Reopen",
+    "show": "Show",
+    "open": "To do",
+    "completed": "Done",
+    "dueOn": "Due {{when}}",
+    "doneOn": "Done on {{date}}",
+    "noneDone": "No reminder done yet.",
+    "emptyTitle": "Nothing to remember",
+    "emptyBody": "Add what the logbook does not cover: renew a parking badge, check the spare tire, change the wiper blades...",
+    "fields": {
+      "title": "What to do",
+      "titlePlaceholder": "e.g. Renew the parking badge",
+      "dueDate": "On",
+      "dueMileage": "At ({{unit}})",
+      "whenRequired": "Set a date, a mileage or both."
+    }
+  },
+  "notes": {
+    "add": "Add a note",
+    "addTitle": "Add a note",
+    "editTitle": "Edit the note",
+    "added": "Note added",
+    "updated": "Note updated",
+    "deleted": "Note deleted",
+    "pin": "Pin to the top",
+    "unpin": "Unpin",
+    "pinned": "Pinned",
+    "searchPlaceholder": "Search the notes",
+    "noMatch": "No note matches these filters.",
+    "emptyTitle": "No note yet",
+    "emptyBody": "Write down a noise to watch, the mechanic's advice or the code of the radio.",
+    "fields": {
+      "title": "Title",
+      "body": "Note",
+      "bodyPlaceholder": "e.g. Squeak from the front left wheel when braking cold.",
+      "pinned": "Pin to the top of the list"
     }
   }
 }
