@@ -6,6 +6,7 @@ import "@fontsource/barlow-condensed/700.css";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./styles/index.css";
+import "./i18n";
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";

@@ -1437,7 +1437,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["AlertResponse"];
     };
     /** ApiResponse[AlertSummary] */
@@ -1447,7 +1447,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["AlertSummary"];
     };
     /** ApiResponse[AttachmentResponse] */
@@ -1457,7 +1457,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["AttachmentResponse"];
     };
     /** ApiResponse[AuthResponse] */
@@ -1467,7 +1467,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["AuthResponse"];
     };
     /** ApiResponse[DocumentResponse] */
@@ -1477,7 +1477,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["DocumentResponse"];
     };
     /** ApiResponse[ExpenseResponse] */
@@ -1487,7 +1487,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["ExpenseResponse"];
     };
     /** ApiResponse[FuelRecordResponse] */
@@ -1497,7 +1497,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["FuelRecordResponse"];
     };
     /** ApiResponse[FuelStatisticsResponse] */
@@ -1507,7 +1507,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["FuelStatisticsResponse"];
     };
     /** ApiResponse[GarageResponse] */
@@ -1517,7 +1517,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["GarageResponse"];
     };
     /** ApiResponse[GlobalDashboard] */
@@ -1527,7 +1527,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["GlobalDashboard"];
     };
     /** ApiResponse[GlobalStatistics] */
@@ -1537,7 +1537,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["GlobalStatistics"];
     };
     /** ApiResponse[HealthStatus] */
@@ -1547,7 +1547,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["HealthStatus"];
     };
     /** ApiResponse[MaintenanceRecordResponse] */
@@ -1557,7 +1557,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["MaintenanceRecordResponse"];
     };
     /** ApiResponse[MaintenanceTypeResponse] */
@@ -1567,7 +1567,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["MaintenanceTypeResponse"];
     };
     /** ApiResponse[MessageResponse] */
@@ -1577,7 +1577,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["MessageResponse"];
     };
     /** ApiResponse[MileageUpdateResponse] */
@@ -1587,7 +1587,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["MileageUpdateResponse"];
     };
     /** ApiResponse[NoteResponse] */
@@ -1597,7 +1597,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["NoteResponse"];
     };
     /** ApiResponse[OilChangeResponse] */
@@ -1607,7 +1607,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["OilChangeResponse"];
     };
     /** ApiResponse[PartResponse] */
@@ -1617,7 +1617,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["PartResponse"];
     };
     /** ApiResponse[PartTypeResponse] */
@@ -1627,7 +1627,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["PartTypeResponse"];
     };
     /** ApiResponse[ReadAllResponse] */
@@ -1637,7 +1637,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["ReadAllResponse"];
     };
     /** ApiResponse[ReminderResponse] */
@@ -1647,7 +1647,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["ReminderResponse"];
     };
     /** ApiResponse[ScheduleResponse] */
@@ -1657,7 +1657,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["ScheduleResponse"];
     };
     /** ApiResponse[ShareResponse] */
@@ -1667,7 +1667,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["ShareResponse"];
     };
     /** ApiResponse[TireEventResponse] */
@@ -1677,7 +1677,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["TireEventResponse"];
     };
     /** ApiResponse[TireResponse] */
@@ -1687,7 +1687,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["TireResponse"];
     };
     /** ApiResponse[TokenPair] */
@@ -1697,7 +1697,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["TokenPair"];
     };
     /** ApiResponse[UserResponse] */
@@ -1707,7 +1707,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["UserResponse"];
     };
     /** ApiResponse[VehicleDashboard] */
@@ -1717,7 +1717,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["VehicleDashboard"];
     };
     /** ApiResponse[VehicleResponse] */
@@ -1727,7 +1727,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["VehicleResponse"];
     };
     /** ApiResponse[VehicleStatistics] */
@@ -1737,7 +1737,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       data: components["schemas"]["VehicleStatistics"];
     };
     /** ApiResponse[list[MaintenanceTypeResponse]] */
@@ -1747,7 +1747,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["MaintenanceTypeResponse"][];
     };
@@ -1758,7 +1758,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["PartTypeResponse"][];
     };
@@ -1769,7 +1769,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["PreferenceResponse"][];
     };
@@ -1780,7 +1780,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["ReminderResponse"][];
     };
@@ -1791,7 +1791,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["ScheduleResponse"][];
     };
@@ -1802,7 +1802,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["SessionResponse"][];
     };
@@ -1813,7 +1813,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["ShareResponse"][];
     };
@@ -1824,7 +1824,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["TireResponse"][];
     };
@@ -2061,7 +2061,7 @@ export interface components {
       /** Notes */
       notes: string | null;
       /** @default valid */
-      status: components["schemas"]["DocumentStatus"];
+      status?: components["schemas"]["DocumentStatus"];
       /** Days Until Expiration */
       days_until_expiration?: number | null;
       /** Created By Id */
@@ -2155,7 +2155,7 @@ export interface components {
        * @default false
        * @constant
        */
-      success: false;
+      success?: false;
       error: components["schemas"]["ErrorDetail"];
     };
     /**
@@ -2317,7 +2317,7 @@ export interface components {
       /** Notes */
       notes: string | null;
       /** @default valid */
-      status: components["schemas"]["DocumentStatus"];
+      status?: components["schemas"]["DocumentStatus"];
       /** Days Until Expiration */
       days_until_expiration?: number | null;
       /** Created By Id */
@@ -2384,13 +2384,13 @@ export interface components {
        * Full Tank
        * @default true
        */
-      full_tank: boolean;
+      full_tank?: boolean;
       /**
        * Missed Previous
        * @description Fill-ups were skipped before this one (breaks consumption).
        * @default false
        */
-      missed_previous: boolean;
+      missed_previous?: boolean;
       fuel_type?: components["schemas"]["PumpFuel"] | null;
       /** Gas Station */
       gas_station?: string | null;
@@ -2538,7 +2538,7 @@ export interface components {
     /** GarageCreate */
     GarageCreate: {
       /** @default garage */
-      garage_type: components["schemas"]["GarageType"];
+      garage_type?: components["schemas"]["GarageType"];
       /** Contact Name */
       contact_name?: string | null;
       /** Phone */
@@ -2771,7 +2771,7 @@ export interface components {
     /** MaintenanceRecordCreate */
     MaintenanceRecordCreate: {
       /** @default maintenance */
-      kind: components["schemas"]["MaintenanceKind"];
+      kind?: components["schemas"]["MaintenanceKind"];
       /**
        * Title
        * @description Defaults to the maintenance type name.
@@ -2893,7 +2893,7 @@ export interface components {
       /** Name */
       name: string;
       /** @default other */
-      category: components["schemas"]["MaintenanceCategory"];
+      category?: components["schemas"]["MaintenanceCategory"];
       /** Description */
       description?: string | null;
       /** Default Interval Km */
@@ -2987,13 +2987,13 @@ export interface components {
        * @description Store the reading in the mileage history.
        * @default true
        */
-      record_history: boolean;
+      record_history?: boolean;
       /**
        * Force
        * @description Accept a reading lower than a previous one (odometer replaced or corrected). The override is audited.
        * @default false
        */
-      force: boolean;
+      force?: boolean;
     };
     /** MileageEntryResponse */
     MileageEntryResponse: {
@@ -3071,7 +3071,7 @@ export interface components {
       /** Title */
       title?: string | null;
       /** @default general */
-      category: components["schemas"]["NoteCategory"];
+      category?: components["schemas"]["NoteCategory"];
       /** @description Record of this vehicle the note is about (none: the vehicle). */
       entity_type?: components["schemas"]["NoteEntity"] | null;
       /** Entity Id */
@@ -3080,7 +3080,7 @@ export interface components {
        * Is Pinned
        * @default false
        */
-      is_pinned: boolean;
+      is_pinned?: boolean;
     };
     /**
      * NoteEntity
@@ -3184,7 +3184,7 @@ export interface components {
        * Oil Filter Changed
        * @default false
        */
-      oil_filter_changed: boolean;
+      oil_filter_changed?: boolean;
     };
     /** OilChangeResponse */
     OilChangeResponse: {
@@ -3315,7 +3315,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["AlertResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3327,7 +3327,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["AttachmentResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3339,7 +3339,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["DocumentResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3351,7 +3351,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["ExpenseResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3363,7 +3363,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["FuelRecordResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3375,7 +3375,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["GarageResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3387,7 +3387,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["MaintenanceRecordResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3399,7 +3399,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["MileageEntryResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3411,7 +3411,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["NoteResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3423,7 +3423,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["OilChangeResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3435,7 +3435,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["PartResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3447,7 +3447,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["TimelineEventResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3459,7 +3459,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["TireEventResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3471,7 +3471,7 @@ export interface components {
        * @default true
        * @constant
        */
-      success: true;
+      success?: true;
       /** Data */
       data: components["schemas"]["VehicleResponse"][];
       meta: components["schemas"]["PageMeta"];
@@ -3515,7 +3515,7 @@ export interface components {
        * Quantity
        * @default 1
        */
-      quantity: number;
+      quantity?: number;
       /** Installed Mileage */
       installed_mileage?: number | null;
       /** Price */
@@ -3641,7 +3641,7 @@ export interface components {
       /** Name */
       name: string;
       /** @default other */
-      category: components["schemas"]["PartCategory"];
+      category?: components["schemas"]["PartCategory"];
       /** Description */
       description?: string | null;
       /** Default Lifetime Km */
@@ -3785,14 +3785,14 @@ export interface components {
        * @description `all` or one alert type (overrides `all`).
        * @default all
        */
-      alert_type: string;
+      alert_type?: string;
       /**
        * Enabled
        * @default true
        */
-      enabled: boolean;
+      enabled?: boolean;
       /** @default low */
-      min_priority: components["schemas"]["AlertPriority"];
+      min_priority?: components["schemas"]["AlertPriority"];
     };
     /** PreferenceResponse */
     PreferenceResponse: {
@@ -3848,7 +3848,7 @@ export interface components {
       /** Phone Number */
       phone_number?: string | null;
       /** @default en */
-      preferred_language: components["schemas"]["Language"];
+      preferred_language?: components["schemas"]["Language"];
       /**
        * Preferred Currency
        * @description ISO 4217 currency code.
@@ -3856,17 +3856,17 @@ export interface components {
        * @example EUR
        * @example MAD
        */
-      preferred_currency: string;
+      preferred_currency?: string;
       /** @default km */
-      preferred_distance_unit: components["schemas"]["DistanceUnit"];
+      preferred_distance_unit?: components["schemas"]["DistanceUnit"];
       /** @default l_100km */
-      preferred_consumption_unit: components["schemas"]["ConsumptionUnit"];
+      preferred_consumption_unit?: components["schemas"]["ConsumptionUnit"];
       /**
        * Timezone
        * @default UTC
        * @example Africa/Casablanca
        */
-      timezone: string;
+      timezone?: string;
     };
     /** ReminderCreate */
     ReminderCreate: {
@@ -3882,12 +3882,12 @@ export interface components {
        * Warning Before Days
        * @default 7
        */
-      warning_before_days: number;
+      warning_before_days?: number;
       /**
        * Warning Before Km
        * @default 500
        */
-      warning_before_km: number;
+      warning_before_km?: number;
     };
     /** ReminderResponse */
     ReminderResponse: {
@@ -3916,7 +3916,7 @@ export interface components {
       /** Completed At */
       completed_at: string | null;
       /** @default unknown */
-      status: components["schemas"]["DueStatus"];
+      status?: components["schemas"]["DueStatus"];
       /** Remaining Km */
       remaining_km?: number | null;
       /** Remaining Days */
@@ -3997,18 +3997,18 @@ export interface components {
        * @description Warn this many km before.
        * @default 1000
        */
-      warning_before_km: number;
+      warning_before_km?: number;
       /**
        * Warning Before Days
        * @description Warn this many days before.
        * @default 30
        */
-      warning_before_days: number;
+      warning_before_days?: number;
       /**
        * Enabled
        * @default true
        */
-      enabled: boolean;
+      enabled?: boolean;
     };
     /** ScheduleResponse */
     ScheduleResponse: {
@@ -4452,7 +4452,7 @@ export interface components {
        * Token Type
        * @default bearer
        */
-      token_type: string;
+      token_type?: string;
       /**
        * Expires In
        * @description Access token lifetime in seconds.
@@ -4648,14 +4648,14 @@ export interface components {
        * @description Odometer when acquired (km).
        * @default 0
        */
-      initial_mileage: number;
+      initial_mileage?: number;
       /**
        * Current Mileage
        * @description Current odometer (km); defaults to initial_mileage.
        */
       current_mileage?: number | null;
       /** @default active */
-      status: components["schemas"]["VehicleStatus"];
+      status?: components["schemas"]["VehicleStatus"];
     };
     /** VehicleDashboard */
     VehicleDashboard: {

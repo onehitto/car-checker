@@ -13,7 +13,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "api:types": "openapi-typescript ${API_SCHEMA_URL:-http://api:8000/openapi.json} -o src/api/schema.d.ts && prettier --write src/api/schema.d.ts",
+    "api:types": "openapi-typescript ${API_SCHEMA_URL:-http://api:8000/openapi.json} --default-non-nullable false -o src/api/schema.d.ts && prettier --write src/api/schema.d.ts",
     "e2e": "playwright test"
   },
   "dependencies": {

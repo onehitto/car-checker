@@ -10,17 +10,30 @@ interface OdometerProps {
   label: string;
   size?: "sm" | "lg";
   minDigits?: number;
+  className?: string;
 }
 
 /**
  * Mechanical odometer: one drum per digit, the last drum inverted like the tenths drum of a
  * real odometer. Drums roll to their new position when the value changes.
  */
-export function Odometer({ value, unit, label, size = "lg", minDigits = 6 }: OdometerProps) {
+export function Odometer({
+  value,
+  unit,
+  label,
+  size = "lg",
+  minDigits = 6,
+  className,
+}: OdometerProps) {
   const digits = Math.max(0, Math.round(value)).toString().padStart(minDigits, "0").split("");
   const large = size === "lg";
   return (
-    <div className="inline-flex items-end gap-2" role="img" aria-label={label} dir="ltr">
+    <div
+      className={cn("inline-flex w-fit items-end gap-2", className)}
+      role="img"
+      aria-label={label}
+      dir="ltr"
+    >
       <div
         aria-hidden="true"
         className={cn(
@@ -56,7 +69,7 @@ export function Odometer({ value, unit, label, size = "lg", minDigits = 6 }: Odo
       </div>
       <span
         aria-hidden="true"
-        className={cn("font-display font-semibold text-steel", large ? "pb-1 text-xl" : "text-sm")}
+        className={cn("font-display font-semibold opacity-60", large ? "pb-1 text-xl" : "text-sm")}
       >
         {unit}
       </span>

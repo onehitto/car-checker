@@ -16,6 +16,8 @@ export default defineConfig({
     host: "0.0.0.0",
     port: 5173,
     strictPort: true,
+    // "frontend" is the Docker Compose service name used by the end-to-end tests.
+    allowedHosts: ["localhost", "frontend"],
     // Same-origin calls in development too: the browser never talks to the API directly.
     proxy: {
       "/api": { target: apiTarget, xfwd: true },

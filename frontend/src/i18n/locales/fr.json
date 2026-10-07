@@ -38,7 +38,19 @@
     "notFound": "Cette page n'existe pas ou vous n'y avez plus accès.",
     "forbidden": "Votre rôle sur ce véhicule ne permet pas cette action.",
     "requestId": "Référence : {{id}}",
-    "required": "Obligatoire"
+    "required": "Obligatoire",
+    "codes": {
+      "INVALID_CREDENTIALS": "E-mail ou mot de passe incorrect.",
+      "EMAIL_ALREADY_REGISTERED": "Un compte utilise déjà cet e-mail. Connectez-vous plutôt.",
+      "INVALID_TOKEN": "Ce lien est invalide ou expiré. Demandez-en un nouveau.",
+      "RATE_LIMITED": "Trop de tentatives. Patientez une minute puis réessayez.",
+      "ACCOUNT_DISABLED": "Ce compte est désactivé.",
+      "FORBIDDEN": "Votre rôle sur ce véhicule ne permet pas cette action.",
+      "MILEAGE_DECREASE": "Ce relevé est inférieur à un précédent. Vérifiez-le, ou confirmez que le compteur a été remplacé.",
+      "PAYLOAD_TOO_LARGE": "Le fichier est trop volumineux (10 Mo maximum).",
+      "UNSUPPORTED_MEDIA_TYPE": "Utilisez un fichier PDF, JPEG, PNG, WebP ou HEIC."
+    },
+    "notFoundTitle": "Page introuvable"
   },
   "languages": {
     "en": "English",
@@ -60,5 +72,61 @@
     "medium": "Moyen",
     "high": "Élevé",
     "critical": "Critique"
+  },
+  "auth": {
+    "hero": "Chaque entretien, chaque kilomètre, consigné.",
+    "heroBody": "Sachez ce qui arrive avant que cela coûte cher, et gardez tout l'historique de vos voitures au même endroit.",
+    "signInTitle": "Connexion",
+    "signInBody": "Bon retour. Votre carnet vous attend.",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "forgotLink": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "createAccount": "Créer un compte",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "registerTitle": "Créez votre compte",
+    "registerBody": "Cela prend une minute. Vous pouvez supprimer votre compte et ses données à tout moment.",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "currency": "Devise",
+    "distanceUnit": "Distance",
+    "passwordRule": "Au moins 8 caractères, avec des lettres et des chiffres.",
+    "invalidEmail": "Saisissez une adresse e-mail valide.",
+    "forgotTitle": "Réinitialiser le mot de passe",
+    "forgotBody": "Saisissez votre e-mail, nous vous enverrons un lien pour choisir un nouveau mot de passe.",
+    "sendResetLink": "Envoyer le lien",
+    "checkInboxTitle": "Consultez votre boîte mail",
+    "checkInboxBody": "Si un compte utilise {{email}}, un lien de réinitialisation est en route. Il est valable 30 minutes.",
+    "backToSignIn": "Retour à la connexion",
+    "resetTitle": "Choisissez un nouveau mot de passe",
+    "resetBody": "Tous vos appareils seront déconnectés.",
+    "resetLinkInvalid": "Ce lien est incomplet. Demandez-en un nouveau.",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmez le mot de passe",
+    "passwordsDiffer": "Les mots de passe ne correspondent pas.",
+    "setPassword": "Définir le mot de passe",
+    "passwordReset": "Mot de passe modifié. Connectez-vous avec le nouveau."
+  },
+  "units": {
+    "km": "Kilomètres",
+    "mi": "Miles"
+  },
+  "nav": {
+    "main": "Navigation principale",
+    "dashboard": "Tableau de bord",
+    "vehicles": "Véhicules",
+    "alerts": "Alertes",
+    "unread": "non lues",
+    "statistics": "Statistiques",
+    "garages": "Garages",
+    "settings": "Paramètres",
+    "myGarage": "Mon garage",
+    "addVehicle": "Ajouter un véhicule",
+    "signOut": "Se déconnecter",
+    "skipToContent": "Aller au contenu"
+  },
+  "dashboard": {
+    "greeting": "Bonjour {{name}}"
   }
 }

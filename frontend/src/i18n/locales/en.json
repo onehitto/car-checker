@@ -38,7 +38,19 @@
     "notFound": "This page does not exist or you no longer have access to it.",
     "forbidden": "Your role on this vehicle does not allow this action.",
     "requestId": "Reference: {{id}}",
-    "required": "Required"
+    "required": "Required",
+    "codes": {
+      "INVALID_CREDENTIALS": "Wrong email or password.",
+      "EMAIL_ALREADY_REGISTERED": "An account already uses this email. Sign in instead.",
+      "INVALID_TOKEN": "This link is invalid or has expired. Request a new one.",
+      "RATE_LIMITED": "Too many attempts. Wait a minute and try again.",
+      "ACCOUNT_DISABLED": "This account is disabled.",
+      "FORBIDDEN": "Your role on this vehicle does not allow this action.",
+      "MILEAGE_DECREASE": "This reading is lower than a previous one. Check it, or confirm the odometer was replaced.",
+      "PAYLOAD_TOO_LARGE": "The file is too large (10 MB maximum).",
+      "UNSUPPORTED_MEDIA_TYPE": "Use a PDF, JPEG, PNG, WebP or HEIC file."
+    },
+    "notFoundTitle": "Page not found"
   },
   "languages": {
     "en": "English",
@@ -60,5 +72,61 @@
     "medium": "Medium",
     "high": "High",
     "critical": "Critical"
+  },
+  "auth": {
+    "hero": "Every service, every kilometre, on record.",
+    "heroBody": "Know what is due before it costs you, and keep the full history of your cars in one place.",
+    "signInTitle": "Sign in",
+    "signInBody": "Welcome back. Your logbook is waiting.",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign in",
+    "forgotLink": "Forgot your password?",
+    "noAccount": "No account yet?",
+    "createAccount": "Create an account",
+    "haveAccount": "Already have an account?",
+    "registerTitle": "Create your account",
+    "registerBody": "It takes a minute. You can delete your account and its data at any time.",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "currency": "Currency",
+    "distanceUnit": "Distance",
+    "passwordRule": "At least 8 characters, with letters and digits.",
+    "invalidEmail": "Enter a valid email address.",
+    "forgotTitle": "Reset your password",
+    "forgotBody": "Enter your email and we will send you a link to choose a new password.",
+    "sendResetLink": "Send the reset link",
+    "checkInboxTitle": "Check your inbox",
+    "checkInboxBody": "If an account uses {{email}}, a link to reset the password is on its way. It is valid for 30 minutes.",
+    "backToSignIn": "Back to sign in",
+    "resetTitle": "Choose a new password",
+    "resetBody": "All your devices will be signed out.",
+    "resetLinkInvalid": "This reset link is incomplete. Request a new one.",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm the password",
+    "passwordsDiffer": "The passwords do not match.",
+    "setPassword": "Set the password",
+    "passwordReset": "Password changed. Sign in with the new one."
+  },
+  "units": {
+    "km": "Kilometres",
+    "mi": "Miles"
+  },
+  "nav": {
+    "main": "Main navigation",
+    "dashboard": "Dashboard",
+    "vehicles": "Vehicles",
+    "alerts": "Alerts",
+    "unread": "unread",
+    "statistics": "Statistics",
+    "garages": "Garages",
+    "settings": "Settings",
+    "myGarage": "My garage",
+    "addVehicle": "Add a vehicle",
+    "signOut": "Sign out",
+    "skipToContent": "Skip to content"
+  },
+  "dashboard": {
+    "greeting": "Hello {{name}}"
   }
 }
