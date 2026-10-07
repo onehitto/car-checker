@@ -63,6 +63,13 @@ describe("useFormSubmit", () => {
       )
       .mockRejectedValueOnce(
         new ApiError(409, { code: "MILEAGE_DECREASE", message: "Mileage decreased" }),
+      )
+      .mockRejectedValueOnce(
+        new ApiError(422, {
+          code: "MILEAGE_DECREASE",
+          message: "Mileage decreased",
+          fields: { mileage: "Must be greater than or equal to 98910." },
+        }),
       );
     renderWithProviders(<MileageForm save={save} />);
     await userEvent.type(screen.getByLabelText("Mileage"), "100");
@@ -71,5 +78,10 @@ describe("useFormSubmit", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/lower than a previous one/);
+
+    // Business rules attached to a field use the translated rule message.
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    expect(await screen.findByText(/lower than a previous one/)).toBeInTheDocument();
+    expect(screen.queryByText(/greater than or equal/)).not.toBeInTheDocument();
   });
 });

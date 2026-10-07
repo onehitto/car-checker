@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import type { z } from "zod";
 
 import { isApiError } from "@/api/errors";
-import { errorMessage } from "@/components/ui/errorMessage";
+import { codeMessage, errorMessage } from "@/components/ui/errorMessage";
 import { useToast } from "@/components/ui/toastContext";
 
 /**
@@ -29,9 +29,13 @@ export function applyServerErrors<T extends FieldValues>(
 ): string | null {
   if (!isApiError(error)) return errorMessage(error, t);
   const entries = Object.entries(error.fields);
+  // A business rule (e.g. MILEAGE_DECREASE) has a translated message; generic validation
+  // errors keep the server's per-field text.
+  const ruleMessage = error.code === "VALIDATION_ERROR" ? null : codeMessage(error.code, t);
   let unmatched = entries.length === 0;
   for (const [field, message] of entries) {
-    if (fieldNames.includes(field)) setError(field as Path<T>, { type: "server", message });
+    if (fieldNames.includes(field))
+      setError(field as Path<T>, { type: "server", message: ruleMessage ?? message });
     else unmatched = true;
   }
   return unmatched ? errorMessage(error, t) : null;
